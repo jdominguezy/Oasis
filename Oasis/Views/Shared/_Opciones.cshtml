@@ -1,0 +1,131 @@
+﻿@{ 
+    List<SelectListItem> lst = new List<SelectListItem>();
+    lst.Add(new SelectListItem() { Text = "LABOVIDA", Value = "LABOVIDA S.A." });
+    lst.Add(new SelectListItem() { Text = "LEBENFARMA", Value = "LEBENFARMA S.A." });
+    lst.Add(new SelectListItem() { Text = "FARMALIGHT", Value = "FARMALIGHT S.A." });
+    lst.Add(new SelectListItem() { Text = "DANIVET", Value = "LABORATORIOS DANIVET S.A." });
+    lst.Add(new SelectListItem() { Text = "DANIVET 2", Value = "LABORATORIOS DANIVET S.A. 2" });
+    lst.Add(new SelectListItem() { Text = "ANYUPA", Value = "LABORATORIOS ANYUPA S.A." });
+    lst.Add(new SelectListItem() { Text = "MEDITOTAL", Value = "MEDITOTAL S.A." });
+    ViewBag.Opciones = lst;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h2 class="card-title">Cartera por cobrar</h2>
+                <div class="card-tools">
+                    <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn bg-primary btn-sm" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- form start -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Empresa</label>
+                            @Html.DropDownList("empresa_ind",
+                                        new SelectList(ViewBag.Opciones, "Value", "Text"),
+                                        htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Localidad</label>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <select class="form-control" id="localidad" disabled="">
+                                            <option value="CIUDAD">CIUDAD</option>
+                                            <option value="GIRA">GIRA</option>
+                                        </select>
+                                    </div>
+                                    <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
+                                        <input class="custom-control-input" type="checkbox" id="chkLocalidad" checked="" disabled="">
+                                        <label for="chkLocalidad" class="custom-control-label" disabled="">Ambas localidades</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Región</label>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <select class="form-control" id="sucursal_ind">
+                                        <option value="COSTA">COSTA</option>
+                                        <option value="SIERRA">SIERRA</option>
+                                        <option value="AUSTRO">AUSTRO</option>
+                                    </select>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
+                                    <input class="custom-control-input" type="checkbox" id="chkRegion">
+                                    <label for="chkRegion" class="custom-control-label">Todas</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Tipo de cliente</label>
+                                    <div class="col-sm-6">
+                                        <!-- checkbox -->
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input tipoCliente" name="INSTITUCIONES" type="checkbox" id="chkInstituciones">
+                                                <label for="chkInstituciones" class="custom-control-label">Instituciones</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input tipoCliente" name="FARMACIA" type="checkbox" id="chkFarmacia" checked="">
+                                                <label for="chkFarmacia" class="custom-control-label">Farmacia</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input tipoCliente" name="DISTRIBUIDORES" type="checkbox" id="chkDistribuidores">
+                                                <label for="chkDistribuidores" class="custom-control-label">Distribuidores</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Tipo de cartera</label>
+                                    <div class="col-md-10">
+                                        <!-- checkbox -->
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input class="form-check-input cartera_general" id="cartera_general" type="radio" name="radio1" checked="">
+                                                <label class="form-check-label" style="font-weight:700;" for="cartera_general">General</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input cartera_visitador" id="cartera_visitador" type="radio" name="radio1">
+                                                <label class="form-check-label" style="font-weight:700;" for="cartera_visitador">Por visitador</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="visibility: hidden" id="divVendedor">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Visitador</label>
+                                    <select class="form-control js-data-vendedor-ajax" id="sucursal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="button" id="DetalleIndividual" style="visibility: hidden" class="btn btn-info  float-left">Detalle individual</button>
+                <button type="button" id="GenerarCartera" class="btn btn-primary  float-right">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>

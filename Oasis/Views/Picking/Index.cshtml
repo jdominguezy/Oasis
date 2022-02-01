@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Reporte</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <!-- form start -->
+            <div class="card-body">
+                <table id="tablaPick">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Secuencial</th>
+                            <th>Inicio Picking</th>
+                            <th>Usuario IP</th>
+                            <th>Fin Picking</th>
+                            <th>Usuario FP</th>
+                            <th>Inicio Despacho</th>
+                            <th>Usuario ID</th>
+                            <th>Fin Despacho</th>
+                            <th>Usuario FD</th>
+                            <th>Generación guía</th>
+                            <th>Diferencia tiempo</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $('#tablaPick').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "processing": true,
+            //"serverSide": true,
+            "ajax": {
+                "url": "Picking/ReportePick",
+                "type": "POST",
+                "dataSrc": ""
+            },
+            "columns": [
+                { "data": "empresa" },
+                { "data": "secuencial" },
+                { "data": "fecha_inicio_pick" },
+                { "data": "usuario_inicio_pick" },
+                { "data": "fecha_fin_pick" },
+                { "data": "usuario_fin_pick" },
+                { "data": "fecha_inicio_desp" },
+                { "data": "usuario_inicio_desp" },
+                { "data": "fecha_fin_desp" },
+                { "data": "usuario_fin_desp" },
+                { "data": "fecha_guia_troquelada" },
+                { "data": "diferencia" },
+            ],
+            responsive: true,
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+            }
+        });
+
+    </script>
+   }

@@ -1,0 +1,117 @@
+﻿@model Oasis.Models.productos
+@using Oasis.Models;
+
+@{
+    ViewBag.Title = "Crear";
+    ViewBag.Modulo = "Producto";
+}
+
+
+@using (Html.BeginForm("Create", "Gastos", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr/>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Nuevo producto</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="categoria">Descripción</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="valor_unitario">Valor unitario</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.valor_unitario, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.valor_unitario, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="categoria">Categoria</label>
+                        <div class="col-md-10">
+                            @{
+                                as2oasis db = new as2oasis();
+                                List<invt_categoria> lista_categoria = db.invt_categoria.ToList();
+                                <select name="categoria" class="form-control">
+                                    @{
+                                        <option value="" disabled hidden selected>Selecciona la categoría</option>
+                                        foreach (invt_categoria cat in lista_categoria)
+                                        {
+                                            <option value="@cat.categoria">@cat.categoria</option>
+                                        }
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="um">UM</label>
+                        <div class="col-md-10">
+                            @{
+                                List<invt_um> lista_um  = db.invt_um.ToList();
+                                <select name="um" class="form-control">
+                                    @{
+                                        <option value="" disabled hidden selected>Selecciona la UM</option>
+                                        foreach (invt_um um in lista_um)
+                                        {
+                                            <option value="@um.um">@um.um</option>
+                                        }
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="iva">IVA</label>
+                        <div class="col-md-10">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(model => model.iva, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.iva, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Crear" class="btn btn-success" />
+                        </div>
+                    </div>
+
+                    @if (@ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-check"></i> Listo</h5>
+                            @ViewBag.SuccessMessage
+                        </div>
+                    }
+                    @if (@ViewBag.ProductoDuplicado != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-ban"></i> Alerta</h5>
+                            El producto ya se encuentra creado
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>

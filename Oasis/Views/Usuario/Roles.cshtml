@@ -1,0 +1,377 @@
+﻿
+@{
+    ViewBag.Title = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h2 class="card-title">Roles de usuario</h2>
+                <div class="card-tools">
+                    <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn bg-primary btn-sm" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- form start -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Usuario</label>
+                            <select class="form-control js-data-usuarios-ajax" id="usuario">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Roles asignados</label>
+                            <select class="form-control js-data-roles-ajax" id="roles" multiple="multiple">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Empresas asignadas</label>
+                            <select class="form-control js-data-empresas-ajax" id="empresas" onchange="ObtenerSucursalesPorUsuario()">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Sucursales asignadas</label>
+                            <select class="form-control js-data-sucursales-ajax" id="sucursales" multiple="multiple">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h2 class="card-title">Modificar clave</h2>
+                <div class="card-tools">
+                    <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn bg-primary btn-sm" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- form start -->
+            <div class="card-body">
+                <label>Nueva clave</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input class="form-control" id="password" type="password" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button class="btn btn-block btn-primary" onclick="ModificarClave()">Modificar clave</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #086fdf !important;
+        border: 1px solid #2f70f5 !important;
+        padding-right: 6px !important;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        border-right: 1px solid #0000 !important;
+        color: #f1fcff !important;
+    }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+            background-color: #ffffff00 !important;
+        }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice
+</style>
+
+
+@section Scripts{
+    <script>
+        ActivarUsuarios();
+        ActivaEmpresas();
+        ActivaSucursales();
+        ActivaRoles();
+        $('.js-data-empresas-ajax').select2();
+        $('.js-data-sucursales-ajax').select2();
+
+
+        function generaBulletEmpresa(empresa, activo) {
+            var html = `<li class="${activo}" >
+                                        <!-- drag handle -->
+                                        <span class="handle ui-sortable-handle">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <!-- checkbox -->
+                                        <div class="icheck-primary d-inline ml-2">
+                                            <input type="checkbox" value="" name="todo1" id="todoCheck1">
+                                            <label for="todoCheck1"></label>
+                                        </div>
+                                        <!-- todo text -->
+                                        <span class="text">${empresa}</span>
+                                    </li>`;
+
+            return html;
+        }
+
+
+        $('#sucursales').on('select2:select', function (e) {
+            GuardarSucursales();
+        });
+
+
+        $('#sucursales').on('select2:unselect', function (e) {
+            GuardarSucursales();
+        });
+
+        $('#roles').on('select2:select', function (e) {
+            GuardarRoles();
+        });
+
+
+        $('#roles').on('select2:unselect', function (e) {
+            GuardarRoles();
+        });
+
+
+        function limpiarRolesSelect() {
+            $('.js-data-roles-ajax').val(null).trigger('change');
+        }
+
+        function limpiarSucursalesSelect() {
+            $('.js-data-sucursales-ajax').val(null).trigger('change');
+        }
+
+        function ObtenerRolesPorUsuario() {
+            var id_usuario = $('#usuario').val();
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                $.map(this.response, function (data) {
+                    $(".js-data-roles-ajax option[value='" + data.id + "']").prop('selected', true);
+                    $('.js-data-roles-ajax').trigger('change');
+                })
+            }
+            xhttp.open("GET", "/Usuario/RolesPorUsuario?id_usuario=" + id_usuario);
+            xhttp.responseType = 'json';
+            xhttp.send();
+        }
+
+        function ObtenerEmpresasPorUsuario(id_usuario) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                $.map(this.response, function (data) {
+                    $(".js-data-empresas-ajax option[value='" + data.id + "']").prop('selected', true);
+                    $('.js-data-empresas-ajax').trigger('change');
+                })
+            }
+            xhttp.open("GET", "/Usuario/EmpresasPorUsuario?id_usuario=" + id_usuario);
+            xhttp.responseType = 'json';
+            xhttp.send();
+        }
+
+        function ObtenerSucursalesPorUsuario() {
+            limpiarSucursalesSelect();
+            var id_usuario = $('#usuario').val();
+            var id_empresa = $('#empresas').val();
+            if (id_usuario != null && id_empresa != null) {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    $.map(this.response, function (data) {
+                        $(".js-data-sucursales-ajax option[value='" + data.id + "']").prop('selected', true);
+                        $('.js-data-sucursales-ajax').trigger('change');
+                    })
+                }
+                xhttp.open("GET", "/Usuario/SucursalesPorUsuario?id_usuario=" + id_usuario + "&id_empresa=" + id_empresa);
+                xhttp.responseType = 'json';
+                xhttp.send();
+            }
+        }
+
+
+        function ActivaEmpresas() {
+            $('.js-data-empresas-ajax').select2();
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                $.map(this.response, function (data) {
+                    var newOption = new Option(data.text, data.id, false, false);
+                    $('.js-data-empresas-ajax').append(newOption).trigger('change');
+                })
+            }
+            xhttp.open("GET", "/Usuario/ObtenerEmpresas");
+            xhttp.responseType = 'json';
+            xhttp.send();
+        }
+
+        function ActivaSucursales() {
+            $('.js-data-sucursales-ajax').select2();
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                $.map(this.response, function (data) {
+                    var newOption = new Option(data.text, data.id, false, false);
+                    $('.js-data-sucursales-ajax').append(newOption).trigger('change');
+                })
+            }
+            xhttp.open("GET", "/Usuario/ObtenerSucursales");
+            xhttp.responseType = 'json';
+            xhttp.send();
+        }
+
+        function ActivaRoles() {
+            $('.js-data-roles-ajax').select2();
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                $.map(this.response, function (data) {
+                    var newOption = new Option(data.text, data.id, false, false);
+                    $('.js-data-roles-ajax').append(newOption).trigger('change');
+                })
+            }
+            xhttp.open("GET", "/Usuario/ObtenerRoles");
+            xhttp.responseType = 'json';
+            xhttp.send();
+        }
+
+
+        function ActivarUsuarios() {
+            $('.js-data-usuarios-ajax').select2({
+                //selectOnClose: true,
+                minimumInputLength: 2,
+                language: {
+                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
+                },
+                tags: [],
+                ajax: {
+                    url: '/Usuario/ObtenerUsuarios',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.username,
+                                    id: item.id_usuario
+                                }
+                            })
+                        };
+                    },
+                    dataType: 'json',
+                    data: function (params) {
+                        var query = {
+                            textoBusqueda: params.term
+                        }
+                        return query;
+                    }
+                }
+            }).on('change', function (e) {
+                limpiarRolesSelect();
+                ObtenerRolesPorUsuario();
+                ObtenerSucursalesPorUsuario();
+            });
+        }
+
+        function GuardarRoles() {
+            var rolesSeleccionadas = $('#roles').select2('data');
+            var _rolesSeleccionadas = [];
+            if (rolesSeleccionadas.length > 0) {
+                rolesSeleccionadas.map(function (x) {
+                    _rolesSeleccionadas.push({ id: parseInt(x.id) });
+                })
+            }
+
+            var id_usuario = parseInt($('#usuario').val());
+
+            var datos = {
+                id_usuario: id_usuario,
+                roles: _rolesSeleccionadas
+            };
+
+            if (
+                !Number.isNaN(id_usuario) &&
+                id_usuario != 0 &&
+                _rolesSeleccionadas != null) {
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "/Usuario/GuardarRoles");
+                xhttp.responseType = 'json';
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify(datos));
+            }
+        }
+
+        function GuardarSucursales() {
+            var sucursalesSeleccionadas = $('#sucursales').select2('data');
+            var _sucursalesSeleccionadas = [];
+            if (sucursalesSeleccionadas.length > 0) {
+                sucursalesSeleccionadas.map(function (x) {
+                    _sucursalesSeleccionadas.push({ id: parseInt(x.id) });
+                })
+            }
+
+            var id_empresa = parseInt($('#empresas').val());
+            var id_usuario = parseInt($('#usuario').val());
+
+            var datos = {
+                id_empresa: id_empresa,
+                id_usuario: id_usuario,
+                sucursales: _sucursalesSeleccionadas
+            };
+
+            if (
+                !Number.isNaN(id_empresa) &&
+                id_empresa != 0 &&
+                !Number.isNaN(id_usuario) &&
+                id_usuario != 0 &&
+                sucursalesSeleccionadas != null) {
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "/Usuario/GuardarSucursales");
+                xhttp.responseType = 'json';
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify(datos));
+            }
+        }
+
+        function ModificarClave() {
+            var id_usuario = parseInt($('#usuario').val());
+            var password = $("#password").val();
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (this.status == 200) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Contraseña modificada'
+                    });
+                }
+                console.log(this.response);
+            }
+            xhttp.open("POST", "/Usuario/ModificarPassword");
+            xhttp.responseType = 'json';
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify({ "id_usuario": id_usuario, "password": password }));
+        }
+
+    </script>
+}

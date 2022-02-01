@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c93f1513b6e748bc9f4152f5afa70442" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="oasisModel1.C__EFMigrationsHistory" Width="1.5" PointX="2.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.AspNetRoleClaims" Width="1.5" PointX="8" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.AspNetRoles" Width="1.5" PointX="5.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.AspNetUserClaims" Width="1.5" PointX="10.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.AspNetUserLogins" Width="1.5" PointX="10.25" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.AspNetUsers" Width="1.5" PointX="8" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.AspNetUserTokens" Width="1.5" PointX="10.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.cobros_no_aplicable" Width="1.5" PointX="4.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.concentracion" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.cpc" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.departamentos" Width="1.5" PointX="12.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.detalle_lista_precio" Width="1.5" PointX="8.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.detalle_roles_usuario" Width="1.5" PointX="5.25" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.detalle_usuario_empresa_sucursal" Width="1.5" PointX="5.25" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.empresaOasis" Width="1.5" PointX="0.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.facturas_no_aplicable" Width="1.5" PointX="12.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.forma_farmaceutica" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.geoubicacion" Width="1.5" PointX="14.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.guia_urbano_troq" Width="1.5" PointX="14.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.lista_precio" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.nc_no_aplicable" Width="1.5" PointX="15.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.picking" Width="1.5" PointX="16.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.presentacion" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.presupuesto_cabecera" Width="1.5" PointX="12.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.presupuesto_detalle" Width="1.5" PointX="15" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.producto_instituciones" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.productos" Width="1.5" PointX="10.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.prov_oc_detalle" Width="1.5" PointX="13" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.prov_oc_principal" Width="1.5" PointX="10.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.roles" Width="1.5" PointX="3" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.sucursalOasis" Width="1.5" PointX="3" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.sysdiagrams" Width="1.5" PointX="16.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.usuarioOasis" Width="1.5" PointX="3" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.clientes_actualizacion" Width="1.5" PointX="12.75" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.despacho" Width="1.5" PointX="14.75" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.invt_categoria" Width="1.5" PointX="16.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.invt_um" Width="1.5" PointX="17.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Anticipos" Width="1.5" PointX="17.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.CarteraBK" Width="1.5" PointX="9.75" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Cheques_Postfechados" Width="1.5" PointX="18.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Clientes" Width="1.5" PointX="19.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Clientes2" Width="1.5" PointX="11.75" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Cobros_Consolidado" Width="1.5" PointX="19.875" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Cobros_Diario" Width="1.5" PointX="20.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.DetalleOCEnlazada" Width="1.5" PointX="13.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.GuiaUrbano" Width="1.5" PointX="17.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.MP_ME_STOCK" Width="1.5" PointX="20.75" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.NC_Consolidado" Width="1.5" PointX="21.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.NC_Diario" Width="1.5" PointX="22.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Orden_Produccion_Cabecera" Width="1.5" PointX="22.75" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.ordenes_compra" Width="1.5" PointX="23.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Pedidos" Width="1.5" PointX="19.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Picking_Estado" Width="1.5" PointX="21.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.PickingGuias" Width="1.5" PointX="23.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Presupuesto_Vendedor_Detalle" Width="1.5" PointX="24.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Proveedores" Width="1.5" PointX="5.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Registros_Contabilidad" Width="1.5" PointX="7.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Reporte_GuiasRemision" Width="1.5" PointX="24.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Stock" Width="1.5" PointX="24.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Transito_MP_ME_OC" Width="1.5" PointX="24.75" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Transito_MP_ME_pedido" Width="1.5" PointX="24.75" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Transito_MP_ME_Total" Width="1.5" PointX="25.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Transito_PT_orden" Width="1.5" PointX="26.125" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Transito_PT_pedido" Width="1.5" PointX="26.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Transito_PT_Total" Width="1.5" PointX="26.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Vendedores" Width="1.5" PointX="26.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Ventas_Consolidado" Width="1.5" PointX="26.75" PointY="14.125" IsExpanded="true" />
+        <AssociationConnector Association="oasisModel1.FK_AspNetRoleClaims_AspNetRoles_RoleId" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_AspNetUserClaims_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_AspNetUserLogins_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_AspNetUserTokens_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_producto_instituciones_concentracion" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_producto_instituciones_cpc" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_lista_precio_lista_precio" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_lista_precio_producto_instituciones" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_roles_usuario_roles" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_roles_usuario_usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_usuario_empresa_sucursal_empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_usuario_empresa_sucursal_sucursal" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_detalle_usuario_empresa_sucursal_usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_usuario_empresaOasis" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_producto_instituciones_forma_farmaceutica" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_producto_instituciones_presentacion" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK__presupues__id_pr__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_prov_oc_detalle_productos" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.FK_prov_oc_detalle_prov_oc_principal" ManuallyRouted="false" />
+        <AssociationConnector Association="oasisModel1.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="oasisModel1.cotizacion_detalle" Width="1.5" PointX="5.75" PointY="2.75" />
+        <AssociationConnector Association="oasisModel1.FK_cotizacion_detalle_producto_instituciones" />
+        <EntityTypeShape EntityType="oasisModel1.cotizacion_cabecera" Width="1.5" PointX="3" PointY="31" />
+        <AssociationConnector Association="oasisModel1.FK_cotizacion_cabecera_cotizacion_cabecera" />
+        <AssociationConnector Association="oasisModel1.FK_cotizacion_cabecera_empresaOasis" />
+        <AssociationConnector Association="oasisModel1.FK_cotizacion_detalle_cotizacion_cabecera" />
+        <EntityTypeShape EntityType="oasisModel1.Cartera" Width="1.5" PointX="26.375" PointY="25.75" />
+        <EntityTypeShape EntityType="oasisModel1.KPI_Salida_Material" Width="1.5" PointX="10.375" PointY="27.75" />
+        <EntityTypeShape EntityType="oasisModel1.relacion_cotizacion_ganadora_perdedora" Width="1.5" PointX="5.25" PointY="32.25" />
+        <AssociationConnector Association="oasisModel1.FK_relacion_cotizacion_ganadora_perdedora_cotizacion_cabecera" />
+        <AssociationConnector Association="oasisModel1.FK_relacion_cotizacion_ganadora_perdedora_cotizacion_cabecera1" />
+        <EntityTypeShape EntityType="oasisModel1.Costos_Indirectos" Width="1.5" PointX="28.375" PointY="0.75" />
+        <EntityTypeShape EntityType="oasisModel1.DVP" Width="1.5" PointX="17.75" PointY="26.625" />
+        <EntityTypeShape EntityType="oasisModel1.Orden_Produccion" Width="1.5" PointX="14.375" PointY="25.75" />
+        <EntityTypeShape EntityType="oasisModel1.Costos_MP_ME" Width="1.5" PointX="22.375" PointY="28.75" />
+        <EntityTypeShape EntityType="oasisModel1.Costos_MOD" Width="1.5" PointX="28.375" PointY="20.75" />
+        <EntityTypeShape EntityType="oasisModel1.Cobros_Consolidado_Di" Width="1.5" PointX="28.375" PointY="24.75" />
+        <EntityTypeShape EntityType="oasisModel1.NC_Consolidado_Di" Width="1.5" PointX="29.375" PointY="3.75" />
+        <EntityTypeShape EntityType="oasisModel1.Vendedores_Distribuidores" Width="1.5" PointX="3.375" PointY="14.75" />
+        <EntityTypeShape EntityType="oasisModel1.Ventas_Consolidado_Di" Width="1.5" PointX="7.375" PointY="29.75" />
+        <EntityTypeShape EntityType="oasisModel1.Cartera_Proveedor" Width="1.5" PointX="29.375" PointY="9.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

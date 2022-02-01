@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Oasis.Models.detalle_lista_precio >
+
+<p>
+    <a href="CrearDetalleLista" class="btn btn-info">Crear nuevo </a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                NOMBRE GENERICO
+                            </th>
+                            <th>
+                                PRECIO MAYOR
+                            </th>
+                            <th>
+                                PRECIO MENOR
+                            </th>
+                            <th>
+                                PORCENTAJE
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.producto_instituciones.nombre_generico)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.precio_mayor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.precio_menor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.porcentaje) %
+                            </td>
+                            <td>
+                                @Html.ActionLink("Editar", "EditarListaPrecio", new { id = item.id_detalle_lista_precio }) |
+                                @Html.ActionLink("Borrar", "Delete", new { id = item.id_detalle_lista_precio })
+                            </td>
+                        </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

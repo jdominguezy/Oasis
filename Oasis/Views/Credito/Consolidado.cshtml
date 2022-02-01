@@ -1,0 +1,175 @@
+﻿
+@using Oasis.Models
+@using Oasis.Models.Login
+@{
+    ViewBag.Title = "Consolidado";
+    var id_usuario = (User as CustomPrincipal).id_usuario;
+    var db = new as2oasis();
+    var sucursales = db.detalle_usuario_empresa_sucursal
+        .Where(x => x.id_usuario == id_usuario)
+        .GroupBy(x => x.sucursalOasis.nombre)
+        .Select(x => x.Key);
+    var empresas = db.detalle_usuario_empresa_sucursal
+        .Where(x => x.id_usuario == id_usuario)
+        .GroupBy(x => x.empresaOasis.nombre)
+        .Select(x => x.Key);
+
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h2 class="card-title">Consolidado</h2>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Empresa</label>
+                            <select class="form-control" id="empresa" name="empresa">
+                                <option value="0">Todas las empresas</option>
+                                @foreach (var emp in empresas)
+                                {
+                            <option value="@emp">@emp</option>}
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Localidad</label>
+                            <select class="form-control" id="localidad" disabled>
+                                <option value="CIUDAD">CIUDAD</option>
+                                <option value="GIRA">GIRA</option>
+                            </select>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="chkLocalidad" checked="" disabled>
+                                    <label for="chkLocalidad" class="custom-control-label" disabled>Ambas localidades</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Región</label>
+                            <select class="form-control" id="sucursal">
+                                <option value="0">Todas las Regiones</option>
+                                @foreach (var suc in sucursales)
+                                {
+                            <option value="@suc">@suc</option>}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Tipo de cliente</label>
+                            <div class="col-sm-6">
+                                <!-- checkbox -->
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input tipoCliente" name="FARMACIA" type="checkbox" id="chkFarmacia" checked="">
+                                        <label for="chkFarmacia" class="custom-control-label">Farmacia</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input tipoCliente DISTRIBUIDORES" name="DISTRIBUIDORES" type="checkbox" id="chkDistribuidores">
+                                        <label for="chkDistribuidores" class="custom-control-label">Distribuidores</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- se añade combo para buscar vendedor -->
+                            <div class="col-md-4" style="visibility: hidden" id="divVendedor">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Visitador</label>
+                                    <select class="form-control js-data-vendedor-ajax" id="sucursal">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Fecha de facturación:</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" class="form-control float-right" id="fecha_presupuesto">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a class="btn btn-info"
+                                       data-toggle="tooltip"
+                                       title="Te sugiere la fecha de corte más cercana según la base de datos"
+                                       onclick="SugerirFecha();"><i class="fas fa-sync"></i><span>Autocorte</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="button" id="GenerarPresupuesto" class="btn btn-primary  float-right">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('.DISTRIBUIDORES').change(
+            function () {
+                if (this.checked) {
+                    $("#divVendedor").css('visibility', 'visible');
+                } else {
+                    $("#divVendedor").css('visibility', 'hidden');
+                }
+            });
+
+        ActivarVendedores();
+        function ActivarVendedores() {
+            $('.js-data-vendedor-ajax').select2({
+                //selectOnClose: true,
+                minimumInputLength: 2,
+                language: {
+                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
+                },
+                tags: [],
+                ajax: {
+                    url: 'ObtenerVendedoresDistribuidores',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.username,
+                                    id: item.id_vendedor
+                                }
+                            })
+                        };
+                    },
+                    dataType: 'json',
+                    data: function (params) {
+                        var query = {
+                            textoBusqueda: params.term,
+                            empresa: $('#empresa').val(),
+                            sucursal: $('#sucursal').val()
+                        }
+                        return query;
+                    }
+                }
+            });
+        }
+
+    </script>
+}

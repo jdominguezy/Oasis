@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Oasis.Models.presentacion>
+
+<p>
+    <a href="CrearPresentacion" class="btn btn-info">Crear nuevo </a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                NOMBRE
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.id_presentacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.nombre)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Editar", "EditarPresentacion", new { id = item.id_presentacion }) |
+                                    @Html.ActionLink("Borrar", "Delete", new { id = item.id_presentacion })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

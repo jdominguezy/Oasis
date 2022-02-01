@@ -1,0 +1,92 @@
+﻿@model Oasis.Models.productos
+@using Oasis.Models;
+
+@{
+    ViewBag.Title = "Editar";
+    ViewBag.Modulo = "Producto";
+
+}
+
+@*<h2>Edit</h2>*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @*<h4>invt_productos_gastos</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <label class="control-label col-md-2">CÓDIGO</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.id_producto, new { htmlAttributes = new { @class = "form-control ", @disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.id_producto, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="descripcion">Descripción</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="valor_unitario">Valor unitario</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.valor_unitario, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.valor_unitario, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="categoria">Categoría</label>
+        <div class="col-md-10">
+            @{
+                as2oasis db = new as2oasis();
+                List<invt_categoria> lista_categoria = db.invt_categoria.ToList();
+                <select name="categoria" class="form-control">
+                    @{
+                        <option value="@ViewBag.categoria">@ViewBag.categoria</option>
+                        foreach (invt_categoria cat in 
+                            lista_categoria.Where(x => x.categoria != ViewBag.categoria))
+                        {
+                            <option value="@cat.categoria">@cat.categoria</option>
+                        }
+                    }
+                </select>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="um">UM</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.um, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.um, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.grava_iva, htmlAttributes: new { @class = "control-label col-md-2" })*@
+        <div class="col-md-10">
+            <div class="form-check">
+                @Html.EditorFor(model => model.iva, new { htmlAttributes = new { @class = "" } })
+                <label class="form-check-label" for="iva">IVA 12%</label>
+            </div>
+            @Html.ValidationMessageFor(model => model.iva, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Guardar" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>

@@ -1,0 +1,503 @@
+﻿@{
+    var mensaje_hora = "";
+
+    var hora_actual = DateTime.Now.Hour;
+    if (hora_actual >= 5 && hora_actual < 12)
+    {
+        mensaje_hora = "Buenos dias";
+    }
+    else if (hora_actual >= 12 && hora_actual < 19)
+    {
+        mensaje_hora = "Buenas tardes";
+    }
+    else if (hora_actual >= 19 && hora_actual < 5)
+    {
+        mensaje_hora = "Buenas noches";
+    }
+}
+
+@using Oasis.Models.Login;
+<!-- Sidebar -->
+<div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="padding:20px">
+        <div class="info">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="#" class="d-block">@mensaje_hora,  @((User as CustomPrincipal).nombre)</a>
+            }
+        </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
+            <div class="input-group-append">
+                <button class="btn btn-sidebar">
+                    <i class="fas fa-search fa-fw"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @if (User.IsInRole("Bodega") ||
+                    User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "GuiasRemision,Picking")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "GuiasRemision,Picking")">
+                            <i class="nav-icon fas fa-dolly"></i>
+                            <p>
+                                Bodega
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "GuiasRemision")"
+                                   class="@Html.IsSelected(actions: "Index", controllers: "GuiasRemision")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Generar guía</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("ReporteGuias", "GuiasRemision")"
+                                   class="@Html.IsSelected(actions: "ReporteGuias", controllers: "GuiasRemision")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reporte de guías</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Picking")"
+                                   class="@Html.IsSelected(actions: "Index", controllers: "Picking")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Picking</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("DescargarAPP", "Picking")"
+                                   class="@Html.IsSelected(actions: "DescargarAPP", controllers: "Picking")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Descargar APP</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Credito") ||
+                    User.IsInRole("Consolidado") ||
+                    User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "Credito,Presupuesto")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Credito,Presupuesto")">
+                            <i class="nav-icon fas fa-dollar-sign"></i>
+                            <p>
+                                Credito
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (User.IsInRole("Credito"))
+                            {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Presupuesto")"
+                               class="@Html.IsSelected(actions: "Index", controllers: "Presupuesto")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver Presupuesto</p>
+                            </a>
+                        </li>}
+                            @if (User.IsInRole("Consolidado") || User.IsInRole("Credito"))
+                            {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Consolidado", "Credito")"
+                               class="@Html.IsSelected(actions: "Consolidado", controllers: "Credito")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Consolidado</p>
+                            </a>
+                        </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("ConsolidadoDI", "Credito")"
+                                                       class="@Html.IsSelected(actions: "ConsolidadoDI", controllers: "Credito")">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Consolidado Distribuidor</p>
+                                                    </a>
+                                                </li>}
+                            @if (User.IsInRole("Credito"))
+                            {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Cartera", "Credito")"
+                               class="@Html.IsSelected(actions: "Cartera", controllers: "Credito")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Cartera</p>
+                            </a>
+                        </li>
+                                                <li class="nav-item">
+                                                    <a href="@Url.Action("ChequesPost", "Credito")"
+                                                       class="@Html.IsSelected(actions: "ChequesPost", controllers: "Credito")">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Cheques postfechados</p>
+                                                    </a>
+                                                </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="@Url.Action("NotasCredito", "Credito")"
+                                                                               class="@Html.IsSelected(actions: "NotasCredito", controllers: "Credito")">
+                                                                                <i class="far fa-circle nav-icon"></i>
+                                                                                <p>Notas de crédito</p>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="@Url.Action("VerCobro", "Credito")"
+                                                                                class="@Html.IsSelected(actions: "VerCobro", controllers: "Credito")">
+                                                                                <i class="far fa-circle nav-icon"></i>
+                                                                                <p>Cobros</p>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a href="#" class="nav-link">
+                                                                                <i class="far fa-circle nav-icon"></i>
+                                                                                <p>
+                                                                                    Facturas
+                                                                                    <i class="fas fa-angle-left right"></i>
+                                                                                </p>
+                                                                            </a>
+                                                                            <ul class="nav nav-treeview" style="display: none;">
+                                                                                <li class="nav-item">
+                                                                                    <a href="@Url.Action("VerFactura", "Credito")"
+                                                                                        class="@Html.IsSelected(actions: "VerFactura", controllers: "Credito")">
+                                                                                        <i class="far fa-dot-circle nav-icon"></i>
+                                                                                        <p>Reporte</p>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li class="nav-item">
+                                                                                    <a href="@Url.Action("EditarFactura", "Credito")"
+                                                                                        class="@Html.IsSelected(actions: "EditarFactura", controllers: "Credito")">
+                                                                                        <i class="far fa-dot-circle nav-icon"></i>
+                                                                                        <p>Editar Vendedor</p>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                        <a href="@Url.Action("VerDVP", "Credito")"
+                                                                            class="@Html.IsSelected(actions: "VerDVP", controllers: "Credito")">
+                                                                            <i class="far fa-circle nav-icon"></i>
+                                                                            <p>DVP</p>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a href="@Url.Action("VerDVP", "Credito")"
+                                                                            class="@Html.IsSelected(actions: "VerDVP", controllers: "Credito")">
+                                                                            <i class="far fa-circle nav-icon"></i>
+                                                                            <p>Movimientos Clientes</p>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a href="@Url.Action("VerDVP", "Credito")"
+                                                                           class="@Html.IsSelected(actions: "VerDVP", controllers: "Credito")">
+                                                                            <i class="far fa-circle nav-icon"></i>
+                                                                            <p>Presupuesto Cobros Consolidado</p>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a href="@Url.Action("VerDVP", "Credito")"
+                                                                           class="@Html.IsSelected(actions: "VerDVP", controllers: "Credito")">
+                                                                            <i class="far fa-circle nav-icon"></i>
+                                                                            <p>Ventas x Prod. Precio</p>
+                                                                        </a>
+                                                                    </li>}
+</ul>
+                    </li>
+                }
+                @if (User.IsInRole("Instituciones") ||
+                User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "Inventario")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Inventario")">
+                            <i class="nav-icon fas fa-hospital-alt"></i>
+                            <p>
+                                Instituciones
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Producto", "Inventario")"
+                                   class="@Html.IsSelected(actions: "Producto", controllers: "Inventario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Productos</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("CPC", "Inventario")"
+                                   class="@Html.IsSelected(actions: "CPC", controllers: "Inventario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>CPC</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("FormaFarmaceutica", "Inventario")"
+                                   class="@Html.IsSelected(actions: "FormaFarmaceutica", controllers: "Inventario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Formas farmacéuticas</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Concentracion", "Inventario")"
+                                   class="@Html.IsSelected(actions: "Concentracion", controllers: "Inventario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Concentración</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Presentacion", "Inventario")"
+                                   class="@Html.IsSelected(actions: "Presentacion", controllers: "Inventario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Presentación</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("ListaPrecio", "Inventario")"
+                                   class="@Html.IsSelected(actions: "ListaPrecio", controllers: "Inventario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lista de precios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Cotizacion")"
+                                   class="@Html.IsSelected(actions: "Index", controllers: "Cotizacion")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Cotizaciones</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Compras") ||
+                User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "DetalleOrdenCompra")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "OrdenesCompra")">
+                            <i class="nav-icon fas fa-clipboard"></i>
+                            <p>
+                                Compras
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "DetalleOrdenCompra")"
+                                   class="@Html.IsSelected(actions: "Index", controllers: "DetalleOrdenCompra")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ver OC</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Reporte", "DetalleOrdenCompra")"
+                                   class="@Html.IsSelected(actions: "Reporte", controllers: "DetalleOrdenCompra")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reporte</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="@Html.DropdownIsSelected(controllers: "Gastos")">
+                                <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Gastos")">
+                                    <i class="nav-icon fas fa-dolly"></i>
+                                    <p>
+                                        Inventario
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "Gastos")"
+                                           class="@Html.IsSelected(actions: "Index", controllers: "Gastos")">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Listar productos</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Create", "Gastos")"
+                                           class="@Html.IsSelected(actions: "Create", controllers: "Gastos")">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Crear producto</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Contabilidad") ||
+                User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "Contabilidad")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Contabilidad")">
+                            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                            <p>
+                                Contabilidad
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Autorizaciones", "Contabilidad")"
+                                   class="@Html.IsSelected(actions: "Autorizaciones", controllers: "Contabilidad")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Autorizaciones</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("VerATS", "Contabilidad")"
+                                   class="@Html.IsSelected(actions: "VerATS", controllers: "Contabilidad")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>ATS</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("CuentasPorPagar", "Contabilidad")"
+                                   class="@Html.IsSelected(actions: "CuentasPorPagar", controllers: "Contabilidad")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Cuentas por pagar</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Produccion") ||
+                User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "Produccion")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Produccion")">
+                            <i class="nav-icon fas fa-industry"></i>
+                            <p>
+                                Producción
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Produccion")"
+                                   class="@Html.IsSelected(actions: "Index", controllers: "Produccion")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Órdenes</p>
+                                </a>
+                            </li>
+                            <!--2 opciones nuevas I JD-->
+                            <li class="nav-item">
+                                <a href="@Url.Action("Mplotes", "Produccion")"
+                                   class="@Html.IsSelected(actions: "Mplotes", controllers: "Produccion")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>MP-EE lotes-fechas</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Horastandar", "Produccion")"
+                                   class="@Html.IsSelected(actions: "Horastandar", controllers: "Produccion")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Horas Estandar producto</p>
+                                </a>
+                            </li>
+                            <!--2 opciones nuevas F JD-->
+                        </ul>
+                    </li>
+                } 
+                @if (User.IsInRole("Costos") ||
+                User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "Costos")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Costos")">
+                            <i class="nav-icon fas fa-industry"></i>
+                            <p>
+                                Costos
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Ordenes", "Costos")"
+                                   class="@Html.IsSelected(actions: "Ordenes", controllers: "Costos")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Órdenes</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("KPI") ||
+                User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "KPI")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "KPI")">
+                            <i class="nav-icon fas fa-industry"></i>
+                            <p>
+                                KPI
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("SalidaMaterial", "KPI")"
+                                   class="@Html.IsSelected(actions: "SalidaMaterial", controllers: "KPI")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Salida de material</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (
+               User.IsInRole("Admin"))
+                {
+                    <li class="@Html.DropdownIsSelected(controllers: "Produccion")">
+                        <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "Produccion")">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Usuarios
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Crear", "Usuario")"
+                                   class="@Html.IsSelected(actions: "Crear", controllers: "Usuario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Crear usuario</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Roles", "Usuario")"
+                                   class="@Html.IsSelected(actions: "Roles", controllers: "Usuario")">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Roles</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    }
+</div>
+<!-- /.sidebar -->

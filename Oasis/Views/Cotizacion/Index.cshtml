@@ -1,0 +1,242 @@
+﻿@model IEnumerable<Oasis.Models.cotizacion_cabecera>
+@using Oasis.Models
+@{
+    var db = new AS2Context();
+    var oasis = new as2oasis();
+    //var cotizaciones = oasis
+    //    .cotizacion_cabecera
+    //    .Join(oasis.cotizacion_detalle,
+    //    cabecera => cabecera.id_cotizacion,
+    //    detalle => detalle.id_cotizacion_cabecera,
+    //    (cabecera,detalle)=> new { Cabecera = cabecera, Detalle = detalle})
+    //    .Where(x => x.Cabecera.indicador_ganadora == 1);
+    var cotizaciones = oasis
+        .cotizacion_cabecera
+        .Where(x => x.indicador_ganadora == 1);
+}
+<p>
+    <a href="Cotizacion/CrearCotizacion" class="btn btn-info">Crear cotización</a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    Cotizaciones ganadoras
+                </h3>
+                @*<div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#ganadoras-chart" data-toggle="tab">Ganadoras</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#perdedoras-chart" data-toggle="tab">Perdedoras</a>
+                        </li>
+                    </ul>
+                </div>*@
+            </div>
+            <div class="card-body">
+                <div class="box-body no-padding">
+                    <table class="table table-striped table-responsive" id="cotizaciones">
+                        <thead>
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    FECHA
+                                </th>
+                                <th>
+                                    CLIENTE
+                                </th>
+                                <th>
+                                    EMPRESA
+                                </th>
+                                <th>
+                                    VALOR TOTAL
+                                </th>
+                                <th>
+                                    ACCIONES
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in cotizaciones)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.id_cotizacion
+                                        @*@Html.DisplayFor(modelItem => item.id_cotizacion)*@
+                                    </td>
+                                    <td>
+                                        @item.fecha_documento.ToShortDateString()
+                                    </td>
+                                    <td>
+                                        @(db.empresa.Where(y=>y.id_empresa== item.id_cliente).FirstOrDefault().nombre_comercial)
+                                    </td>
+                                    <td>
+                                        @item.empresaOasis.nombre
+                                        @*@Html.DisplayFor(modelItem => item.empresaOasis.nombre)*@
+                                    </td>
+                                    <td>
+                                        $@item.valor_total
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info" onclick="GenerarPerdedoras(@item.id_cotizacion)">Generar perdedoras</button>
+                                            <button type="button" class="btn btn-info" onclick="VerDetalles(@item.id_cotizacion)">Detalles</button>
+                                            <button type="button" class="btn btn-info" onclick="Imprimir(@item.id_cotizacion)">Imprimir</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        function Imprimir(id_cotizacion) {
+            fetch(`/Cotizacion/ObtenerCotizacionesGeneradas?id_cotizacion=${id_cotizacion}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    var elemento_padre = document.createElement('div');
+                    elemento_padre.className = 'col-sm-12';
+                    var elemento_hijo = document.createElement('div');
+                    elemento_hijo.className = 'form-group ';
+
+                    data.map(obj => elemento_hijo.innerHTML
+                        += (`
+                            <button class="btn btn-info btn-block "
+                            value=${obj.id_cotizacion} id='${obj.id_cotizacion}' 
+                            onClick='ImprimirCotizacion(${obj.id_cotizacion})'>${obj.empresa}
+                            </button>
+                            `));
+
+                    elemento_padre.appendChild(elemento_hijo);
+
+                    Swal.fire({
+                        title: 'Cotizaciones disponibles',
+                        html: elemento_padre,
+                        confirmButtonText: 'Ok'
+                    });
+                });         
+        }
+
+        function ImprimirCotizacion(id_cotizacion) {
+            $.ajax({
+                url: 'Cotizacion/ImprimirCotizacion',
+                type: "GET",
+                data: { id_cotizacion: id_cotizacion },
+                success: function (d) {
+                    if (d.length > 0) {
+                        const fileWindow = window.open("#");
+                        const url = 'data:application/pdf;base64,' + encodeURI(d)
+                        fileWindow.document.write(
+                            '<title>Cotizacion</title>' +
+                            '<body style="overflow: hidden; margin: 0">' +
+                            '<object width="100%" height="100%"  type="application/pdf" data="' + encodeURI(url) + '"></object>' +
+                            '</body>'
+                        );
+                    }
+                },
+                error: function (e) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Hubo un error al intentar imprimir.'
+                    })
+                }
+
+            });
+        }
+
+        function GenerarPerdedoras(id_cotizacion) {
+            fetch(`/Cotizacion/CotizacionesGeneradas?id_cotizacion=${id_cotizacion}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    if (data.length == 0) {
+                        return Swal.fire('No existen cotizaciones perdedoras a generar');
+                    }
+
+                    var elemento_padre = document.createElement('div');
+                    elemento_padre.className = 'col-sm-12';
+                    var elemento_hijo = document.createElement('div');
+                    elemento_hijo.className = 'form-group cotizaciones_a_generar'; 
+
+                    data.map(obj => elemento_hijo.innerHTML
+                        += (`<div class="custom-control custom-checkbox">
+                            <input class="custom-control-input empresaGenerar" type="checkbox" value=${obj.id_empresa} id='${obj.id_empresa}'>
+                            <label for="${obj.id_empresa}" class="custom-control-label">${obj.nombre}</label>
+                            </div>`));
+
+                    elemento_padre.appendChild(elemento_hijo);
+
+                    Swal.fire({
+                        title: 'Cotizaciones perdedoras disponibles',
+                        html: elemento_padre,
+                        showCancelButton: true,
+                        cancelButtonText: "Cancelar",
+                        confirmButtonText: 'Generar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (login) => {
+                            var empresasAGenerar = [];
+                            $('.empresaGenerar:checkbox:checked').each(function () {
+                                empresasAGenerar.push($(this).attr('value'));
+                            });
+
+                            return fetch(`/Cotizacion/GenerarCotizacionesPerdedoras`
+                                , {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ empresas: empresasAGenerar, id_cotizacion_principal: id_cotizacion })
+                                }) 
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(response.statusText)
+                                    }
+                                    return Swal.fire(
+                                        'Listo!',
+                                        'Se ha generado la(s) cotización(es)',
+                                        'success'
+                                    );
+                                })
+                                .catch(error => {
+                                    Swal.showValidationMessage(
+                                        `Request failed: ${error}`
+                                    )
+                                })
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: `${result.value.login}'s avatar`,
+                                imageUrl: result.value.avatar_url
+                            })
+                        }
+                    })
+                })
+            }
+
+        $('#cotizaciones').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'pdf', 'print'
+            ],
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+            }
+        });
+    </script>
+}

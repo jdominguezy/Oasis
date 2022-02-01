@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Oasis.Models.producto_instituciones>
+
+<p>
+    <a href="CrearProducto" class="btn btn-info">Crear nuevo </a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                NOMBRE GENERICO
+                            </th>
+                            <th>
+                                CPC
+                            </th>
+                            <th>
+                                FORMA FARMACEUTICA
+                            </th>
+                            <th>
+                                CONCENTRACION
+                            </th>
+                            <th>
+                                PRESENTACION
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.id_producto_inst)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nombre_generico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.cpc.nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.forma_farmaceutica.nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.concentracion.nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.presentacion.nombre)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Editar", "EditarProducto", new { id = item.id_producto_inst }) |
+                            @Html.ActionLink("Borrar", "Delete", new { id = item.id_producto_inst })
+                        </td>
+                    </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

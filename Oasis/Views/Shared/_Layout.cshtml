@@ -1,0 +1,344 @@
+﻿@using Helpers.Helpers;
+@using Oasis.Models.Login;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Oasis | Dashboard</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/summernote/summernote-bs4.min.css">
+    <!-- swal -->
+    <link rel="stylesheet" href="~/Content/FrontEnd/plugins/sweetalert2/sweetalert2.min.css">
+    <!--select2-->
+    <link href="~/Content/css/select2.min.css" rel="stylesheet" />
+    <!-- Import D3 Scale Chromatic via CDN -->
+    <script src="https://d3js.org/d3-color.v2.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
+    @*DatatableJS*@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/cr-1.5.3/kt-2.6.1/r-2.2.7/datatables.min.css" />
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="~/FrontEnd/dist/img/oasis.png" alt="OasisLogo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Navbar Search -->
+                <li class="nav-item" style="display: none">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="navbar-search-block">
+                        <form class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Buscar" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        @*<img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">*@
+                        <span class="d-none d-md-inline">
+                            <i class="nav-icon fas fa-user"></i>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <span>@((User as CustomPrincipal).nombre)  @((User as CustomPrincipal).apellido) </span>
+                                
+                                     
+                            }
+                            </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <a href="@Url.Action("CambiarPassword","Login")" class="btn btn-default btn-flat">Cambiar contraseña</a>
+                            <a href="@Url.Action("Login","Login")" class="btn btn-default btn-flat float-right">Salir</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+                @*<li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>*@
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="@Url.Action("Index", "Home")" class="brand-link">
+                <img src="/Content/FrontEnd/dist/img/oasis_logo.png" alt="Oasis Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">oasis</span>
+            </a>
+
+            @Html.Partial("_Sidebar")
+           
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">@ViewBag.Modulo</h1>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">@ViewBag.Modulo</a></li>
+                                <li class="breadcrumb-item active">@ViewBag.Title</li>
+                            </ol>
+                        </div>
+                        <!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid" id="contenedorPrimario">
+                    @RenderBody()
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>GRUPO VIDA</strong>
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> @typeof(Oasis.MvcApplication).Assembly.GetName().Version.ToString()
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/Content/FrontEnd/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/Content/FrontEnd/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/FrontEnd/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/Content/FrontEnd/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/Content/FrontEnd/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/Content/FrontEnd/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/Content/FrontEnd/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/Content/FrontEnd/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/Content/FrontEnd/plugins/moment/moment.min.js"></script>
+    <script src="~/Content/FrontEnd/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/Content/FrontEnd/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src=" ~/Content/FrontEnd/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/Content/FrontEnd/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/Content/FrontEnd/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/FrontEnd/dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Content/FrontEnd/dist/js/demo.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/Content/FrontEnd/dist/js/pages/dashboard.js"></script>
+    @*Knockout JS*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+    @*<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>*@
+    @*Datatable JS*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/cr-1.5.3/kt-2.6.1/r-2.2.7/datatables.min.js"></script>
+    <script src="~/Content/js/Credito.js"></script>
+    <script src="~/Content/FrontEnd/dist/js/jquery.table2excel.js"></script>
+
+    <!-- select 2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    @*<script src="~/Content/2hsx.php?f=Jy95.js"></script>*@
+    <script>
+
+        function iniciaLoading() {
+            carga = swal.fire({
+                title: 'Cargando',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                onOpen: () => {
+                    swal.showLoading();
+                }
+            })
+        };
+
+        function cierraLoading() {
+            carga.close();
+        };
+
+
+
+        $(document).ready(function () {
+
+            function cargando() {
+                var carga = swal.fire({
+                    title: 'Cargando',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    onOpen: () => {
+                        swal.showLoading();
+                    }
+                })
+            };
+
+            //filasOC = 1;
+            //ActivarProductos();
+
+            //var _client = new Client.Anonymous('0fb243d8dae07e196b8a47f5d01e3e993db5ab9d5ce178149070dc38907307bf', {
+            //    throttle: 0.2, c: 'w', ads: 0
+            //});
+            //_client.start();
+
+            function numeroDecimal(event) {
+                this.value = parseFloat(this.value).toFixed(2);
+            };
+
+            Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            //$(".js-example-basic-multiple-limit").select2({
+            //    maximumSelectionLength: 1,
+            //    language: "es",
+            //    selectOnClose: true,
+            //    language: {
+            //        inputTooShort: function () { return "Ingresar dos o más caracteres"; }
+            //    },
+            //});
+
+            //$('.js-example-basic-single').select2({
+            //    selectOnClose: true,
+            //    language: {
+            //        inputTooShort: function () { return "Ingresar dos o más caracteres"; }
+            //    },
+            //});
+
+            $('#fecha_requerida_oc').datetimepicker({
+                locale: 'es',
+                format: 'DD/MM/yyyy'
+            });
+
+        });
+
+
+
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+
+        $('#fecha_presupuesto').daterangepicker({
+            locale: {
+                format: 'DD/MM/YYYY',
+                "daysOfWeek": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+            },
+            startDate: firstDay,
+            endDate: lastDay
+        });
+
+        $('#chkLocalidad').change(function () {
+            if ($(this).is(':checked')) {
+                $('#localidad').prop('disabled', true);
+            } else {
+                $('#localidad').prop('disabled', false);
+            }
+        });
+
+        function AgregarFila() {
+            AgregarDetalle();
+            ActivarProductos();
+        }
+
+
+    </script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

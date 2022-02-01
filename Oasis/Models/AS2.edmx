@@ -1,0 +1,1705 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="as2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="categoria_empresa">
+          <Key>
+            <PropertyRef Name="id_categoria_empresa" />
+          </Key>
+          <Property Name="id_categoria_empresa" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="codigo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="credito_maximo" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="indicador_cliente" Type="bit" Nullable="false" />
+          <Property Name="indicador_empleado" Type="bit" Nullable="false" />
+          <Property Name="indicador_proveedor" Type="bit" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="numero_maximo_documentos_sin_garantia" Type="int" />
+          <Property Name="porcentaje_maximo_morosidad" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="predeterminado" Type="bit" Nullable="false" />
+          <Property Name="verificar_documentos" Type="bit" Nullable="false" />
+          <Property Name="id_cuenta_contable_2x1000" Type="int" />
+          <Property Name="id_cuenta_contable_3x1000" Type="int" />
+          <Property Name="id_cuenta_contable_anticipo_cliente" Type="int" />
+          <Property Name="id_cuenta_contable_anticipo_cliente_nota_credito" Type="int" />
+          <Property Name="id_cuenta_contable_anticipo_proveedor" Type="int" />
+          <Property Name="id_cuenta_contable_anticipo_proveedor_nota_credito" Type="int" />
+          <Property Name="id_cuenta_contable_cliente" Type="int" />
+          <Property Name="id_cuenta_contable_iva_presuntivo" Type="int" />
+          <Property Name="id_cuenta_contable_proveedor" Type="int" />
+          <Property Name="id_cuenta_contable_suedo_por_pagar" Type="int" />
+          <Property Name="longitud" Type="int" />
+          <Property Name="prefijo" Type="varchar" MaxLength="3" />
+          <Property Name="valor_maximo" Type="int" />
+          <Property Name="valor_minimo" Type="int" />
+        </EntityType>
+        <EntityType Name="detalle_forma_cobro">
+          <Key>
+            <PropertyRef Name="id_detalle_forma_cobro" />
+          </Key>
+          <Property Name="id_detalle_forma_cobro" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="autorizacion" Type="varchar" MaxLength="50" />
+          <Property Name="base_imponible_diferente_cero" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="base_imponible_tarifa_cero" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="documento_referencia" Type="varchar" MaxLength="20" />
+          <Property Name="documento_referencia_protesto" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha_protesto" Type="date" />
+          <Property Name="fecha_voucher" Type="date" />
+          <Property Name="id_dispositivo_sincronizacion" Type="int" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="impuesto_comision" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="indicador_cargar_cliente_protesto" Type="bit" Nullable="false" />
+          <Property Name="indicador_cheque_posfechado" Type="bit" Nullable="false" />
+          <Property Name="indicador_cheque_protestado" Type="bit" Nullable="false" />
+          <Property Name="indicador_cobrado" Type="bit" Nullable="false" />
+          <Property Name="indicador_valor_retencion_fuente" Type="bit" Nullable="false" />
+          <Property Name="indicador_valor_retencion_iva" Type="bit" Nullable="false" />
+          <Property Name="interes" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="lote" Type="varchar" MaxLength="20" />
+          <Property Name="monto_iva" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="numero_tarjeta" Type="varchar" MaxLength="50" />
+          <Property Name="porcentaje_comision" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="retencion_fuente" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="retencion_iva" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="secuencial" Type="int" />
+          <Property Name="valor" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_comision" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_pagado" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_pagado_calculado" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_protestado" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="id_anticipo_cliente" Type="int" />
+          <Property Name="id_asiento" Type="int" />
+          <Property Name="id_banco" Type="int" />
+          <Property Name="id_caja" Type="int" />
+          <Property Name="id_cobro" Type="int" />
+          <Property Name="id_cobro_tarjeta" Type="int" />
+          <Property Name="id_cuenta_bancaria_organizacion" Type="int" />
+          <Property Name="id_cuenta_bancaria_organizacion_protesto" Type="int" />
+          <Property Name="id_cuenta_contable_forma_cobro" Type="int" />
+          <Property Name="id_dimension_contable1" Type="int" />
+          <Property Name="id_dimension_contable2" Type="int" />
+          <Property Name="id_dimension_contable3" Type="int" />
+          <Property Name="id_dimension_contable4" Type="int" />
+          <Property Name="id_dimension_contable5" Type="int" />
+          <Property Name="id_forma_pago" Type="int" Nullable="false" />
+          <Property Name="id_forma_pago_protesto" Type="int" />
+          <Property Name="id_plan_tarjeta_credito" Type="int" />
+          <Property Name="id_punto_venta" Type="int" />
+          <Property Name="id_tarjeta_credito" Type="int" />
+          <Property Name="nombre_retencion_bien_servicio" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_documento" Type="date" />
+        </EntityType>
+        <EntityType Name="direccion_empresa">
+          <Key>
+            <PropertyRef Name="id_direccion_empresa" />
+          </Key>
+          <Property Name="id_direccion_empresa" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="codigo_postal" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="id_dispositivo_sincronizacion" Type="int" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="indicador_direccion_envio" Type="bit" Nullable="false" />
+          <Property Name="indicador_direccion_factura" Type="bit" Nullable="false" />
+          <Property Name="indicador_direccion_principal" Type="bit" Nullable="false" />
+          <Property Name="indicador_paraiso_fiscal" Type="bit" />
+          <Property Name="telefono1" Type="varchar" MaxLength="20" />
+          <Property Name="telefono2" Type="varchar" MaxLength="20" />
+          <Property Name="id_ciudad" Type="int" Nullable="false" />
+          <Property Name="id_empresa" Type="int" />
+          <Property Name="id_parroquia" Type="int" />
+          <Property Name="id_ubicacion" Type="int" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="codigo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="codigo_alterno" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="cuenta_facebook" Type="varchar" MaxLength="50" />
+          <Property Name="cuenta_twitter" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" />
+          <Property Name="email1" Type="varchar" MaxLength="100" />
+          <Property Name="email2" Type="varchar" MaxLength="100" />
+          <Property Name="email3" Type="varchar" MaxLength="500" />
+          <Property Name="email4" Type="varchar" MaxLength="500" />
+          <Property Name="email5" Type="varchar" MaxLength="500" />
+          <Property Name="genero" Type="int" />
+          <Property Name="id_dispositivo_sincronizacion" Type="int" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="indicador_aplica_descuento" Type="bit" Nullable="false" />
+          <Property Name="indicador_cliente" Type="bit" Nullable="false" />
+          <Property Name="indicador_cliente_proveedor" Type="bit" Nullable="false" />
+          <Property Name="indicador_empleado" Type="bit" Nullable="false" />
+          <Property Name="indicador_entidad_publica" Type="bit" Nullable="false" />
+          <Property Name="indicador_floricola" Type="bit" Nullable="false" />
+          <Property Name="indicador_proveedor" Type="bit" Nullable="false" />
+          <Property Name="latitud" Type="numeric" Precision="18" Scale="6" />
+          <Property Name="longitud" Type="numeric" Precision="18" Scale="6" />
+          <Property Name="nombre_comercial" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="nombre_fiscal" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="pagina_web" Type="varchar" MaxLength="50" />
+          <Property Name="texto_busqueda" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="tipo_empresa" Type="int" Nullable="false" />
+          <Property Name="id_categoria_empresa" Type="int" />
+          <Property Name="id_conjunto_atributo_cliente" Type="int" />
+          <Property Name="id_conjunto_atributo_proveedor" Type="int" />
+          <Property Name="id_estado_civil" Type="int" />
+          <Property Name="id_origen_ingresos" Type="int" />
+          <Property Name="id_tipo_identificacion" Type="int" Nullable="false" />
+          <Property Name="indicador_bloqeuado_generacion_archivo" Type="bit" Nullable="false" />
+          <Property Name="indicador_envia_cedula_archivo" Type="bit" Nullable="false" />
+          <Property Name="indicador_nuevo_generacion_archivo" Type="bit" Nullable="false" />
+          <Property Name="codigo_fcm" Type="varchar" MaxLength="1000" />
+          <Property Name="dia_cobro" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="factura_cliente">
+          <Key>
+            <PropertyRef Name="id_factura_cliente" />
+          </Key>
+          <Property Name="id_factura_cliente" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="archivo" Type="varchar" MaxLength="50" />
+          <Property Name="autorizacion_liberacion" Type="int" />
+          <Property Name="cantidad_garantias" Type="int" Nullable="false" />
+          <Property Name="codigo_movil" Type="varchar" MaxLength="200" />
+          <Property Name="descripcion" Type="varchar" MaxLength="2000" />
+          <Property Name="descripcion2" Type="varchar" MaxLength="500" />
+          <Property Name="descuento" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="descuento_impuesto" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="dias_margen_tolerancia_puntos" Type="int" Nullable="false" />
+          <Property Name="direccion_factura" Type="varchar" MaxLength="255" />
+          <Property Name="email" Type="varchar" MaxLength="500" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="fecha_contabilizacion" Type="date" />
+          <Property Name="fecha_vencimiento" Type="date" />
+          <Property Name="flete_internacional" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="gastos_aduaneros" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="id_dispositivo_sincronizacion" Type="int" />
+          <Property Name="id_externo" Type="varchar" MaxLength="32" />
+          <Property Name="id_factura_unosoft" Type="varchar" MaxLength="32" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="impuesto" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="incoterm" Type="varchar" MaxLength="10" />
+          <Property Name="indicador_aprobada_calidad" Type="bit" Nullable="false" />
+          <Property Name="indicador_automatico" Type="bit" />
+          <Property Name="indicador_emision_retencion" Type="bit" Nullable="false" />
+          <Property Name="indicador_genera_cxc" Type="bit" Nullable="false" />
+          <Property Name="indicador_generada_por_mora" Type="bit" Nullable="false" />
+          <Property Name="indicador_generado_prefactura" Type="bit" />
+          <Property Name="indicador_genero_transformacion" Type="bit" Nullable="false" />
+          <Property Name="indicador_renegociada" Type="bit" Nullable="false" />
+          <Property Name="indicador_saldo_inicial" Type="bit" Nullable="false" />
+          <Property Name="indicador_sincronizacion_uno_soft" Type="varchar" MaxLength="255" />
+          <Property Name="indicador_solicitado_anulacion" Type="bit" Nullable="false" />
+          <Property Name="maneja_descuento_adicional" Type="bit" Nullable="false" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="numero_cuotas" Type="int" Nullable="false" />
+          <Property Name="origen" Type="int" Nullable="false" />
+          <Property Name="otros_gastos_transporte" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="pdf" Type="varchar" MaxLength="50" />
+          <Property Name="puntos" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="referencia1" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="referencia10" Type="varchar" MaxLength="200" />
+          <Property Name="referencia2" Type="varchar" MaxLength="200" />
+          <Property Name="referencia3" Type="varchar" MaxLength="200" />
+          <Property Name="referencia4" Type="varchar" MaxLength="200" />
+          <Property Name="referencia5" Type="varchar" MaxLength="200" />
+          <Property Name="referencia6" Type="varchar" MaxLength="200" />
+          <Property Name="referencia7" Type="varchar" MaxLength="1200" />
+          <Property Name="referencia8" Type="varchar" MaxLength="200" />
+          <Property Name="referencia9" Type="varchar" MaxLength="200" />
+          <Property Name="requiere_codeudor" Type="bit" />
+          <Property Name="requiere_garante" Type="bit" />
+          <Property Name="saldo_puntos" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="saldo_valor_puntos" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="seguro_internacional" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="total" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="usuario_autoriza_ventas" Type="varchar" MaxLength="50" />
+          <Property Name="valor_cuota_inicial" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_devuelto" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_otros" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_puntos" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="valor_referencia1" Type="numeric" Precision="16" Scale="4" />
+          <Property Name="valor_referencia2" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_referencia3" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="id_agente_comercial" Type="int" />
+          <Property Name="id_asiento" Type="int" />
+          <Property Name="id_autorizacion_documento_punto_de_venta_autoimpresor_SRI" Type="int" />
+          <Property Name="id_canal" Type="int" />
+          <Property Name="id_garante_codeudor" Type="int" />
+          <Property Name="id_condicion_pago" Type="int" />
+          <Property Name="id_despacho_cliente" Type="int" />
+          <Property Name="id_garante_deudor" Type="int" />
+          <Property Name="id_direccion_empresa" Type="int" Nullable="false" />
+          <Property Name="id_documento" Type="int" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="id_factura_cliente_padre" Type="int" />
+          <Property Name="id_forma_pago" Type="int" />
+          <Property Name="id_interfaz_contable_proceso" Type="int" />
+          <Property Name="id_ciudad_incoterm" Type="int" />
+          <Property Name="id_motivo_anulacion" Type="int" />
+          <Property Name="id_motivo_nota_credito_cliente" Type="int" />
+          <Property Name="id_numero_cuota" Type="int" />
+          <Property Name="id_pais_adquisicion" Type="int" />
+          <Property Name="id_pais_destino" Type="int" />
+          <Property Name="id_pais_origen" Type="int" />
+          <Property Name="id_pedido_cliente" Type="int" />
+          <Property Name="id_proyecto" Type="int" />
+          <Property Name="id_puerto_destino" Type="int" />
+          <Property Name="id_puerto_embarque" Type="int" />
+          <Property Name="id_subempresa" Type="int" />
+          <Property Name="id_sucursal" Type="int" />
+          <Property Name="id_transportista" Type="int" />
+          <Property Name="id_zona" Type="int" />
+          <Property Name="descripcion_anulacion" Type="varchar" MaxLength="500" />
+          <Property Name="descripcion_factura_flor" Type="varchar" MaxLength="500" />
+          <Property Name="indicador_crear_factura_cliente_agil" Type="bit" Nullable="false" />
+          <Property Name="indicador_recepcion_automatica" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="factura_proveedorSRI">
+          <Key>
+            <PropertyRef Name="id_factura_proveedorSRI" />
+          </Key>
+          <Property Name="id_factura_proveedorSRI" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="ambiente" Type="int" Nullable="false" />
+          <Property Name="anio_generacion_utilidades" Type="int" />
+          <Property Name="autorizacion" Type="varchar" MaxLength="50" />
+          <Property Name="autorizacion_modificado" Type="varchar" MaxLength="50" />
+          <Property Name="autorizacion_retencion" Type="varchar" MaxLength="50" />
+          <Property Name="base_imponible_diferente_cero" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="base_imponible_no_objeto_iva" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="base_imponible_tarifa_cero" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="ciudad" Type="varchar" MaxLength="50" />
+          <Property Name="clave_acceso" Type="varchar" MaxLength="50" />
+          <Property Name="clave_acceso_liquidacion" Type="varchar" MaxLength="50" />
+          <Property Name="codigo_forma_pago_sri" Type="varchar" MaxLength="10" />
+          <Property Name="codigo_unico" Type="varchar" MaxLength="50" />
+          <Property Name="direccion_matriz" Type="varchar" MaxLength="200" />
+          <Property Name="direccion_proveedor" Type="varchar" MaxLength="300" />
+          <Property Name="direccion_sucursal" Type="varchar" MaxLength="200" />
+          <Property Name="email" Type="varchar" MaxLength="500" />
+          <Property Name="establecimiento" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="establecimiento_modificado" Type="varchar" MaxLength="3" />
+          <Property Name="establecimiento_retencion" Type="varchar" MaxLength="3" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="estado_documento_electronico" Type="int" />
+          <Property Name="estado_documento_electronico_liquidacion" Type="int" />
+          <Property Name="estado_liquidacion" Type="int" />
+          <Property Name="fecha_autorizacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_autorizacion_liquidacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_emision" Type="date" />
+          <Property Name="fecha_emision_retencion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_pago_dividendo" Type="date" />
+          <Property Name="fecha_registro" Type="date" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="identificacion_proveedor" Type="varchar" MaxLength="20" />
+          <Property Name="indicador_documento_electronico" Type="bit" Nullable="false" />
+          <Property Name="indicador_factura_electronica" Type="bit" Nullable="false" />
+          <Property Name="indicador_parte_relacionada" Type="bit" Nullable="false" />
+          <Property Name="indicador_retencion_asumida" Type="bit" Nullable="false" />
+          <Property Name="indicador_retencion_emitida" Type="bit" Nullable="false" />
+          <Property Name="indicador_saldo_inicial" Type="bit" Nullable="false" />
+          <Property Name="ir_asociado_dividendo" Type="numeric" Precision="19" Scale="2" />
+          <Property Name="mensaje_sri" Type="varchar" MaxLength="5000" />
+          <Property Name="mensaje_sri_liquidacion" Type="varchar" MaxLength="5000" />
+          <Property Name="monto_ice" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="monto_iva" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="nombre_proveedor" Type="varchar" MaxLength="200" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="numero_modificado" Type="varchar" MaxLength="20" />
+          <Property Name="numero_retencion" Type="varchar" MaxLength="20" />
+          <Property Name="provincia" Type="varchar" MaxLength="50" />
+          <Property Name="punto_emision" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="punto_emision_modificado" Type="varchar" MaxLength="3" />
+          <Property Name="punto_emision_retencion" Type="varchar" MaxLength="3" />
+          <Property Name="telefono_proveedor" Type="varchar" MaxLength="13" />
+          <Property Name="tipo_emision" Type="int" Nullable="false" />
+          <Property Name="tipo_empresa" Type="int" Nullable="false" />
+          <Property Name="total_valor_retenido" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="valor_total_factura" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="id_compra_caja_chica" Type="int" />
+          <Property Name="id_credito_tributarioSRI" Type="int" />
+          <Property Name="id_documento" Type="int" />
+          <Property Name="id_tipo_comprobante_modificado" Type="int" />
+          <Property Name="id_factura_proveedor" Type="int" />
+          <Property Name="id_pago" Type="int" />
+          <Property Name="id_tipo_comprobante" Type="int" />
+          <Property Name="id_tipo_identificacion" Type="int" />
+          <Property Name="id_autorizacion_empresa_SRI" Type="int" />
+        </EntityType>
+        <EntityType Name="organizacion">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+          </Key>
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="descripcion_notificacion" Type="varchar" MaxLength="500" />
+          <Property Name="identificacion" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="identificacion_contador" Type="varchar" MaxLength="20" />
+          <Property Name="identificacion_representante" Type="varchar" MaxLength="20" />
+          <Property Name="imagen" Type="varchar" MaxLength="50" />
+          <Property Name="indicador_notificacion" Type="bit" Nullable="false" />
+          <Property Name="nombre_comercial" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="pagina_web" Type="varchar" MaxLength="200" />
+          <Property Name="razon_social" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="representante_legal" Type="varchar" MaxLength="50" />
+          <Property Name="id_tipo_identificacion" Type="int" />
+          <Property Name="id_tipo_identificacion_contador" Type="int" />
+          <Property Name="id_tipo_identificacion_representante" Type="int" />
+        </EntityType>
+        <EntityType Name="ubicacion">
+          <Key>
+            <PropertyRef Name="id_ubicacion" />
+          </Key>
+          <Property Name="id_ubicacion" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="direccion1" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="direccion2" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="direccion3" Type="varchar" MaxLength="250" />
+          <Property Name="direccion4" Type="varchar" MaxLength="250" />
+          <Property Name="direccion5" Type="varchar" MaxLength="200" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="latitud" Type="numeric" Precision="12" Scale="8" />
+          <Property Name="longitud" Type="numeric" Precision="12" Scale="8" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="IP" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="clave" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="codigo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="direccion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="en_linea" Type="bit" Nullable="false" />
+          <Property Name="genero" Type="int" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="indicador_administrador" Type="bit" Nullable="false" />
+          <Property Name="indicador_agente_comercial" Type="bit" Nullable="false" />
+          <Property Name="indicador_aprobador" Type="bit" />
+          <Property Name="indicador_autoriza_despacho" Type="bit" Nullable="false" />
+          <Property Name="indicador_autoriza_ventas" Type="bit" Nullable="false" />
+          <Property Name="indicador_cierre_caja_masivo" Type="bit" Nullable="false" />
+          <Property Name="indicador_maneja_cuentas_contables" Type="bit" Nullable="false" />
+          <Property Name="indicador_nuevo" Type="bit" Nullable="false" />
+          <Property Name="indicador_recibe_notificaciones" Type="bit" Nullable="false" />
+          <Property Name="solo_lectura" Type="bit" />
+          <Property Name="indicador_usuario_pos" Type="bit" Nullable="false" />
+          <Property Name="indicador_ver_costo" Type="bit" Nullable="false" />
+          <Property Name="nombre1" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombre2" Type="varchar" MaxLength="50" />
+          <Property Name="nombre_usuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="obligatorio_logeo_biometrico_huella" Type="bit" Nullable="false" />
+          <Property Name="permitir_sesion_desde_otra_IP" Type="bit" Nullable="false" />
+          <Property Name="predeterminado" Type="bit" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="13" />
+          <Property Name="tema" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tipo_usuario_revisor" Type="int" Nullable="false" />
+          <Property Name="tipo_visualizacion" Type="int" Nullable="false" />
+          <Property Name="id_dispositivo" Type="int" />
+          <Property Name="id_empleado" Type="int" />
+          <Property Name="id_plan_comision" Type="int" />
+          <Property Name="id_recaudador" Type="int" />
+          <Property Name="id_tipo_vendedor" Type="int" />
+          <Property Name="roles" Type="varchar" MaxLength="5000" Nullable="false" />
+          <Property Name="indicador_ingreso_ldap" Type="bit" Nullable="false" />
+          <Property Name="indicador_modifica_valor_promocion" Type="bit" Nullable="false" />
+          <Property Name="consultas_entidad" Type="varchar" MaxLength="1000" />
+          <Property Name="IP_auditoria" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="codigo_fcm" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <Association Name="FK_8xebmbeu08jicjhj6i8in7w3s">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="0..1" />
+          <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="factura_cliente">
+              <PropertyRef Name="id_agente_comercial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comkrnihn5g538cddgr6804xt">
+          <End Role="direccion_empresa" Type="Self.direccion_empresa" Multiplicity="1" />
+          <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="direccion_empresa">
+              <PropertyRef Name="id_direccion_empresa" />
+            </Principal>
+            <Dependent Role="factura_cliente">
+              <PropertyRef Name="id_direccion_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_esbk89j1qg2d7svl7hp3fx68u">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="1" />
+          <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="factura_cliente">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_hev5glia823b69gu5e0e6l97u">
+          <End Role="empresa" Type="Self.empresa" Multiplicity="0..1" />
+          <End Role="direccion_empresa" Type="Self.direccion_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="direccion_empresa">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_if5q14tu796i2kk6cndnttj7w">
+          <End Role="ubicacion" Type="Self.ubicacion" Multiplicity="0..1" />
+          <End Role="direccion_empresa" Type="Self.direccion_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ubicacion">
+              <PropertyRef Name="id_ubicacion" />
+            </Principal>
+            <Dependent Role="direccion_empresa">
+              <PropertyRef Name="id_ubicacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jushfig5ma5q7cel0ew17kmf8">
+          <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="0..1" />
+          <End Role="factura_cliente1" Type="Self.factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="factura_cliente">
+              <PropertyRef Name="id_factura_cliente" />
+            </Principal>
+            <Dependent Role="factura_cliente1">
+              <PropertyRef Name="id_factura_cliente_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_q5s9ubay5dnv2lj9iydghy6uk">
+          <End Role="categoria_empresa" Type="Self.categoria_empresa" Multiplicity="0..1" />
+          <End Role="empresa" Type="Self.empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria_empresa">
+              <PropertyRef Name="id_categoria_empresa" />
+            </Principal>
+            <Dependent Role="empresa">
+              <PropertyRef Name="id_categoria_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="as2ModelStoreContainer">
+          <EntitySet Name="categoria_empresa" EntityType="Self.categoria_empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalle_forma_cobro" EntityType="Self.detalle_forma_cobro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="direccion_empresa" EntityType="Self.direccion_empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="empresa" EntityType="Self.empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="factura_cliente" EntityType="Self.factura_cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="factura_proveedorSRI" EntityType="Self.factura_proveedorSRI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="organizacion" EntityType="Self.organizacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ubicacion" EntityType="Self.ubicacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_8xebmbeu08jicjhj6i8in7w3s" Association="Self.FK_8xebmbeu08jicjhj6i8in7w3s">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comkrnihn5g538cddgr6804xt" Association="Self.FK_comkrnihn5g538cddgr6804xt">
+            <End Role="direccion_empresa" EntitySet="direccion_empresa" />
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_esbk89j1qg2d7svl7hp3fx68u" Association="Self.FK_esbk89j1qg2d7svl7hp3fx68u">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_hev5glia823b69gu5e0e6l97u" Association="Self.FK_hev5glia823b69gu5e0e6l97u">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="direccion_empresa" EntitySet="direccion_empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_if5q14tu796i2kk6cndnttj7w" Association="Self.FK_if5q14tu796i2kk6cndnttj7w">
+            <End Role="ubicacion" EntitySet="ubicacion" />
+            <End Role="direccion_empresa" EntitySet="direccion_empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jushfig5ma5q7cel0ew17kmf8" Association="Self.FK_jushfig5ma5q7cel0ew17kmf8">
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+            <End Role="factura_cliente1" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_q5s9ubay5dnv2lj9iydghy6uk" Association="Self.FK_q5s9ubay5dnv2lj9iydghy6uk">
+            <End Role="categoria_empresa" EntitySet="categoria_empresa" />
+            <End Role="empresa" EntitySet="empresa" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="as2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="factura_cliente">
+          <Key>
+            <PropertyRef Name="id_factura_cliente" />
+          </Key>
+          <Property Name="id_factura_cliente" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="archivo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="autorizacion_liberacion" Type="Int32" />
+          <Property Name="cantidad_garantias" Type="Int32" Nullable="false" />
+          <Property Name="codigo_movil" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="descuento" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="descuento_impuesto" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="dias_margen_tolerancia_puntos" Type="Int32" Nullable="false" />
+          <Property Name="direccion_factura" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_contabilizacion" Type="DateTime" Precision="0" />
+          <Property Name="fecha_vencimiento" Type="DateTime" Precision="0" />
+          <Property Name="flete_internacional" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="gastos_aduaneros" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
+          <Property Name="id_externo" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="id_factura_unosoft" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="impuesto" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="incoterm" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_aprobada_calidad" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_automatico" Type="Boolean" />
+          <Property Name="indicador_emision_retencion" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_genera_cxc" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_generada_por_mora" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_generado_prefactura" Type="Boolean" />
+          <Property Name="indicador_genero_transformacion" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_renegociada" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_saldo_inicial" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_sincronizacion_uno_soft" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_solicitado_anulacion" Type="Boolean" Nullable="false" />
+          <Property Name="maneja_descuento_adicional" Type="Boolean" Nullable="false" />
+          <Property Name="numero" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="numero_cuotas" Type="Int32" Nullable="false" />
+          <Property Name="origen" Type="Int32" Nullable="false" />
+          <Property Name="otros_gastos_transporte" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="pdf" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="puntos" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="referencia1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="referencia10" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia2" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia3" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia4" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia5" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia6" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia7" Type="String" MaxLength="1200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia8" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="referencia9" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="requiere_codeudor" Type="Boolean" />
+          <Property Name="requiere_garante" Type="Boolean" />
+          <Property Name="saldo_puntos" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="saldo_valor_puntos" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="seguro_internacional" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="total" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="usuario_autoriza_ventas" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valor_cuota_inicial" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_devuelto" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_otros" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_puntos" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="valor_referencia1" Type="Decimal" Precision="16" Scale="4" />
+          <Property Name="valor_referencia2" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_referencia3" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="id_agente_comercial" Type="Int32" />
+          <Property Name="id_asiento" Type="Int32" />
+          <Property Name="id_autorizacion_documento_punto_de_venta_autoimpresor_SRI" Type="Int32" />
+          <Property Name="id_canal" Type="Int32" />
+          <Property Name="id_garante_codeudor" Type="Int32" />
+          <Property Name="id_condicion_pago" Type="Int32" />
+          <Property Name="id_despacho_cliente" Type="Int32" />
+          <Property Name="id_garante_deudor" Type="Int32" />
+          <Property Name="id_direccion_empresa" Type="Int32" Nullable="false" />
+          <Property Name="id_documento" Type="Int32" Nullable="false" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="id_factura_cliente_padre" Type="Int32" />
+          <Property Name="id_forma_pago" Type="Int32" />
+          <Property Name="id_interfaz_contable_proceso" Type="Int32" />
+          <Property Name="id_ciudad_incoterm" Type="Int32" />
+          <Property Name="id_motivo_anulacion" Type="Int32" />
+          <Property Name="id_motivo_nota_credito_cliente" Type="Int32" />
+          <Property Name="id_numero_cuota" Type="Int32" />
+          <Property Name="id_pais_adquisicion" Type="Int32" />
+          <Property Name="id_pais_destino" Type="Int32" />
+          <Property Name="id_pais_origen" Type="Int32" />
+          <Property Name="id_pedido_cliente" Type="Int32" />
+          <Property Name="id_proyecto" Type="Int32" />
+          <Property Name="id_puerto_destino" Type="Int32" />
+          <Property Name="id_puerto_embarque" Type="Int32" />
+          <Property Name="id_subempresa" Type="Int32" />
+          <Property Name="id_sucursal" Type="Int32" />
+          <Property Name="id_transportista" Type="Int32" />
+          <Property Name="id_zona" Type="Int32" />
+          <Property Name="descripcion_anulacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion_factura_flor" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_crear_factura_cliente_agil" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_recepcion_automatica" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="factura_cliente1" Relationship="Self.FK_jushfig5ma5q7cel0ew17kmf8" FromRole="factura_cliente" ToRole="factura_cliente1" />
+          <NavigationProperty Name="factura_cliente2" Relationship="Self.FK_jushfig5ma5q7cel0ew17kmf8" FromRole="factura_cliente1" ToRole="factura_cliente" />
+          <NavigationProperty Name="empresa" Relationship="as2Model.FK_esbk89j1qg2d7svl7hp3fx68u" FromRole="factura_cliente" ToRole="empresa" />
+          <NavigationProperty Name="usuario" Relationship="as2Model.FK_8xebmbeu08jicjhj6i8in7w3s" FromRole="factura_cliente" ToRole="usuario" />
+          <NavigationProperty Name="direccion_empresa" Relationship="as2Model.FK_comkrnihn5g538cddgr6804xt" FromRole="factura_cliente" ToRole="direccion_empresa" />
+        </EntityType>
+        <Association Name="FK_jushfig5ma5q7cel0ew17kmf8">
+          <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="0..1" />
+          <End Role="factura_cliente1" Type="Self.factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="factura_cliente">
+              <PropertyRef Name="id_factura_cliente" />
+            </Principal>
+            <Dependent Role="factura_cliente1">
+              <PropertyRef Name="id_factura_cliente_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AS2Context" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="factura_cliente" EntityType="Self.factura_cliente" />
+          <AssociationSet Name="FK_jushfig5ma5q7cel0ew17kmf8" Association="Self.FK_jushfig5ma5q7cel0ew17kmf8">
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+            <End Role="factura_cliente1" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <EntitySet Name="detalle_forma_cobro" EntityType="as2Model.detalle_forma_cobro" />
+          <EntitySet Name="empresa" EntityType="as2Model.empresa" />
+          <EntitySet Name="factura_proveedorSRI" EntityType="as2Model.factura_proveedorSRI" />
+          <EntitySet Name="organizacion" EntityType="as2Model.organizacion" />
+          <AssociationSet Name="FK_esbk89j1qg2d7svl7hp3fx68u" Association="as2Model.FK_esbk89j1qg2d7svl7hp3fx68u">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <EntitySet Name="usuario" EntityType="as2Model.usuario" />
+          <AssociationSet Name="FK_8xebmbeu08jicjhj6i8in7w3s" Association="as2Model.FK_8xebmbeu08jicjhj6i8in7w3s">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <EntitySet Name="direccion_empresa" EntityType="as2Model.direccion_empresa" />
+          <AssociationSet Name="FK_comkrnihn5g538cddgr6804xt" Association="as2Model.FK_comkrnihn5g538cddgr6804xt">
+            <End Role="direccion_empresa" EntitySet="direccion_empresa" />
+            <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_hev5glia823b69gu5e0e6l97u" Association="as2Model.FK_hev5glia823b69gu5e0e6l97u">
+            <End Role="empresa" EntitySet="empresa" />
+            <End Role="direccion_empresa" EntitySet="direccion_empresa" />
+          </AssociationSet>
+          <EntitySet Name="ubicacion" EntityType="as2Model.ubicacion" />
+          <AssociationSet Name="FK_if5q14tu796i2kk6cndnttj7w" Association="as2Model.FK_if5q14tu796i2kk6cndnttj7w">
+            <End Role="ubicacion" EntitySet="ubicacion" />
+            <End Role="direccion_empresa" EntitySet="direccion_empresa" />
+          </AssociationSet>
+          <EntitySet Name="categoria_empresa" EntityType="as2Model.categoria_empresa" />
+          <AssociationSet Name="FK_q5s9ubay5dnv2lj9iydghy6uk" Association="as2Model.FK_q5s9ubay5dnv2lj9iydghy6uk">
+            <End Role="categoria_empresa" EntitySet="categoria_empresa" />
+            <End Role="empresa" EntitySet="empresa" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="detalle_forma_cobro">
+          <Key>
+            <PropertyRef Name="id_detalle_forma_cobro" />
+          </Key>
+          <Property Name="id_detalle_forma_cobro" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="autorizacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="base_imponible_diferente_cero" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="base_imponible_tarifa_cero" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="documento_referencia" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="documento_referencia_protesto" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_protesto" Type="DateTime" Precision="0" />
+          <Property Name="fecha_voucher" Type="DateTime" Precision="0" />
+          <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="impuesto_comision" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="indicador_cargar_cliente_protesto" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_cheque_posfechado" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_cheque_protestado" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_cobrado" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_valor_retencion_fuente" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_valor_retencion_iva" Type="Boolean" Nullable="false" />
+          <Property Name="interes" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="lote" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="monto_iva" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="numero_tarjeta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="porcentaje_comision" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="retencion_fuente" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="retencion_iva" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="secuencial" Type="Int32" />
+          <Property Name="valor" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="valor_comision" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_pagado" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_pagado_calculado" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_protestado" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="id_anticipo_cliente" Type="Int32" />
+          <Property Name="id_asiento" Type="Int32" />
+          <Property Name="id_banco" Type="Int32" />
+          <Property Name="id_caja" Type="Int32" />
+          <Property Name="id_cobro" Type="Int32" />
+          <Property Name="id_cobro_tarjeta" Type="Int32" />
+          <Property Name="id_cuenta_bancaria_organizacion" Type="Int32" />
+          <Property Name="id_cuenta_bancaria_organizacion_protesto" Type="Int32" />
+          <Property Name="id_cuenta_contable_forma_cobro" Type="Int32" />
+          <Property Name="id_dimension_contable1" Type="Int32" />
+          <Property Name="id_dimension_contable2" Type="Int32" />
+          <Property Name="id_dimension_contable3" Type="Int32" />
+          <Property Name="id_dimension_contable4" Type="Int32" />
+          <Property Name="id_dimension_contable5" Type="Int32" />
+          <Property Name="id_forma_pago" Type="Int32" Nullable="false" />
+          <Property Name="id_forma_pago_protesto" Type="Int32" />
+          <Property Name="id_plan_tarjeta_credito" Type="Int32" />
+          <Property Name="id_punto_venta" Type="Int32" />
+          <Property Name="id_tarjeta_credito" Type="Int32" />
+          <Property Name="nombre_retencion_bien_servicio" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_documento" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_alterno" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cuenta_facebook" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cuenta_twitter" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="email1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email3" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="email4" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="email5" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="genero" Type="Int32" />
+          <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="identificacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_aplica_descuento" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_cliente" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_cliente_proveedor" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_empleado" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_entidad_publica" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_floricola" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_proveedor" Type="Boolean" Nullable="false" />
+          <Property Name="latitud" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="longitud" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="nombre_comercial" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_fiscal" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="pagina_web" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="texto_busqueda" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_empresa" Type="Int32" Nullable="false" />
+          <Property Name="id_categoria_empresa" Type="Int32" />
+          <Property Name="id_conjunto_atributo_cliente" Type="Int32" />
+          <Property Name="id_conjunto_atributo_proveedor" Type="Int32" />
+          <Property Name="id_estado_civil" Type="Int32" />
+          <Property Name="id_origen_ingresos" Type="Int32" />
+          <Property Name="id_tipo_identificacion" Type="Int32" Nullable="false" />
+          <Property Name="indicador_bloqeuado_generacion_archivo" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_envia_cedula_archivo" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_nuevo_generacion_archivo" Type="Boolean" Nullable="false" />
+          <Property Name="codigo_fcm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="dia_cobro" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="factura_cliente" Relationship="as2Model.FK_esbk89j1qg2d7svl7hp3fx68u" FromRole="empresa" ToRole="factura_cliente" />
+          <NavigationProperty Name="direccion_empresa" Relationship="as2Model.FK_hev5glia823b69gu5e0e6l97u" FromRole="empresa" ToRole="direccion_empresa" />
+          <NavigationProperty Name="categoria_empresa" Relationship="as2Model.FK_q5s9ubay5dnv2lj9iydghy6uk" FromRole="empresa" ToRole="categoria_empresa" />
+        </EntityType>
+        <EntityType Name="factura_proveedorSRI">
+          <Key>
+            <PropertyRef Name="id_factura_proveedorSRI" />
+          </Key>
+          <Property Name="id_factura_proveedorSRI" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ambiente" Type="Int32" Nullable="false" />
+          <Property Name="anio_generacion_utilidades" Type="Int32" />
+          <Property Name="autorizacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="autorizacion_modificado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="autorizacion_retencion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="base_imponible_diferente_cero" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="base_imponible_no_objeto_iva" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="base_imponible_tarifa_cero" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="clave_acceso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="clave_acceso_liquidacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_forma_pago_sri" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_unico" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion_matriz" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="direccion_proveedor" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="direccion_sucursal" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="establecimiento" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="establecimiento_modificado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="establecimiento_retencion" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="estado_documento_electronico" Type="Int32" />
+          <Property Name="estado_documento_electronico_liquidacion" Type="Int32" />
+          <Property Name="estado_liquidacion" Type="Int32" />
+          <Property Name="fecha_autorizacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_autorizacion_liquidacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_emision" Type="DateTime" Precision="0" />
+          <Property Name="fecha_emision_retencion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_pago_dividendo" Type="DateTime" Precision="0" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="0" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="identificacion_proveedor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_documento_electronico" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_factura_electronica" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_parte_relacionada" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_retencion_asumida" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_retencion_emitida" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_saldo_inicial" Type="Boolean" Nullable="false" />
+          <Property Name="ir_asociado_dividendo" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="mensaje_sri" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="mensaje_sri_liquidacion" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="monto_ice" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="monto_iva" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="nombre_proveedor" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="numero_modificado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="numero_retencion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="provincia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="punto_emision" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="punto_emision_modificado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="punto_emision_retencion" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="telefono_proveedor" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_emision" Type="Int32" Nullable="false" />
+          <Property Name="tipo_empresa" Type="Int32" Nullable="false" />
+          <Property Name="total_valor_retenido" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="valor_total_factura" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="id_compra_caja_chica" Type="Int32" />
+          <Property Name="id_credito_tributarioSRI" Type="Int32" />
+          <Property Name="id_documento" Type="Int32" />
+          <Property Name="id_tipo_comprobante_modificado" Type="Int32" />
+          <Property Name="id_factura_proveedor" Type="Int32" />
+          <Property Name="id_pago" Type="Int32" />
+          <Property Name="id_tipo_comprobante" Type="Int32" />
+          <Property Name="id_tipo_identificacion" Type="Int32" />
+          <Property Name="id_autorizacion_empresa_SRI" Type="Int32" />
+        </EntityType>
+        <EntityType Name="organizacion">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+          </Key>
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion_notificacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion_contador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion_representante" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="imagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_notificacion" Type="Boolean" Nullable="false" />
+          <Property Name="nombre_comercial" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="pagina_web" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="razon_social" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="representante_legal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_tipo_identificacion" Type="Int32" />
+          <Property Name="id_tipo_identificacion_contador" Type="Int32" />
+          <Property Name="id_tipo_identificacion_representante" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_esbk89j1qg2d7svl7hp3fx68u">
+          <End Type="as2Model.empresa" Role="empresa" Multiplicity="1" />
+          <End Type="as2Model.factura_cliente" Role="factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="factura_cliente">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IP" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="clave" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="en_linea" Type="Boolean" Nullable="false" />
+          <Property Name="genero" Type="Int32" Nullable="false" />
+          <Property Name="identificacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_administrador" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_agente_comercial" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_aprobador" Type="Boolean" />
+          <Property Name="indicador_autoriza_despacho" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_autoriza_ventas" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_cierre_caja_masivo" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_maneja_cuentas_contables" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_nuevo" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_recibe_notificaciones" Type="Boolean" Nullable="false" />
+          <Property Name="solo_lectura" Type="Boolean" />
+          <Property Name="indicador_usuario_pos" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_ver_costo" Type="Boolean" Nullable="false" />
+          <Property Name="nombre1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_usuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="obligatorio_logeo_biometrico_huella" Type="Boolean" Nullable="false" />
+          <Property Name="permitir_sesion_desde_otra_IP" Type="Boolean" Nullable="false" />
+          <Property Name="predeterminado" Type="Boolean" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="tema" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_usuario_revisor" Type="Int32" Nullable="false" />
+          <Property Name="tipo_visualizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_dispositivo" Type="Int32" />
+          <Property Name="id_empleado" Type="Int32" />
+          <Property Name="id_plan_comision" Type="Int32" />
+          <Property Name="id_recaudador" Type="Int32" />
+          <Property Name="id_tipo_vendedor" Type="Int32" />
+          <Property Name="roles" Type="String" Nullable="false" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="indicador_ingreso_ldap" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_modifica_valor_promocion" Type="Boolean" Nullable="false" />
+          <Property Name="consultas_entidad" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IP_auditoria" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_fcm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="factura_cliente" Relationship="as2Model.FK_8xebmbeu08jicjhj6i8in7w3s" FromRole="usuario" ToRole="factura_cliente" />
+        </EntityType>
+        <Association Name="FK_8xebmbeu08jicjhj6i8in7w3s">
+          <End Type="as2Model.usuario" Role="usuario" Multiplicity="0..1" />
+          <End Type="as2Model.factura_cliente" Role="factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="factura_cliente">
+              <PropertyRef Name="id_agente_comercial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="direccion_empresa">
+          <Key>
+            <PropertyRef Name="id_direccion_empresa" />
+          </Key>
+          <Property Name="id_direccion_empresa" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="codigo_postal" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="indicador_direccion_envio" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_direccion_factura" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_direccion_principal" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_paraiso_fiscal" Type="Boolean" />
+          <Property Name="telefono1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="telefono2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="id_ciudad" Type="Int32" Nullable="false" />
+          <Property Name="id_empresa" Type="Int32" />
+          <Property Name="id_parroquia" Type="Int32" />
+          <Property Name="id_ubicacion" Type="Int32" />
+          <NavigationProperty Name="factura_cliente" Relationship="as2Model.FK_comkrnihn5g538cddgr6804xt" FromRole="direccion_empresa" ToRole="factura_cliente" />
+          <NavigationProperty Name="empresa" Relationship="as2Model.FK_hev5glia823b69gu5e0e6l97u" FromRole="direccion_empresa" ToRole="empresa" />
+          <NavigationProperty Name="ubicacion" Relationship="as2Model.FK_if5q14tu796i2kk6cndnttj7w" FromRole="direccion_empresa" ToRole="ubicacion" />
+        </EntityType>
+        <Association Name="FK_comkrnihn5g538cddgr6804xt">
+          <End Type="as2Model.direccion_empresa" Role="direccion_empresa" Multiplicity="1" />
+          <End Type="as2Model.factura_cliente" Role="factura_cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="direccion_empresa">
+              <PropertyRef Name="id_direccion_empresa" />
+            </Principal>
+            <Dependent Role="factura_cliente">
+              <PropertyRef Name="id_direccion_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_hev5glia823b69gu5e0e6l97u">
+          <End Type="as2Model.empresa" Role="empresa" Multiplicity="0..1" />
+          <End Type="as2Model.direccion_empresa" Role="direccion_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="empresa">
+              <PropertyRef Name="id_empresa" />
+            </Principal>
+            <Dependent Role="direccion_empresa">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ubicacion">
+          <Key>
+            <PropertyRef Name="id_ubicacion" />
+          </Key>
+          <Property Name="id_ubicacion" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion1" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="direccion2" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="direccion3" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="direccion4" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="direccion5" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="latitud" Type="Decimal" Precision="12" Scale="8" />
+          <Property Name="longitud" Type="Decimal" Precision="12" Scale="8" />
+          <NavigationProperty Name="direccion_empresa" Relationship="as2Model.FK_if5q14tu796i2kk6cndnttj7w" FromRole="ubicacion" ToRole="direccion_empresa" />
+        </EntityType>
+        <Association Name="FK_if5q14tu796i2kk6cndnttj7w">
+          <End Type="as2Model.ubicacion" Role="ubicacion" Multiplicity="0..1" />
+          <End Type="as2Model.direccion_empresa" Role="direccion_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ubicacion">
+              <PropertyRef Name="id_ubicacion" />
+            </Principal>
+            <Dependent Role="direccion_empresa">
+              <PropertyRef Name="id_ubicacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="categoria_empresa">
+          <Key>
+            <PropertyRef Name="id_categoria_empresa" />
+          </Key>
+          <Property Name="id_categoria_empresa" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="credito_maximo" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="indicador_cliente" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_empleado" Type="Boolean" Nullable="false" />
+          <Property Name="indicador_proveedor" Type="Boolean" Nullable="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="numero_maximo_documentos_sin_garantia" Type="Int32" />
+          <Property Name="porcentaje_maximo_morosidad" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="predeterminado" Type="Boolean" Nullable="false" />
+          <Property Name="verificar_documentos" Type="Boolean" Nullable="false" />
+          <Property Name="id_cuenta_contable_2x1000" Type="Int32" />
+          <Property Name="id_cuenta_contable_3x1000" Type="Int32" />
+          <Property Name="id_cuenta_contable_anticipo_cliente" Type="Int32" />
+          <Property Name="id_cuenta_contable_anticipo_cliente_nota_credito" Type="Int32" />
+          <Property Name="id_cuenta_contable_anticipo_proveedor" Type="Int32" />
+          <Property Name="id_cuenta_contable_anticipo_proveedor_nota_credito" Type="Int32" />
+          <Property Name="id_cuenta_contable_cliente" Type="Int32" />
+          <Property Name="id_cuenta_contable_iva_presuntivo" Type="Int32" />
+          <Property Name="id_cuenta_contable_proveedor" Type="Int32" />
+          <Property Name="id_cuenta_contable_suedo_por_pagar" Type="Int32" />
+          <Property Name="longitud" Type="Int32" />
+          <Property Name="prefijo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="valor_maximo" Type="Int32" />
+          <Property Name="valor_minimo" Type="Int32" />
+          <NavigationProperty Name="empresa" Relationship="as2Model.FK_q5s9ubay5dnv2lj9iydghy6uk" FromRole="categoria_empresa" ToRole="empresa" />
+        </EntityType>
+        <Association Name="FK_q5s9ubay5dnv2lj9iydghy6uk">
+          <End Type="as2Model.categoria_empresa" Role="categoria_empresa" Multiplicity="0..1" />
+          <End Type="as2Model.empresa" Role="empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categoria_empresa">
+              <PropertyRef Name="id_categoria_empresa" />
+            </Principal>
+            <Dependent Role="empresa">
+              <PropertyRef Name="id_categoria_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="as2ModelStoreContainer" CdmEntityContainer="AS2Context">
+          <EntitySetMapping Name="factura_cliente">
+            <EntityTypeMapping TypeName="as2Model.factura_cliente">
+              <MappingFragment StoreEntitySet="factura_cliente">
+                <ScalarProperty Name="id_factura_cliente" ColumnName="id_factura_cliente" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="archivo" ColumnName="archivo" />
+                <ScalarProperty Name="autorizacion_liberacion" ColumnName="autorizacion_liberacion" />
+                <ScalarProperty Name="cantidad_garantias" ColumnName="cantidad_garantias" />
+                <ScalarProperty Name="codigo_movil" ColumnName="codigo_movil" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="descripcion2" ColumnName="descripcion2" />
+                <ScalarProperty Name="descuento" ColumnName="descuento" />
+                <ScalarProperty Name="descuento_impuesto" ColumnName="descuento_impuesto" />
+                <ScalarProperty Name="dias_margen_tolerancia_puntos" ColumnName="dias_margen_tolerancia_puntos" />
+                <ScalarProperty Name="direccion_factura" ColumnName="direccion_factura" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="fecha_contabilizacion" ColumnName="fecha_contabilizacion" />
+                <ScalarProperty Name="fecha_vencimiento" ColumnName="fecha_vencimiento" />
+                <ScalarProperty Name="flete_internacional" ColumnName="flete_internacional" />
+                <ScalarProperty Name="gastos_aduaneros" ColumnName="gastos_aduaneros" />
+                <ScalarProperty Name="id_dispositivo_sincronizacion" ColumnName="id_dispositivo_sincronizacion" />
+                <ScalarProperty Name="id_externo" ColumnName="id_externo" />
+                <ScalarProperty Name="id_factura_unosoft" ColumnName="id_factura_unosoft" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="impuesto" ColumnName="impuesto" />
+                <ScalarProperty Name="incoterm" ColumnName="incoterm" />
+                <ScalarProperty Name="indicador_aprobada_calidad" ColumnName="indicador_aprobada_calidad" />
+                <ScalarProperty Name="indicador_automatico" ColumnName="indicador_automatico" />
+                <ScalarProperty Name="indicador_emision_retencion" ColumnName="indicador_emision_retencion" />
+                <ScalarProperty Name="indicador_genera_cxc" ColumnName="indicador_genera_cxc" />
+                <ScalarProperty Name="indicador_generada_por_mora" ColumnName="indicador_generada_por_mora" />
+                <ScalarProperty Name="indicador_generado_prefactura" ColumnName="indicador_generado_prefactura" />
+                <ScalarProperty Name="indicador_genero_transformacion" ColumnName="indicador_genero_transformacion" />
+                <ScalarProperty Name="indicador_renegociada" ColumnName="indicador_renegociada" />
+                <ScalarProperty Name="indicador_saldo_inicial" ColumnName="indicador_saldo_inicial" />
+                <ScalarProperty Name="indicador_sincronizacion_uno_soft" ColumnName="indicador_sincronizacion_uno_soft" />
+                <ScalarProperty Name="indicador_solicitado_anulacion" ColumnName="indicador_solicitado_anulacion" />
+                <ScalarProperty Name="maneja_descuento_adicional" ColumnName="maneja_descuento_adicional" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="numero_cuotas" ColumnName="numero_cuotas" />
+                <ScalarProperty Name="origen" ColumnName="origen" />
+                <ScalarProperty Name="otros_gastos_transporte" ColumnName="otros_gastos_transporte" />
+                <ScalarProperty Name="pdf" ColumnName="pdf" />
+                <ScalarProperty Name="puntos" ColumnName="puntos" />
+                <ScalarProperty Name="referencia1" ColumnName="referencia1" />
+                <ScalarProperty Name="referencia10" ColumnName="referencia10" />
+                <ScalarProperty Name="referencia2" ColumnName="referencia2" />
+                <ScalarProperty Name="referencia3" ColumnName="referencia3" />
+                <ScalarProperty Name="referencia4" ColumnName="referencia4" />
+                <ScalarProperty Name="referencia5" ColumnName="referencia5" />
+                <ScalarProperty Name="referencia6" ColumnName="referencia6" />
+                <ScalarProperty Name="referencia7" ColumnName="referencia7" />
+                <ScalarProperty Name="referencia8" ColumnName="referencia8" />
+                <ScalarProperty Name="referencia9" ColumnName="referencia9" />
+                <ScalarProperty Name="requiere_codeudor" ColumnName="requiere_codeudor" />
+                <ScalarProperty Name="requiere_garante" ColumnName="requiere_garante" />
+                <ScalarProperty Name="saldo_puntos" ColumnName="saldo_puntos" />
+                <ScalarProperty Name="saldo_valor_puntos" ColumnName="saldo_valor_puntos" />
+                <ScalarProperty Name="seguro_internacional" ColumnName="seguro_internacional" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="usuario_autoriza_ventas" ColumnName="usuario_autoriza_ventas" />
+                <ScalarProperty Name="valor_cuota_inicial" ColumnName="valor_cuota_inicial" />
+                <ScalarProperty Name="valor_devuelto" ColumnName="valor_devuelto" />
+                <ScalarProperty Name="valor_otros" ColumnName="valor_otros" />
+                <ScalarProperty Name="valor_puntos" ColumnName="valor_puntos" />
+                <ScalarProperty Name="valor_referencia1" ColumnName="valor_referencia1" />
+                <ScalarProperty Name="valor_referencia2" ColumnName="valor_referencia2" />
+                <ScalarProperty Name="valor_referencia3" ColumnName="valor_referencia3" />
+                <ScalarProperty Name="id_agente_comercial" ColumnName="id_agente_comercial" />
+                <ScalarProperty Name="id_asiento" ColumnName="id_asiento" />
+                <ScalarProperty Name="id_autorizacion_documento_punto_de_venta_autoimpresor_SRI" ColumnName="id_autorizacion_documento_punto_de_venta_autoimpresor_SRI" />
+                <ScalarProperty Name="id_canal" ColumnName="id_canal" />
+                <ScalarProperty Name="id_garante_codeudor" ColumnName="id_garante_codeudor" />
+                <ScalarProperty Name="id_condicion_pago" ColumnName="id_condicion_pago" />
+                <ScalarProperty Name="id_despacho_cliente" ColumnName="id_despacho_cliente" />
+                <ScalarProperty Name="id_garante_deudor" ColumnName="id_garante_deudor" />
+                <ScalarProperty Name="id_direccion_empresa" ColumnName="id_direccion_empresa" />
+                <ScalarProperty Name="id_documento" ColumnName="id_documento" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="id_factura_cliente_padre" ColumnName="id_factura_cliente_padre" />
+                <ScalarProperty Name="id_forma_pago" ColumnName="id_forma_pago" />
+                <ScalarProperty Name="id_interfaz_contable_proceso" ColumnName="id_interfaz_contable_proceso" />
+                <ScalarProperty Name="id_ciudad_incoterm" ColumnName="id_ciudad_incoterm" />
+                <ScalarProperty Name="id_motivo_anulacion" ColumnName="id_motivo_anulacion" />
+                <ScalarProperty Name="id_motivo_nota_credito_cliente" ColumnName="id_motivo_nota_credito_cliente" />
+                <ScalarProperty Name="id_numero_cuota" ColumnName="id_numero_cuota" />
+                <ScalarProperty Name="id_pais_adquisicion" ColumnName="id_pais_adquisicion" />
+                <ScalarProperty Name="id_pais_destino" ColumnName="id_pais_destino" />
+                <ScalarProperty Name="id_pais_origen" ColumnName="id_pais_origen" />
+                <ScalarProperty Name="id_pedido_cliente" ColumnName="id_pedido_cliente" />
+                <ScalarProperty Name="id_proyecto" ColumnName="id_proyecto" />
+                <ScalarProperty Name="id_puerto_destino" ColumnName="id_puerto_destino" />
+                <ScalarProperty Name="id_puerto_embarque" ColumnName="id_puerto_embarque" />
+                <ScalarProperty Name="id_subempresa" ColumnName="id_subempresa" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_transportista" ColumnName="id_transportista" />
+                <ScalarProperty Name="id_zona" ColumnName="id_zona" />
+                <ScalarProperty Name="descripcion_anulacion" ColumnName="descripcion_anulacion" />
+                <ScalarProperty Name="descripcion_factura_flor" ColumnName="descripcion_factura_flor" />
+                <ScalarProperty Name="indicador_crear_factura_cliente_agil" ColumnName="indicador_crear_factura_cliente_agil" />
+                <ScalarProperty Name="indicador_recepcion_automatica" ColumnName="indicador_recepcion_automatica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalle_forma_cobro">
+            <EntityTypeMapping TypeName="as2Model.detalle_forma_cobro">
+              <MappingFragment StoreEntitySet="detalle_forma_cobro">
+                <ScalarProperty Name="fecha_documento" ColumnName="fecha_documento" />
+                <ScalarProperty Name="nombre_retencion_bien_servicio" ColumnName="nombre_retencion_bien_servicio" />
+                <ScalarProperty Name="id_tarjeta_credito" ColumnName="id_tarjeta_credito" />
+                <ScalarProperty Name="id_punto_venta" ColumnName="id_punto_venta" />
+                <ScalarProperty Name="id_plan_tarjeta_credito" ColumnName="id_plan_tarjeta_credito" />
+                <ScalarProperty Name="id_forma_pago_protesto" ColumnName="id_forma_pago_protesto" />
+                <ScalarProperty Name="id_forma_pago" ColumnName="id_forma_pago" />
+                <ScalarProperty Name="id_dimension_contable5" ColumnName="id_dimension_contable5" />
+                <ScalarProperty Name="id_dimension_contable4" ColumnName="id_dimension_contable4" />
+                <ScalarProperty Name="id_dimension_contable3" ColumnName="id_dimension_contable3" />
+                <ScalarProperty Name="id_dimension_contable2" ColumnName="id_dimension_contable2" />
+                <ScalarProperty Name="id_dimension_contable1" ColumnName="id_dimension_contable1" />
+                <ScalarProperty Name="id_cuenta_contable_forma_cobro" ColumnName="id_cuenta_contable_forma_cobro" />
+                <ScalarProperty Name="id_cuenta_bancaria_organizacion_protesto" ColumnName="id_cuenta_bancaria_organizacion_protesto" />
+                <ScalarProperty Name="id_cuenta_bancaria_organizacion" ColumnName="id_cuenta_bancaria_organizacion" />
+                <ScalarProperty Name="id_cobro_tarjeta" ColumnName="id_cobro_tarjeta" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+                <ScalarProperty Name="id_caja" ColumnName="id_caja" />
+                <ScalarProperty Name="id_banco" ColumnName="id_banco" />
+                <ScalarProperty Name="id_asiento" ColumnName="id_asiento" />
+                <ScalarProperty Name="id_anticipo_cliente" ColumnName="id_anticipo_cliente" />
+                <ScalarProperty Name="valor_protestado" ColumnName="valor_protestado" />
+                <ScalarProperty Name="valor_pagado_calculado" ColumnName="valor_pagado_calculado" />
+                <ScalarProperty Name="valor_pagado" ColumnName="valor_pagado" />
+                <ScalarProperty Name="valor_comision" ColumnName="valor_comision" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="secuencial" ColumnName="secuencial" />
+                <ScalarProperty Name="retencion_iva" ColumnName="retencion_iva" />
+                <ScalarProperty Name="retencion_fuente" ColumnName="retencion_fuente" />
+                <ScalarProperty Name="porcentaje_comision" ColumnName="porcentaje_comision" />
+                <ScalarProperty Name="numero_tarjeta" ColumnName="numero_tarjeta" />
+                <ScalarProperty Name="monto_iva" ColumnName="monto_iva" />
+                <ScalarProperty Name="lote" ColumnName="lote" />
+                <ScalarProperty Name="interes" ColumnName="interes" />
+                <ScalarProperty Name="indicador_valor_retencion_iva" ColumnName="indicador_valor_retencion_iva" />
+                <ScalarProperty Name="indicador_valor_retencion_fuente" ColumnName="indicador_valor_retencion_fuente" />
+                <ScalarProperty Name="indicador_cobrado" ColumnName="indicador_cobrado" />
+                <ScalarProperty Name="indicador_cheque_protestado" ColumnName="indicador_cheque_protestado" />
+                <ScalarProperty Name="indicador_cheque_posfechado" ColumnName="indicador_cheque_posfechado" />
+                <ScalarProperty Name="indicador_cargar_cliente_protesto" ColumnName="indicador_cargar_cliente_protesto" />
+                <ScalarProperty Name="impuesto_comision" ColumnName="impuesto_comision" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_dispositivo_sincronizacion" ColumnName="id_dispositivo_sincronizacion" />
+                <ScalarProperty Name="fecha_voucher" ColumnName="fecha_voucher" />
+                <ScalarProperty Name="fecha_protesto" ColumnName="fecha_protesto" />
+                <ScalarProperty Name="documento_referencia_protesto" ColumnName="documento_referencia_protesto" />
+                <ScalarProperty Name="documento_referencia" ColumnName="documento_referencia" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="base_imponible_tarifa_cero" ColumnName="base_imponible_tarifa_cero" />
+                <ScalarProperty Name="base_imponible_diferente_cero" ColumnName="base_imponible_diferente_cero" />
+                <ScalarProperty Name="autorizacion" ColumnName="autorizacion" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_detalle_forma_cobro" ColumnName="id_detalle_forma_cobro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="empresa">
+            <EntityTypeMapping TypeName="as2Model.empresa">
+              <MappingFragment StoreEntitySet="empresa">
+                <ScalarProperty Name="dia_cobro" ColumnName="dia_cobro" />
+                <ScalarProperty Name="codigo_fcm" ColumnName="codigo_fcm" />
+                <ScalarProperty Name="indicador_nuevo_generacion_archivo" ColumnName="indicador_nuevo_generacion_archivo" />
+                <ScalarProperty Name="indicador_envia_cedula_archivo" ColumnName="indicador_envia_cedula_archivo" />
+                <ScalarProperty Name="indicador_bloqeuado_generacion_archivo" ColumnName="indicador_bloqeuado_generacion_archivo" />
+                <ScalarProperty Name="id_tipo_identificacion" ColumnName="id_tipo_identificacion" />
+                <ScalarProperty Name="id_origen_ingresos" ColumnName="id_origen_ingresos" />
+                <ScalarProperty Name="id_estado_civil" ColumnName="id_estado_civil" />
+                <ScalarProperty Name="id_conjunto_atributo_proveedor" ColumnName="id_conjunto_atributo_proveedor" />
+                <ScalarProperty Name="id_conjunto_atributo_cliente" ColumnName="id_conjunto_atributo_cliente" />
+                <ScalarProperty Name="id_categoria_empresa" ColumnName="id_categoria_empresa" />
+                <ScalarProperty Name="tipo_empresa" ColumnName="tipo_empresa" />
+                <ScalarProperty Name="texto_busqueda" ColumnName="texto_busqueda" />
+                <ScalarProperty Name="pagina_web" ColumnName="pagina_web" />
+                <ScalarProperty Name="nombre_fiscal" ColumnName="nombre_fiscal" />
+                <ScalarProperty Name="nombre_comercial" ColumnName="nombre_comercial" />
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="latitud" ColumnName="latitud" />
+                <ScalarProperty Name="indicador_proveedor" ColumnName="indicador_proveedor" />
+                <ScalarProperty Name="indicador_floricola" ColumnName="indicador_floricola" />
+                <ScalarProperty Name="indicador_entidad_publica" ColumnName="indicador_entidad_publica" />
+                <ScalarProperty Name="indicador_empleado" ColumnName="indicador_empleado" />
+                <ScalarProperty Name="indicador_cliente_proveedor" ColumnName="indicador_cliente_proveedor" />
+                <ScalarProperty Name="indicador_cliente" ColumnName="indicador_cliente" />
+                <ScalarProperty Name="indicador_aplica_descuento" ColumnName="indicador_aplica_descuento" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_dispositivo_sincronizacion" ColumnName="id_dispositivo_sincronizacion" />
+                <ScalarProperty Name="genero" ColumnName="genero" />
+                <ScalarProperty Name="email5" ColumnName="email5" />
+                <ScalarProperty Name="email4" ColumnName="email4" />
+                <ScalarProperty Name="email3" ColumnName="email3" />
+                <ScalarProperty Name="email2" ColumnName="email2" />
+                <ScalarProperty Name="email1" ColumnName="email1" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="cuenta_twitter" ColumnName="cuenta_twitter" />
+                <ScalarProperty Name="cuenta_facebook" ColumnName="cuenta_facebook" />
+                <ScalarProperty Name="codigo_alterno" ColumnName="codigo_alterno" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="factura_proveedorSRI">
+            <EntityTypeMapping TypeName="as2Model.factura_proveedorSRI">
+              <MappingFragment StoreEntitySet="factura_proveedorSRI">
+                <ScalarProperty Name="id_autorizacion_empresa_SRI" ColumnName="id_autorizacion_empresa_SRI" />
+                <ScalarProperty Name="id_tipo_identificacion" ColumnName="id_tipo_identificacion" />
+                <ScalarProperty Name="id_tipo_comprobante" ColumnName="id_tipo_comprobante" />
+                <ScalarProperty Name="id_pago" ColumnName="id_pago" />
+                <ScalarProperty Name="id_factura_proveedor" ColumnName="id_factura_proveedor" />
+                <ScalarProperty Name="id_tipo_comprobante_modificado" ColumnName="id_tipo_comprobante_modificado" />
+                <ScalarProperty Name="id_documento" ColumnName="id_documento" />
+                <ScalarProperty Name="id_credito_tributarioSRI" ColumnName="id_credito_tributarioSRI" />
+                <ScalarProperty Name="id_compra_caja_chica" ColumnName="id_compra_caja_chica" />
+                <ScalarProperty Name="valor_total_factura" ColumnName="valor_total_factura" />
+                <ScalarProperty Name="total_valor_retenido" ColumnName="total_valor_retenido" />
+                <ScalarProperty Name="tipo_empresa" ColumnName="tipo_empresa" />
+                <ScalarProperty Name="tipo_emision" ColumnName="tipo_emision" />
+                <ScalarProperty Name="telefono_proveedor" ColumnName="telefono_proveedor" />
+                <ScalarProperty Name="punto_emision_retencion" ColumnName="punto_emision_retencion" />
+                <ScalarProperty Name="punto_emision_modificado" ColumnName="punto_emision_modificado" />
+                <ScalarProperty Name="punto_emision" ColumnName="punto_emision" />
+                <ScalarProperty Name="provincia" ColumnName="provincia" />
+                <ScalarProperty Name="numero_retencion" ColumnName="numero_retencion" />
+                <ScalarProperty Name="numero_modificado" ColumnName="numero_modificado" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="nombre_proveedor" ColumnName="nombre_proveedor" />
+                <ScalarProperty Name="monto_iva" ColumnName="monto_iva" />
+                <ScalarProperty Name="monto_ice" ColumnName="monto_ice" />
+                <ScalarProperty Name="mensaje_sri_liquidacion" ColumnName="mensaje_sri_liquidacion" />
+                <ScalarProperty Name="mensaje_sri" ColumnName="mensaje_sri" />
+                <ScalarProperty Name="ir_asociado_dividendo" ColumnName="ir_asociado_dividendo" />
+                <ScalarProperty Name="indicador_saldo_inicial" ColumnName="indicador_saldo_inicial" />
+                <ScalarProperty Name="indicador_retencion_emitida" ColumnName="indicador_retencion_emitida" />
+                <ScalarProperty Name="indicador_retencion_asumida" ColumnName="indicador_retencion_asumida" />
+                <ScalarProperty Name="indicador_parte_relacionada" ColumnName="indicador_parte_relacionada" />
+                <ScalarProperty Name="indicador_factura_electronica" ColumnName="indicador_factura_electronica" />
+                <ScalarProperty Name="indicador_documento_electronico" ColumnName="indicador_documento_electronico" />
+                <ScalarProperty Name="identificacion_proveedor" ColumnName="identificacion_proveedor" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="fecha_pago_dividendo" ColumnName="fecha_pago_dividendo" />
+                <ScalarProperty Name="fecha_emision_retencion" ColumnName="fecha_emision_retencion" />
+                <ScalarProperty Name="fecha_emision" ColumnName="fecha_emision" />
+                <ScalarProperty Name="fecha_autorizacion_liquidacion" ColumnName="fecha_autorizacion_liquidacion" />
+                <ScalarProperty Name="fecha_autorizacion" ColumnName="fecha_autorizacion" />
+                <ScalarProperty Name="estado_liquidacion" ColumnName="estado_liquidacion" />
+                <ScalarProperty Name="estado_documento_electronico_liquidacion" ColumnName="estado_documento_electronico_liquidacion" />
+                <ScalarProperty Name="estado_documento_electronico" ColumnName="estado_documento_electronico" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="establecimiento_retencion" ColumnName="establecimiento_retencion" />
+                <ScalarProperty Name="establecimiento_modificado" ColumnName="establecimiento_modificado" />
+                <ScalarProperty Name="establecimiento" ColumnName="establecimiento" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="direccion_sucursal" ColumnName="direccion_sucursal" />
+                <ScalarProperty Name="direccion_proveedor" ColumnName="direccion_proveedor" />
+                <ScalarProperty Name="direccion_matriz" ColumnName="direccion_matriz" />
+                <ScalarProperty Name="codigo_unico" ColumnName="codigo_unico" />
+                <ScalarProperty Name="codigo_forma_pago_sri" ColumnName="codigo_forma_pago_sri" />
+                <ScalarProperty Name="clave_acceso_liquidacion" ColumnName="clave_acceso_liquidacion" />
+                <ScalarProperty Name="clave_acceso" ColumnName="clave_acceso" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="base_imponible_tarifa_cero" ColumnName="base_imponible_tarifa_cero" />
+                <ScalarProperty Name="base_imponible_no_objeto_iva" ColumnName="base_imponible_no_objeto_iva" />
+                <ScalarProperty Name="base_imponible_diferente_cero" ColumnName="base_imponible_diferente_cero" />
+                <ScalarProperty Name="autorizacion_retencion" ColumnName="autorizacion_retencion" />
+                <ScalarProperty Name="autorizacion_modificado" ColumnName="autorizacion_modificado" />
+                <ScalarProperty Name="autorizacion" ColumnName="autorizacion" />
+                <ScalarProperty Name="anio_generacion_utilidades" ColumnName="anio_generacion_utilidades" />
+                <ScalarProperty Name="ambiente" ColumnName="ambiente" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_factura_proveedorSRI" ColumnName="id_factura_proveedorSRI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="organizacion">
+            <EntityTypeMapping TypeName="as2Model.organizacion">
+              <MappingFragment StoreEntitySet="organizacion">
+                <ScalarProperty Name="id_tipo_identificacion_representante" ColumnName="id_tipo_identificacion_representante" />
+                <ScalarProperty Name="id_tipo_identificacion_contador" ColumnName="id_tipo_identificacion_contador" />
+                <ScalarProperty Name="id_tipo_identificacion" ColumnName="id_tipo_identificacion" />
+                <ScalarProperty Name="representante_legal" ColumnName="representante_legal" />
+                <ScalarProperty Name="razon_social" ColumnName="razon_social" />
+                <ScalarProperty Name="pagina_web" ColumnName="pagina_web" />
+                <ScalarProperty Name="nombre_comercial" ColumnName="nombre_comercial" />
+                <ScalarProperty Name="indicador_notificacion" ColumnName="indicador_notificacion" />
+                <ScalarProperty Name="imagen" ColumnName="imagen" />
+                <ScalarProperty Name="identificacion_representante" ColumnName="identificacion_representante" />
+                <ScalarProperty Name="identificacion_contador" ColumnName="identificacion_contador" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="descripcion_notificacion" ColumnName="descripcion_notificacion" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="as2Model.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="codigo_fcm" ColumnName="codigo_fcm" />
+                <ScalarProperty Name="IP_auditoria" ColumnName="IP_auditoria" />
+                <ScalarProperty Name="consultas_entidad" ColumnName="consultas_entidad" />
+                <ScalarProperty Name="indicador_modifica_valor_promocion" ColumnName="indicador_modifica_valor_promocion" />
+                <ScalarProperty Name="indicador_ingreso_ldap" ColumnName="indicador_ingreso_ldap" />
+                <ScalarProperty Name="roles" ColumnName="roles" />
+                <ScalarProperty Name="id_tipo_vendedor" ColumnName="id_tipo_vendedor" />
+                <ScalarProperty Name="id_recaudador" ColumnName="id_recaudador" />
+                <ScalarProperty Name="id_plan_comision" ColumnName="id_plan_comision" />
+                <ScalarProperty Name="id_empleado" ColumnName="id_empleado" />
+                <ScalarProperty Name="id_dispositivo" ColumnName="id_dispositivo" />
+                <ScalarProperty Name="tipo_visualizacion" ColumnName="tipo_visualizacion" />
+                <ScalarProperty Name="tipo_usuario_revisor" ColumnName="tipo_usuario_revisor" />
+                <ScalarProperty Name="tema" ColumnName="tema" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="predeterminado" ColumnName="predeterminado" />
+                <ScalarProperty Name="permitir_sesion_desde_otra_IP" ColumnName="permitir_sesion_desde_otra_IP" />
+                <ScalarProperty Name="obligatorio_logeo_biometrico_huella" ColumnName="obligatorio_logeo_biometrico_huella" />
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="nombre2" ColumnName="nombre2" />
+                <ScalarProperty Name="nombre1" ColumnName="nombre1" />
+                <ScalarProperty Name="indicador_ver_costo" ColumnName="indicador_ver_costo" />
+                <ScalarProperty Name="indicador_usuario_pos" ColumnName="indicador_usuario_pos" />
+                <ScalarProperty Name="solo_lectura" ColumnName="solo_lectura" />
+                <ScalarProperty Name="indicador_recibe_notificaciones" ColumnName="indicador_recibe_notificaciones" />
+                <ScalarProperty Name="indicador_nuevo" ColumnName="indicador_nuevo" />
+                <ScalarProperty Name="indicador_maneja_cuentas_contables" ColumnName="indicador_maneja_cuentas_contables" />
+                <ScalarProperty Name="indicador_cierre_caja_masivo" ColumnName="indicador_cierre_caja_masivo" />
+                <ScalarProperty Name="indicador_autoriza_ventas" ColumnName="indicador_autoriza_ventas" />
+                <ScalarProperty Name="indicador_autoriza_despacho" ColumnName="indicador_autoriza_despacho" />
+                <ScalarProperty Name="indicador_aprobador" ColumnName="indicador_aprobador" />
+                <ScalarProperty Name="indicador_agente_comercial" ColumnName="indicador_agente_comercial" />
+                <ScalarProperty Name="indicador_administrador" ColumnName="indicador_administrador" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="genero" ColumnName="genero" />
+                <ScalarProperty Name="en_linea" ColumnName="en_linea" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="clave" ColumnName="clave" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="direccion_empresa">
+            <EntityTypeMapping TypeName="as2Model.direccion_empresa">
+              <MappingFragment StoreEntitySet="direccion_empresa">
+                <ScalarProperty Name="id_ubicacion" ColumnName="id_ubicacion" />
+                <ScalarProperty Name="id_parroquia" ColumnName="id_parroquia" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="id_ciudad" ColumnName="id_ciudad" />
+                <ScalarProperty Name="telefono2" ColumnName="telefono2" />
+                <ScalarProperty Name="telefono1" ColumnName="telefono1" />
+                <ScalarProperty Name="indicador_paraiso_fiscal" ColumnName="indicador_paraiso_fiscal" />
+                <ScalarProperty Name="indicador_direccion_principal" ColumnName="indicador_direccion_principal" />
+                <ScalarProperty Name="indicador_direccion_factura" ColumnName="indicador_direccion_factura" />
+                <ScalarProperty Name="indicador_direccion_envio" ColumnName="indicador_direccion_envio" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_dispositivo_sincronizacion" ColumnName="id_dispositivo_sincronizacion" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="codigo_postal" ColumnName="codigo_postal" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_direccion_empresa" ColumnName="id_direccion_empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ubicacion">
+            <EntityTypeMapping TypeName="as2Model.ubicacion">
+              <MappingFragment StoreEntitySet="ubicacion">
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="latitud" ColumnName="latitud" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="direccion5" ColumnName="direccion5" />
+                <ScalarProperty Name="direccion4" ColumnName="direccion4" />
+                <ScalarProperty Name="direccion3" ColumnName="direccion3" />
+                <ScalarProperty Name="direccion2" ColumnName="direccion2" />
+                <ScalarProperty Name="direccion1" ColumnName="direccion1" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_ubicacion" ColumnName="id_ubicacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="categoria_empresa">
+            <EntityTypeMapping TypeName="as2Model.categoria_empresa">
+              <MappingFragment StoreEntitySet="categoria_empresa">
+                <ScalarProperty Name="valor_minimo" ColumnName="valor_minimo" />
+                <ScalarProperty Name="valor_maximo" ColumnName="valor_maximo" />
+                <ScalarProperty Name="prefijo" ColumnName="prefijo" />
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="id_cuenta_contable_suedo_por_pagar" ColumnName="id_cuenta_contable_suedo_por_pagar" />
+                <ScalarProperty Name="id_cuenta_contable_proveedor" ColumnName="id_cuenta_contable_proveedor" />
+                <ScalarProperty Name="id_cuenta_contable_iva_presuntivo" ColumnName="id_cuenta_contable_iva_presuntivo" />
+                <ScalarProperty Name="id_cuenta_contable_cliente" ColumnName="id_cuenta_contable_cliente" />
+                <ScalarProperty Name="id_cuenta_contable_anticipo_proveedor_nota_credito" ColumnName="id_cuenta_contable_anticipo_proveedor_nota_credito" />
+                <ScalarProperty Name="id_cuenta_contable_anticipo_proveedor" ColumnName="id_cuenta_contable_anticipo_proveedor" />
+                <ScalarProperty Name="id_cuenta_contable_anticipo_cliente_nota_credito" ColumnName="id_cuenta_contable_anticipo_cliente_nota_credito" />
+                <ScalarProperty Name="id_cuenta_contable_anticipo_cliente" ColumnName="id_cuenta_contable_anticipo_cliente" />
+                <ScalarProperty Name="id_cuenta_contable_3x1000" ColumnName="id_cuenta_contable_3x1000" />
+                <ScalarProperty Name="id_cuenta_contable_2x1000" ColumnName="id_cuenta_contable_2x1000" />
+                <ScalarProperty Name="verificar_documentos" ColumnName="verificar_documentos" />
+                <ScalarProperty Name="predeterminado" ColumnName="predeterminado" />
+                <ScalarProperty Name="porcentaje_maximo_morosidad" ColumnName="porcentaje_maximo_morosidad" />
+                <ScalarProperty Name="numero_maximo_documentos_sin_garantia" ColumnName="numero_maximo_documentos_sin_garantia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="indicador_proveedor" ColumnName="indicador_proveedor" />
+                <ScalarProperty Name="indicador_empleado" ColumnName="indicador_empleado" />
+                <ScalarProperty Name="indicador_cliente" ColumnName="indicador_cliente" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="credito_maximo" ColumnName="credito_maximo" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_categoria_empresa" ColumnName="id_categoria_empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

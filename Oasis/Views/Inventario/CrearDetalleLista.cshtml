@@ -1,0 +1,125 @@
+﻿@model Oasis.Models.detalle_lista_precio
+
+@{
+    ViewBag.Title = "Crear detalle lista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h2 class="card-title">Crear precio</h2>
+                    <div class="card-tools">
+                        <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn bg-primary btn-sm" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <label for="exampleInputEmail1">Producto</label>
+                                <select class="form-control js-data-ProductosInstituciones-ajax" id="producto" name="id_producto_instituciones">
+                                <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <label for="exampleInputEmail1">Porcentaje</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        @Html.EditorFor(model => model.porcentaje, new { htmlAttributes = new { @class = "form-control" } })
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">%</div>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.porcentaje, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <label for="exampleInputEmail1">Precio mayor</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </span>
+                                        </div>
+                                        @Html.EditorFor(model => model.precio_mayor, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.precio_mayor, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <label for="exampleInputEmail1">Precio menor</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </span>
+                                        </div>
+                                        @Html.EditorFor(model => model.precio_menor, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.precio_menor, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <a class="btn btn-default" href="/Inventario/ListaPrecio">Regresar</a>
+                    <button id="enviar" class="btn btn-info float-right">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        ActivarSelect("ProductosInstituciones");
+
+        function ActivarSelect(modulo) {
+            $('.js-data-' + modulo + '-ajax').select2();
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                $.map(this.response, function (data) {
+                    var newOption = new Option(data.text, data.id, false, false);
+                    $('.js-data-' + modulo + '-ajax').append(newOption).trigger('change');
+                })
+            }
+            xhttp.open("GET", "/Inventario/Obtener" + modulo);
+            xhttp.responseType = 'json';
+            xhttp.send();
+        }
+
+
+
+
+
+
+    </script>
+
+}
