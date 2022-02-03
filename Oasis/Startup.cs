@@ -16,6 +16,7 @@ namespace Oasis
         public void Configuration(IAppBuilder app)
         {
             
+            //hola pruebe cambios 
             //var authOptions = new CookieAuthenticationOptions
             //{
             //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
