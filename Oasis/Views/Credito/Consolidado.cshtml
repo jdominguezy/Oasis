@@ -1,20 +1,17 @@
 ﻿
 @using Oasis.Models
 @using Oasis.Models.Login
-@{
-    ViewBag.Title = "Consolidado";
-    var id_usuario = (User as CustomPrincipal).id_usuario;
-    var db = new as2oasis();
-    var sucursales = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.sucursalOasis.nombre)
-        .Select(x => x.Key);
-    var empresas = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.empresaOasis.nombre)
-        .Select(x => x.Key);
-
-}
+@{ ViewBag.Title = "Consolidado";
+                var id_usuario = (User as CustomPrincipal).id_usuario;
+                var db = new as2oasis();
+                var sucursales = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.sucursalOasis.nombre)
+                    .Select(x => x.Key);
+                var empresas = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.empresaOasis.nombre)
+                    .Select(x => x.Key); }
 
 
 <div class="row">
@@ -34,7 +31,8 @@
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                            <option value="@emp">@emp</option>}
+                    <option value="@emp">@emp</option>
+}
                             </select>
 
                         </div>
@@ -60,7 +58,8 @@
                                 <option value="0">Todas las Regiones</option>
                                 @foreach (var suc in sucursales)
                                 {
-                            <option value="@suc">@suc</option>}
+                    <option value="@suc">@suc</option>
+}
                             </select>
                         </div>
                         <div class="form-group">
@@ -125,6 +124,7 @@
 
 
 @section Scripts {
+    <script src="~/Content/js/Credito.js"></script>
     <script>
         $('[data-toggle="tooltip"]').tooltip();
 

@@ -68,6 +68,8 @@ public partial class Cheques_Postfechados
 
     public string forma_pago { get; set; }
 
+    public string documento_referencia { get; set; }
+
 }
 
 }

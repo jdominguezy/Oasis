@@ -612,6 +612,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Cheques_Postfechados' no tiene def
           <Property Name="descripcion_factura" Type="varchar" MaxLength="500" />
           <Property Name="valor_factura" Type="numeric" Precision="14" Scale="2" />
           <Property Name="forma_pago" Type="varchar" MaxLength="50" />
+          <Property Name="documento_referencia" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Clientes' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -737,6 +738,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Cobros_Consolidado' no tiene defin
           <Property Name="vendedor" Type="varchar" MaxLength="50" />
           <Property Name="total" Type="numeric" Precision="14" Scale="2" />
           <Property Name="forma_pago" Type="varchar" MaxLength="50" />
+          <Property Name="documento_referencia" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Cobros_Consolidado_Di' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -800,6 +802,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Cobros_Diario' no tiene definida n
           <Property Name="id_vendedor" Type="int" />
           <Property Name="vendedor" Type="varchar" MaxLength="50" />
           <Property Name="forma_pago" Type="varchar" MaxLength="50" />
+          <Property Name="documento_referencia" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Costos_Indirectos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1980,8 +1983,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
         <Function Name="Presupuesto_Consolidado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="empresa" Type="varchar" Mode="In" />
           <Parameter Name="sucursal" Type="varchar" Mode="In" />
-          <Parameter Name="fecha_desde" Type="date" Mode="In" />
-          <Parameter Name="fecha_hasta" Type="date" Mode="In" />
+          <Parameter Name="fecha_desde" Type="datetime" Mode="In" />
+          <Parameter Name="fecha_hasta" Type="datetime" Mode="In" />
           <Parameter Name="tipoCliente" Type="varchar" Mode="In" />
         </Function>
         <Function Name="PresupuestoDI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2237,7 +2240,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
     [Cheques_Postfechados].[fecha_vencimiento_factura] AS [fecha_vencimiento_factura], 
     [Cheques_Postfechados].[descripcion_factura] AS [descripcion_factura], 
     [Cheques_Postfechados].[valor_factura] AS [valor_factura], 
-    [Cheques_Postfechados].[forma_pago] AS [forma_pago]
+    [Cheques_Postfechados].[forma_pago] AS [forma_pago], 
+    [Cheques_Postfechados].[documento_referencia] AS [documento_referencia]
     FROM [dbo].[Cheques_Postfechados] AS [Cheques_Postfechados]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Clientes" EntityType="Self.Clientes" store:Type="Views" store:Schema="dbo">
@@ -2325,7 +2329,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
     [Cobros_Consolidado].[id_vendedor] AS [id_vendedor], 
     [Cobros_Consolidado].[vendedor] AS [vendedor], 
     [Cobros_Consolidado].[total] AS [total], 
-    [Cobros_Consolidado].[forma_pago] AS [forma_pago]
+    [Cobros_Consolidado].[forma_pago] AS [forma_pago], 
+    [Cobros_Consolidado].[documento_referencia] AS [documento_referencia]
     FROM [dbo].[Cobros_Consolidado] AS [Cobros_Consolidado]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Cobros_Consolidado_Di" EntityType="Self.Cobros_Consolidado_Di" store:Type="Views" store:Schema="dbo">
@@ -2371,7 +2376,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
     [Cobros_Diario].[categoria] AS [categoria], 
     [Cobros_Diario].[id_vendedor] AS [id_vendedor], 
     [Cobros_Diario].[vendedor] AS [vendedor], 
-    [Cobros_Diario].[forma_pago] AS [forma_pago]
+    [Cobros_Diario].[forma_pago] AS [forma_pago], 
+    [Cobros_Diario].[documento_referencia] AS [documento_referencia]
     FROM [dbo].[Cobros_Diario] AS [Cobros_Diario]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Costos_Indirectos" EntityType="Self.Costos_Indirectos" store:Type="Views" store:Schema="dbo">
@@ -3558,6 +3564,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
           <Property Name="descripcion_factura" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="valor_factura" Type="Decimal" Precision="14" Scale="2" />
           <Property Name="forma_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="documento_referencia" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Clientes">
           <Key>
@@ -3677,6 +3684,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
           <Property Name="vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="total" Type="Decimal" Precision="14" Scale="2" />
           <Property Name="forma_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="documento_referencia" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Cobros_Diario">
           <Key>
@@ -3706,6 +3714,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
           <Property Name="id_vendedor" Type="Int32" />
           <Property Name="vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="forma_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="documento_referencia" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DetalleOCEnlazada">
           <Key>
@@ -5791,6 +5800,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
           <EntitySetMapping Name="Cheques_Postfechados">
             <EntityTypeMapping TypeName="oasisModel1.Cheques_Postfechados">
               <MappingFragment StoreEntitySet="Cheques_Postfechados">
+                <ScalarProperty Name="documento_referencia" ColumnName="documento_referencia" />
                 <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
                 <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
@@ -5890,6 +5900,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
           <EntitySetMapping Name="Cobros_Consolidado">
             <EntityTypeMapping TypeName="oasisModel1.Cobros_Consolidado">
               <MappingFragment StoreEntitySet="Cobros_Consolidado">
+                <ScalarProperty Name="documento_referencia" ColumnName="documento_referencia" />
                 <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
                 <ScalarProperty Name="sucursal" ColumnName="sucursal" />
@@ -5916,6 +5927,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado_Di' no tiene de
           <EntitySetMapping Name="Cobros_Diario">
             <EntityTypeMapping TypeName="oasisModel1.Cobros_Diario">
               <MappingFragment StoreEntitySet="Cobros_Diario">
+                <ScalarProperty Name="documento_referencia" ColumnName="documento_referencia" />
                 <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
                 <ScalarProperty Name="sucursal" ColumnName="sucursal" />

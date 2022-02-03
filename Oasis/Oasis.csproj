@@ -658,6 +658,7 @@
     <Compile Include="Models\presupuesto_cabecera.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Presupuesto_Consolidado_Result.cs" />
     <Compile Include="Models\presupuesto_detalle.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>

@@ -58,6 +58,8 @@ public partial class Cobros_Consolidado
 
     public string forma_pago { get; set; }
 
+    public string documento_referencia { get; set; }
+
 }
 
 }

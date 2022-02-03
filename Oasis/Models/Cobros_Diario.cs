@@ -56,6 +56,8 @@ public partial class Cobros_Diario
 
     public string forma_pago { get; set; }
 
+    public string documento_referencia { get; set; }
+
 }
 
 }

@@ -61,6 +61,8 @@ $("#GenerarNC").click(function () {
     var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
     var localidad;
 
+    console.log("Entra al js")
+
     if ($('#chkLocalidad').is(":checked")) {
         localidad = null
     } else {
@@ -98,6 +100,7 @@ $("#GenerarNC").click(function () {
             var row = document.createElement("div");
             row.className = "row";
             row.appendChild(contenedorTabla);
+            console.log("warning",row.appendChild(contenedorTabla))
             $('#contenedorPrimario').append(row);
             d = JSON.parse(d);
             var col = [];
@@ -105,8 +108,14 @@ $("#GenerarNC").click(function () {
                 "CLIENTE",
                 "FECHA NC", "SECUENCIAL NC", "MOTIVO", "VALOR",
                 "FECHA FACTURA", "FACTURA", "VISITADOR",
-                "NOTA","DESCRIPCIÓN"
+                "NOTA", "DESCRIPCIÓN", "VALOR FACTURA"
             ];
+
+            //console.log("Entra 1")
+            //console.log(encabezado)
+            //console.log(d)
+            //console.log(d.length)
+
             for (var i = 0; i < d.length; i++) {
                 for (var key in d[i]) {
                     if (col.indexOf(key) === -1) {
@@ -115,7 +124,7 @@ $("#GenerarNC").click(function () {
                 }
             }
 
-            console.log(encabezado)
+            //console.log(encabezado)
 
             // CREATE DYNAMIC TABLE.
             var div = document.createElement("div");
@@ -131,15 +140,26 @@ $("#GenerarNC").click(function () {
             table.id = "tableDetalle";
             table.style = '';
 
+            //console.log(encabezado)
+
             // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
             var thead = document.createElement("thead");
             table.appendChild(thead);
             var tr_head = document.createElement("tr");
-            for (var i = 0; i < encabezado.length; i++) {
-                var th = document.createElement("th");      // TABLE HEADER.
-                th.innerHTML = encabezado[i];
-                tr_head.appendChild(th);
+            try {
+                for (var i = 0; i < encabezado.length; i++) {
+
+                    var th = document.createElement("th");      // TABLE HEADER.
+                    //console.log(th);
+                    th.innerHTML = encabezado[i];
+                    tr_head.appendChild(th);
+                }
+
+            } catch (e) {
+                console.log(e);
+
             }
+            
 
             thead.appendChild(tr_head);
 

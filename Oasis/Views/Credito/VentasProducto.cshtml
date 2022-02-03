@@ -3,7 +3,7 @@
 @using Oasis.Models.Login
 
 @{
-    ViewBag.Title = "Detalle de venta por producto";
+    ViewBag.Title = "Detalle de Ventas por Producto y Precio";
     var id_usuario = (User as CustomPrincipal).id_usuario;
     var as2 = new AS2Context();
     var db = new as2oasis();
@@ -15,9 +15,13 @@
         .Where(x => x.id_usuario == id_usuario)
         .GroupBy(x => x.empresaOasis.nombre)
         .Select(x => x.Key);
-    var categoria_cliente = as2.categoria_empresa 
+    var categoria_cliente = as2.categoria_empresa
         .GroupBy(x => x.nombre)
         .Select(x => x.Key);
+    //var cliente = as2
+        //.GroupBy(x => x.nombre)
+        //.Select(x => x.Key);
+
 
 }
 
@@ -71,8 +75,32 @@
                                 </div>
                             </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Producto</label>
+                            <select class="form-control" id="empresa" name="empresa">
+                                @foreach (var emp in empresas)
+                                {
+                                    <option value="@emp">@emp</option>
+                                 }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col" style=" text-align: center; ">
+                            <label>Cliente</label>
+                            <select class="form-control" id="empresa" name="empresa">
+                                @foreach (var emp in empresas)
+                                {
+                            <option value="@emp">@emp</option>}
+                            </select>
+                        </div>
+                    </div>
 
                 </div>
+
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

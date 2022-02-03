@@ -67,6 +67,9 @@ function GenerarDatos(id_vendedor, direccionURL, titulo) {
         success: function (d) {
             d = JSON.parse(d);
             var col = [];
+            console.log(col)
+            console.log(d)
+
             for (var i = 0; i < d.length; i++) {
                 for (var key in d[i]) {
                     if (col.indexOf(key) === -1) {
@@ -326,6 +329,8 @@ $("#GenerarPresupuesto").click(function () {
     var sucursal = $("#sucursal").val();
     var localidad;
 
+    console.log("Entra al js")
+
     if ($('#chkLocalidad').is(":checked")) {
         localidad = null
     } else {
@@ -459,7 +464,6 @@ $("#GenerarPresupuesto").click(function () {
             //    tr_body.append(documen)
 
 
-
             $('#contenedorTabla').remove();
             var contenedorTabla = document.createElement("div");
             contenedorTabla.className = "col-md-12";
@@ -470,11 +474,11 @@ $("#GenerarPresupuesto").click(function () {
             $('#contenedorPrimario').append(row);
             $('.container-fluid').add('<div class="row"><div id="tablaPresupuesto" class="col-md-12"></div></div>');
 
-
+            console.log("12")
 
             var sTxt = '<div class="card"><table class="table table-hover" id="tablePresupuesto">';
             //sTxt += '<thead><tr><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
-            sTxt += '<thead><th style="text-align:center">Empresa</th><tr><th style="text-align:center">Sucursal</th><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
+            sTxt += '<thead><tr><th style="text-align:center">Empresa</th><th style = "text-align:center">Sucursal</th ><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
             sTxt += '<th style="text-align:center">Ventas</th><th style="text-align:center">%</th>';
             sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
             sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
@@ -483,8 +487,8 @@ $("#GenerarPresupuesto").click(function () {
                 sTxt += '<tr>';
                 sTxt += '<td style="text-align:center">';
                 sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + empresa + '" data-sucursal="' + sucursal + '" data-fecha_desde="' + fecha_desde + '" data-fecha_hasta="' + fecha_hasta + '" data-tipocliente="' + tipoCliente + '" hidden></span>';
-                sTxt += '' + p.empresa + '</td>';
-                sTxt += '' + p.sucursal + '</td>';
+                sTxt += '<td style="text-align:center">' + p.empresa + '</td>';
+                sTxt += '<td style="text-align:center">' + p.sucursal + '</td>';
                 sTxt += '' + p.id_vendedor + '</td>';
                 sTxt += '<td style="text-align:center">' + p.nombre_vendedor + '</td>';
                 sTxt += '<td style="text-align:center">' + formatoValor(p.valor_venta) + '</td>';
@@ -506,6 +510,8 @@ $("#GenerarPresupuesto").click(function () {
                 sTxt += '</tr> ';
             });
             sTxt += '</tbody><tfoot><tr><td>Sum</td><td>$180</td></tr></tfoot></table></div>';
+
+            console.log(sTxt)
 
             $('#contenedorTabla').append(sTxt);
 

@@ -240,7 +240,9 @@ namespace Oasis.Controllers.Credito
                         descripcion = x.descripcion,
                         descripcion2 = x.descripcion2,
                         valor_factura = x.total,
-                        x.forma_pago
+                        x.forma_pago,
+                        x.documento_referencia
+                        
                     });
 
 
@@ -383,6 +385,11 @@ namespace Oasis.Controllers.Credito
             return View();
         }
 
+        public ActionResult VentasProducto()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult ObtenerDVP(string fecha_desde, string fecha_hasta, string empresa)
         {
@@ -519,12 +526,14 @@ namespace Oasis.Controllers.Credito
             using (var context = new as2oasis())
             {
                 var presupuesto = context.Presupuesto_Consolidado(empresa, sucursal, fecha_desde_, fecha_hasta_,tipoCliente_);
-                //var presupuesto_list = presupuesto.ToList();
+                
                 var presupuesto_json = JsonConvert.SerializeObject(presupuesto, Formatting.Indented);
 
                 return Json(presupuesto_json,JsonRequestBehavior.AllowGet);
+
                 //foreach (Course cs in courses)
                 //    Console.WriteLine(cs.CourseName);
+
             }
             //return View();
         }
@@ -803,15 +812,15 @@ namespace Oasis.Controllers.Credito
                         x.valor_nc,
                         fecha_factura = x.fecha_factura.Value.ToShortDateString(),
                         factura = x.numero_factura,
-                        //x.valor_factura,
                         x.vendedor,
                         x.nota,
                         x.descripcion_documento,
                         x.valor_factura
-                        
+
                     });
 
                 var nc_json = JsonConvert.SerializeObject(listaNC, Formatting.Indented);
+                
                 return Json(nc_json, JsonRequestBehavior.AllowGet);
             }
         }

@@ -214,6 +214,8 @@
             var fecha_hasta = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').endDate._d);
             iniciaLoading();
 
+            //console.log("Entra al cshtml")
+
             if ($('#chkLocalidad').is(":checked")) {
                 localidad = null
             } else {
@@ -259,7 +261,7 @@
                         "CODIGO COBRO", "FECHA CREACION", "FECHA APLICACIÓN",
                         "VALOR", "SECUNCIAL FACTURA", "FECHA FACTURA",
                         "FECHA VENCIMIENTO", "VENDEDOR",
-                        "DESCRIPCION", "DESCRIPCION 2", " VALOR FACTURA", " FORMA PAGO"];
+                        "DESCRIPCION", "DESCRIPCION 2", " VALOR FACTURA", " FORMA PAGO", "DOCUMENTO REFERENCIA"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
