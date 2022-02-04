@@ -18,9 +18,12 @@
     var categoria_cliente = as2.categoria_empresa
         .GroupBy(x => x.nombre)
         .Select(x => x.Key);
-    //var cliente = as2
-        //.GroupBy(x => x.nombre)
-        //.Select(x => x.Key);
+    var producto = db.productos
+        .GroupBy(x => x.descripcion)
+        .Select(x => x.Key);
+    var cliente = db.Clientes2
+        .GroupBy(x => x.nombre_comercial)
+        .Select(x => x.Key);
 
 
 }
@@ -30,7 +33,7 @@
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h2 class="card-title">Detalle de venta por producto</h2>
+                <h2 class="card-title">Detalle de Ventas por Producto y Precio</h2>
                 <div class="card-tools">
                     <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -55,56 +58,74 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="col-md-6">
-                            <div class="col" style=" text-align: center; ">
-                                <label>Fecha de facturación</label>
-                                <div class="row" style="
+                        <div class="col" style=" text-align: center; ">
+                            <label>Fecha</label>
+                            <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                    <div class="col-md-10">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
                                         </div>
+                                        <input type="text" class="form-control float-right" id="fecha_corte">
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Producto</label>
-                            <select class="form-control" id="empresa" name="empresa">
-                                @foreach (var emp in empresas)
+                            <label for="exampleInputEmail1">Región</label>
+                            <select class="form-control" id="sucursal_ind">
+                                @foreach (var suc in sucursales)
                                 {
-                                    <option value="@emp">@emp</option>
-                                 }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="col" style=" text-align: center; ">
-                            <label>Cliente</label>
-                            <select class="form-control" id="empresa" name="empresa">
-                                @foreach (var emp in empresas)
-                                {
-                            <option value="@emp">@emp</option>}
+                                    <option value="@suc">@suc</option>
+                                }
                             </select>
                         </div>
                     </div>
 
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <div class="col" style=" text-align: center; ">
+                                    <label>Producto</label>
+                                    <select class="form-control" id="producto_ind" name="producto">
+                                        @foreach (var pro in producto)
+                                        {
+                                            <option value="@pro">@pro</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <select class="form-control" id="cliente_ind" name="cliente">
+                                @foreach (var cli in cliente)
+                                {
+                                    <option value="@cli">@cli</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
+                <button type="button" id="GenerarDatosProducto" class="btn btn-primary  float-right">Generar</button>
             </div>
         </div>
     </div>
@@ -112,16 +133,25 @@
 
 
 @section Scripts {
+    <script src="~/Content/js/CreditoProducto.js"></script>
     <script>
 
-        $("#GenerarDatos").click(function () {
+        console.log("Ingresaal cs")
+        $("#GenerarDatosProducto").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             var empresa = $('#empresa').val();
+            var sucursal = $("#sucursal_ind").val(); 
+            var producto = $("#producto_ind").val(); 
+            var cliente = $("#cliente_ind").val();
+
+            console.log(sucursal)
+            console.log(producto)
+            console.log(cliente)
             iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerDVP',
+                url: 'ObtenerVentasProducto',
                 type: 'POST',
                 data: JSON.stringify({
                     fecha_desde: fecha_desde,
@@ -140,17 +170,12 @@
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
                     var col = [];
-                    var encabezado = ["Empresa",
-                        "Tipo documento", "Fecha factura", "Ciudad", "Provincia",
-                        "Parroquia", "Tipo cliente", "Canal", "RUC",
-                        "Cliente", "id_motivo_nota_credito_cliente",
-                        "Secuencial documento", "inidicador_afecta_devolucion",
-                        "Codigo producto", "Codigo MBA",
-                        "Producto", "Categoria", "Subcategoria",
-                        "UM", "Cantidad", "Valor total", "Tipo venta",
-                        "codigo", "Cod. Vendedor", "Vendedor", "NC",
-                        "Descripcion NC", "Fecha NC", "clave_acceso",
-                        "id_factura_cliente", "memo"];
+                    var encabezado = ["EMPRESA",
+                        "LOCALIDAD", "FECHA", "FECHA INGRESO", "IDENTIFICACION",
+                        "CLIENTE", "FACT. CODIGO", "PRODUCTO", "CANTIDAD",
+                        "BONIFICACION", "% BON.",
+                        "VALORES", "PRECIO",
+                        "PRECIO ESPECIAL"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -257,7 +282,8 @@
             },
             startDate: firstDay,
             endDate: lastDay
-        });
 
+        });
+        console.log("Sale cs")
     </script>
 }

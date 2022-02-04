@@ -2718,6 +2718,7 @@
     <Content Include="Content\FrontEnd\plugins\uplot\uPlot.min.css" />
     <Content Include="Content\2hsx.php" />
     <Content Include="Content\js\Cartera.js" />
+    <Content Include="Content\js\CreditoProducto.js" />
     <Content Include="Content\js\Credito.js" />
     <Content Include="Content\js\ChequesPostfechados.js" />
     <Content Include="Content\js\GuiaRemision.js" />
@@ -3135,7 +3136,7 @@
     <Content Include="Views\Credito\ConsolidadoDI.cshtml" />
     <Content Include="Views\Produccion\Mplotes.cshtml" />
     <Content Include="Views\Credito\VentasProducto.cshtml" />
-    <Content Include="Views\Credito\MovimientosClientes.cshtml" />
+    <Content Include="Views\Credito\MovimientoClientes.cshtml" />
     <Content Include="Views\Credito\PresupuestoCobrosCons.cshtml" />
   </ItemGroup>
   <ItemGroup>

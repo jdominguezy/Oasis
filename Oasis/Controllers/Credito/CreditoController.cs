@@ -390,6 +390,16 @@ namespace Oasis.Controllers.Credito
             return View();
         }
 
+        public ActionResult MovimientoClientes()
+        {
+            return View();
+        }
+
+        public ActionResult PresupuestoCobrosCons()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult ObtenerDVP(string fecha_desde, string fecha_hasta, string empresa)
         {
@@ -1114,6 +1124,54 @@ namespace Oasis.Controllers.Credito
 
             return Json(resultadoFecha_json, JsonRequestBehavior.AllowGet);
            
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerVentasProducto(string fecha_desde, string fecha_hasta, string empresa)
+        {
+
+            using (var db = new as2oasis())
+            {
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+                IQueryable<DVP> data = db.DVP.Where(
+                    x => x.Fecha_factura >= _fecha_inicio &&
+                    x.Fecha_factura <= _fecha_fin
+                    );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.Empresa == empresa);
+                }
+
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.Empresa,
+                        x.Tipo_documento,
+                        Fecha_factura = x.Fecha_factura.Value.ToShortDateString(),
+                        x.Ciudad,
+                        x.Provincia,
+                        x.Parroquia,
+                        x.Tipo_cliente,
+                        x.Canal,
+                        x.RUC,
+                        x.Cliente,
+                        x.id_motivo_nota_credito_cliente,
+                        x.Secuencial_documento,
+                        x.indicador_afecta_devolucion,
+                        x.Código_producto
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                data_json.MaxJsonLength = 500000000;
+
+                return data_json;
+            }
         }
     }
 }
