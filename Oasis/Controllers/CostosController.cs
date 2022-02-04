@@ -15,6 +15,7 @@ namespace Oasis.Controllers
     public class CostosController : Controller
     {
         // GET: Costos
+        //PRUEBA2
         public ActionResult Ordenes()
         {
             return View();
@@ -58,7 +59,7 @@ namespace Oasis.Controllers
                     var encabezado_tabla = FontFactory.GetFont("SEGOE UI", 8,Font.BOLD, BaseColor.BLACK);
                     var detalle = FontFactory.GetFont("SEGOE UI", 7, Font.NORMAL, BaseColor.BLACK);
 
-                    var MP = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP01" || x.codigo_categoria_producto == "GRP06"
+                    var MP = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP01" || x.codigo_categoria_producto == "GRP05"
                     || x.codigo_categoria_producto == "GRP07");
                     var ME = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP02" || x.codigo_categoria_producto == "GRP03");
                     

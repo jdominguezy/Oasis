@@ -57,7 +57,7 @@
       <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="clsConectaMBA">
-      <HintPath>..\..\..\Users\BVera.LABOVIDA\source\repos\cv5\clsConectaMBA.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Reporteria\clsConectaMBA.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
       <HintPath>..\..\..\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
