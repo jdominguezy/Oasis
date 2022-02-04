@@ -15,6 +15,7 @@ namespace Oasis.Controllers
     public class CostosController : Controller
     {
         // GET: Costos
+        //PRUEBA2
         public ActionResult Ordenes()
         {
             return View();
