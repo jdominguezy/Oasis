@@ -82,6 +82,8 @@ public partial class DVP
 
     public string memo { get; set; }
 
+    public string zona { get; set; }
+
 }
 
 }

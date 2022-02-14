@@ -82,7 +82,7 @@ $("#GenerarReporteGuias").click(function () {
     var fecha_desde_guia = ConvertirFecha($('#fecha_guia').data('daterangepicker').startDate._d);
     var fecha_hasta_guia = ConvertirFecha($('#fecha_guia').data('daterangepicker').endDate._d);
 
-    console.log("------------------- Entra 1");
+    console.log("------------------- Entra JS");
     iniciaLoading();
     $.ajax({
         url: 'ObtenerReporteGuia',
@@ -107,13 +107,20 @@ $("#GenerarReporteGuias").click(function () {
             row.className = "row";
             row.appendChild(contenedorTabla);
             $('#contenedorPrimario').append(row);
-            d = JSON.parse(d);
+            console.log(d)
+
+            if (empresa != '0') {
+                d = JSON.parse(d);
+            }
+            
             var col = [];
             var encabezado = ['EMPRESA', 'CLIENTE',
                 'SECUENCIAL FACTURA', 'FECHA FACTURA', 'SECUENCIAL GUIA',
                 'FECHA GUIA', 'CIUDAD',
                 'PESO','BULTOS',
                 'GUIA URBANO', 'NOTA GUIA'];
+
+            console.log(encabezado)
             for (var i = 0; i < d.length; i++) {
                 for (var key in d[i]) {
                     if (col.indexOf(key) === -1) {
@@ -149,6 +156,8 @@ $("#GenerarReporteGuias").click(function () {
             }
 
             thead.appendChild(tr_head);
+            console.log("------------------- Entra 2");
+            console.log(tr_head)
 
             var tbody = document.createElement("tbody");
             table.appendChild(tbody);

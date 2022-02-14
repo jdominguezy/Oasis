@@ -1,7 +1,18 @@
 ﻿
-@{
-    ViewBag.Title = "Cartera";
-}
+@using Oasis.Models
+@using Oasis.Models.Login
+@{ ViewBag.Title = "Cartera"; }
+
+@{ var id_usuario = (User as CustomPrincipal).id_usuario;
+                var db = new as2oasis();
+                var sucursales = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.sucursalOasis.nombre)
+                    .Select(x => x.Key);
+                var empresas = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.empresaOasis.nombre)
+                    .Select(x => x.Key); }
 
 
 <div class="row">
@@ -24,9 +35,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Empresa</label>
-                            @Html.DropDownList("empresa_ind",
-                                        new SelectList(ViewBag.Opciones, "Value", "Text"),
-                                        htmlAttributes: new { @class = "form-control" })
+                            @*@Html.DropDownList("empresa_ind",
+                            new SelectList(ViewBag.Opciones, "Value", "Text"),
+                            htmlAttributes: new { @class = "form-control" })*@
+                            <select class="form-control" id="empresa_ind" name="empresa">
+                                <option value="0">Todas las empresas</option>
+                                @foreach (var emp in empresas)
+                                {
+                                <option value="@emp">@emp</option>
+}
+                            </select>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
@@ -45,6 +63,23 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Fecha Cartera:</label>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -52,16 +87,16 @@
                             <div class="row">
                                 <div class="col-lg-9">
                                     <select class="form-control" id="sucursal_ind">
-                                        <option value="0">Todas las Regiones</option>
-                                        <option value="COSTA">COSTA</option>
-                                        <option value="SIERRA">SIERRA</option>
-                                        <option value="AUSTRO">AUSTRO</option>
+                                       <option value="0">Todas las Regiones</option>
+                                        @foreach (var suc in sucursales)
+                                        {
+                                        <option value="@suc">@suc</option>}
                                     </select>
                                 </div>
-                                <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
+                                @*<div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
                                     <input class="custom-control-input" type="checkbox" id="chkRegion">
                                     <label for="chkRegion" class="custom-control-label">Todas</label>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                         <div class="row">
@@ -113,25 +148,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                           <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Fecha Cartera:</label>
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control float-right" id="fecha_presupuesto">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -148,7 +164,7 @@
 @section Scripts {
     <script src="~/Content/js/Cartera.js"></script>
     <script>
-
+        console.log("ENTRA AL CS")
         $('#chkRegion').click(
             function () {
                 if (this.checked) {
@@ -173,13 +189,15 @@
                     $("#DetalleIndividual").css('visibility', 'hidden');
                 }
             });
+        console.log("INICIO ACTIVAR VEND")
         ActivarVendedores();
+        
         function ActivarVendedores() {
             $('.js-data-vendedor-ajax').select2({
                 //selectOnClose: true,
                 minimumInputLength: 2,
                 language: {
-                    inputTooShort: function () {return "Ingresar dos o más caracteres";}
+                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
                 },
                 tags: [],
                 ajax: {
@@ -210,5 +228,38 @@
                 //$(e.target).closest('#id_vendedor').val(id_vendedor);
             });
         }
+
+        console.log("FIN ACTIVAR VEND")
+
+        $('#fecha_corte').daterangepicker({
+            locale: {
+                format: 'DD/MM/YYYY',
+                "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Ma",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+            },
+            startDate: firstDay,
+            endDate: lastDay
+        });
     </script>
 }

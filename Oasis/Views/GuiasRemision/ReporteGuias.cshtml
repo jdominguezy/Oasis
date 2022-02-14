@@ -1,8 +1,17 @@
 ﻿
-@{
-    ViewBag.Title = "Reporte de guías de despacho";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@using Oasis.Models
+@using Oasis.Models.Login
+
+@{ ViewBag.Title = "Reporte de guías de despacho";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@{ 
+    var id_usuario = (User as CustomPrincipal).id_usuario;
+    var as2 = new AS2Context();
+    var empresas = as2.organizacion
+        .OrderBy(x => x.nombre_comercial)
+        .Select(x => x.nombre_comercial);
+   }
 
 
 <div class="row">
@@ -24,41 +33,50 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="row">
+                            @*<div class="col-lg-6">
+                                    <label for="exampleInputEmail1">Empresa</label>
+                                    @Html.DropDownList("empresa",
+                                                new SelectList(ViewBag.Opciones, "Value", "Text"),
+                                                htmlAttributes: new { @class = "form-control" })
+                                </div>*@
                             <div class="col-lg-6">
                                 <label for="exampleInputEmail1">Empresa</label>
-                                @Html.DropDownList("empresa",
-                                            new SelectList(ViewBag.Opciones, "Value", "Text"),
-                                            htmlAttributes: new { @class = "form-control" })
+                                <select class="form-control" id="empresa" name="empresa">
+                                    <option value="0">Todas las empresas</option>
+                                    @foreach (var emp in empresas)
+                                    {
+                                    <option value="@emp">@emp</option>}
+                                </select>
                             </div>
-                            <div class="col-lg-6" style="padding-top: 40px;">
+                            @*<div class="col-lg-6" style="padding-top: 40px;">
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
-                                        <input class="custom-control-input" type="checkbox" id="chkEmpresa" >
+                                        <input class="custom-control-input" type="checkbox" id="chkEmpresa">
                                         <label for="chkEmpresa" class="custom-control-label">Todas las empresas</label>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                         @*<div class="row">
-                            <div class="col-md-10">
-                                <div class="form-group">
-                                    <label>Fecha de corte</label>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </span>
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label>Fecha de corte</label>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="far fa-calendar-alt"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" class="form-control float-right" id="fecha_corte">
                                                 </div>
-                                                <input type="text" class="form-control float-right" id="fecha_corte">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>*@
-                    </div>
+                            </div>*@
+                    
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-10">
@@ -78,7 +96,7 @@
                                         <div class="col-md-2" style="padding-top: 5px;">
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
-                                                    <input class="form-check-input" name="flexRadioDefault" 
+                                                    <input class="form-check-input" name="flexRadioDefault"
                                                            style="transform: scale(1.25);"
                                                            type="radio" id="chkFechaFactura" checked>
                                                 </div>
@@ -106,7 +124,7 @@
                                         <div class="col-md-2" style="padding-top: 5px;">
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
-                                                    <input class="form-check-input" name="flexRadioDefault" 
+                                                    <input class="form-check-input" name="flexRadioDefault"
                                                            style="transform: scale(1.25);"
                                                            type="radio" id="chkFechaGuia">
                                                 </div>
@@ -118,26 +136,26 @@
                         </div>
                         @*<div class="row">
 
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Región</label>
-                    <select class="form-control" id="sucursal">
-                        <option value="COSTA">COSTA</option>
-                        <option value="SIERRA">SIERRA</option>
-                        <option value="AUSTRO">AUSTRO</option>
-                    </select>
-                </div>
-            </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Región</label>
+                                        <select class="form-control" id="sucursal">
+                                            <option value="COSTA">COSTA</option>
+                                            <option value="SIERRA">SIERRA</option>
+                                            <option value="AUSTRO">AUSTRO</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-            <div class="col-lg-6" style="padding-top: 40px;">
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
-                        <input class="custom-control-input" type="checkbox" id="chkRegion">
-                        <label for="chkRegion" class="custom-control-label">Todas las regiones</label>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                                <div class="col-lg-6" style="padding-top: 40px;">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
+                                            <input class="custom-control-input" type="checkbox" id="chkRegion">
+                                            <label for="chkRegion" class="custom-control-label">Todas las regiones</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
                     </div>
                 </div>
 

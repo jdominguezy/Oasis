@@ -128,42 +128,4 @@ function interpolateColors(dataLength, colorScale, colorRangeInfo) {
 
 
 
-function SugerirFecha() {
-    var empresa = $("#empresa").val();
-    var sucursal = $("#sucursal").val();
-    $.ajax({
-        url: 'SugerirFechas',
-        type: 'GET',
-        data: {
-            empresa: empresa,
-            sucursal: sucursal
-        },
-        dataType: "JSON",
-        contentType: "application/JSON",
-        success: function (d) {
 
-            if (d.MensajeError != null) {
-                Toast.fire({
-                    icon: 'error',
-                    title: d.MensajeError
-                })
-            } else {
-                const datos = JSON.parse(d);
-                Toast.fire({
-                    icon: 'success',
-                    title: 'El corte sugerido es desde ' + datos.fecha_desde + ' hasta ' +datos.fecha_hasta
-                })
-                $('#fecha_presupuesto').data('daterangepicker').setStartDate(datos.fecha_desde);
-                $('#fecha_presupuesto').data('daterangepicker').setEndDate(datos.fecha_hasta);
-            }
-            console.log(d);
-
-        },
-        error: function (e) {
-            Toast.fire({
-                icon: 'error',
-                title: 'No se encuentra un corte de fechas sugerido'
-            })
-        }
-    });
-}

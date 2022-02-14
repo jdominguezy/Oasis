@@ -43,6 +43,9 @@
           <Property Name="prefijo" Type="varchar" MaxLength="3" />
           <Property Name="valor_maximo" Type="int" />
           <Property Name="valor_minimo" Type="int" />
+          <Property Name="dias_despacho" Type="int" />
+          <Property Name="hora_desde" Type="int" />
+          <Property Name="hora_hasta" Type="int" />
         </EntityType>
         <EntityType Name="detalle_forma_cobro">
           <Key>
@@ -106,6 +109,7 @@
           <Property Name="id_tarjeta_credito" Type="int" />
           <Property Name="nombre_retencion_bien_servicio" Type="varchar" MaxLength="20" />
           <Property Name="fecha_documento" Type="date" />
+          <Property Name="id_cobro_prestamo" Type="int" />
         </EntityType>
         <EntityType Name="direccion_empresa">
           <Key>
@@ -159,7 +163,7 @@
           <Property Name="id_dispositivo_sincronizacion" Type="int" />
           <Property Name="id_organizacion" Type="int" Nullable="false" />
           <Property Name="id_sucursal" Type="int" Nullable="false" />
-          <Property Name="identificacion" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" />
           <Property Name="indicador_aplica_descuento" Type="bit" Nullable="false" />
           <Property Name="indicador_cliente" Type="bit" Nullable="false" />
           <Property Name="indicador_cliente_proveedor" Type="bit" Nullable="false" />
@@ -169,8 +173,8 @@
           <Property Name="indicador_proveedor" Type="bit" Nullable="false" />
           <Property Name="latitud" Type="numeric" Precision="18" Scale="6" />
           <Property Name="longitud" Type="numeric" Precision="18" Scale="6" />
-          <Property Name="nombre_comercial" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="nombre_fiscal" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="nombre_comercial" Type="varchar" MaxLength="300" />
+          <Property Name="nombre_fiscal" Type="varchar" MaxLength="300" />
           <Property Name="pagina_web" Type="varchar" MaxLength="50" />
           <Property Name="texto_busqueda" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="tipo_empresa" Type="int" Nullable="false" />
@@ -294,6 +298,8 @@
           <Property Name="descripcion_factura_flor" Type="varchar" MaxLength="500" />
           <Property Name="indicador_crear_factura_cliente_agil" Type="bit" Nullable="false" />
           <Property Name="indicador_recepcion_automatica" Type="bit" Nullable="false" />
+          <Property Name="ids_detalles_cobros_prestamos" Type="varchar" MaxLength="255" />
+          <Property Name="id_persona_responsable" Type="int" />
         </EntityType>
         <EntityType Name="factura_proveedorSRI">
           <Key>
@@ -349,7 +355,7 @@
           <Property Name="mensaje_sri_liquidacion" Type="varchar" MaxLength="5000" />
           <Property Name="monto_ice" Type="numeric" Precision="14" Scale="2" />
           <Property Name="monto_iva" Type="numeric" Precision="14" Scale="2" />
-          <Property Name="nombre_proveedor" Type="varchar" MaxLength="200" />
+          <Property Name="nombre_proveedor" Type="varchar" MaxLength="300" />
           <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="numero_modificado" Type="varchar" MaxLength="20" />
           <Property Name="numero_retencion" Type="varchar" MaxLength="20" />
@@ -371,6 +377,7 @@
           <Property Name="id_tipo_comprobante" Type="int" />
           <Property Name="id_tipo_identificacion" Type="int" />
           <Property Name="id_autorizacion_empresa_SRI" Type="int" />
+          <Property Name="fecha_autorizacion_proveedor_sri" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="organizacion">
           <Key>
@@ -383,9 +390,9 @@
           <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
           <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
           <Property Name="descripcion_notificacion" Type="varchar" MaxLength="500" />
-          <Property Name="identificacion" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="identificacion_contador" Type="varchar" MaxLength="20" />
-          <Property Name="identificacion_representante" Type="varchar" MaxLength="20" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" />
+          <Property Name="identificacion_contador" Type="varchar" MaxLength="100" />
+          <Property Name="identificacion_representante" Type="varchar" MaxLength="100" />
           <Property Name="imagen" Type="varchar" MaxLength="50" />
           <Property Name="indicador_notificacion" Type="bit" Nullable="false" />
           <Property Name="nombre_comercial" Type="varchar" MaxLength="200" Nullable="false" />
@@ -710,6 +717,8 @@
           <NavigationProperty Name="empresa" Relationship="as2Model.FK_esbk89j1qg2d7svl7hp3fx68u" FromRole="factura_cliente" ToRole="empresa" />
           <NavigationProperty Name="usuario" Relationship="as2Model.FK_8xebmbeu08jicjhj6i8in7w3s" FromRole="factura_cliente" ToRole="usuario" />
           <NavigationProperty Name="direccion_empresa" Relationship="as2Model.FK_comkrnihn5g538cddgr6804xt" FromRole="factura_cliente" ToRole="direccion_empresa" />
+          <Property Name="ids_detalles_cobros_prestamos" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="id_persona_responsable" Type="Int32" />
         </EntityType>
         <Association Name="FK_jushfig5ma5q7cel0ew17kmf8">
           <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="0..1" />
@@ -824,6 +833,7 @@
           <Property Name="id_tarjeta_credito" Type="Int32" />
           <Property Name="nombre_retencion_bien_servicio" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="fecha_documento" Type="DateTime" Precision="0" />
+          <Property Name="id_cobro_prestamo" Type="Int32" />
         </EntityType>
         <EntityType Name="empresa">
           <Key>
@@ -850,7 +860,7 @@
           <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
           <Property Name="id_organizacion" Type="Int32" Nullable="false" />
           <Property Name="id_sucursal" Type="Int32" Nullable="false" />
-          <Property Name="identificacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="indicador_aplica_descuento" Type="Boolean" Nullable="false" />
           <Property Name="indicador_cliente" Type="Boolean" Nullable="false" />
           <Property Name="indicador_cliente_proveedor" Type="Boolean" Nullable="false" />
@@ -860,8 +870,8 @@
           <Property Name="indicador_proveedor" Type="Boolean" Nullable="false" />
           <Property Name="latitud" Type="Decimal" Precision="18" Scale="6" />
           <Property Name="longitud" Type="Decimal" Precision="18" Scale="6" />
-          <Property Name="nombre_comercial" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="nombre_fiscal" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_comercial" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_fiscal" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="pagina_web" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="texto_busqueda" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="tipo_empresa" Type="Int32" Nullable="false" />
@@ -934,7 +944,7 @@
           <Property Name="mensaje_sri_liquidacion" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
           <Property Name="monto_ice" Type="Decimal" Precision="14" Scale="2" />
           <Property Name="monto_iva" Type="Decimal" Precision="14" Scale="2" />
-          <Property Name="nombre_proveedor" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_proveedor" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="numero_modificado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="numero_retencion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -956,6 +966,7 @@
           <Property Name="id_tipo_comprobante" Type="Int32" />
           <Property Name="id_tipo_identificacion" Type="Int32" />
           <Property Name="id_autorizacion_empresa_SRI" Type="Int32" />
+          <Property Name="fecha_autorizacion_proveedor_sri" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="organizacion">
           <Key>
@@ -968,9 +979,9 @@
           <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="descripcion_notificacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="identificacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="identificacion_contador" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="identificacion_representante" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion_contador" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion_representante" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="imagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="indicador_notificacion" Type="Boolean" Nullable="false" />
           <Property Name="nombre_comercial" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -1186,6 +1197,9 @@
           <Property Name="valor_maximo" Type="Int32" />
           <Property Name="valor_minimo" Type="Int32" />
           <NavigationProperty Name="empresa" Relationship="as2Model.FK_q5s9ubay5dnv2lj9iydghy6uk" FromRole="categoria_empresa" ToRole="empresa" />
+          <Property Name="dias_despacho" Type="Int32" />
+          <Property Name="hora_desde" Type="Int32" />
+          <Property Name="hora_hasta" Type="Int32" />
         </EntityType>
         <Association Name="FK_q5s9ubay5dnv2lj9iydghy6uk">
           <End Type="as2Model.categoria_empresa" Role="categoria_empresa" Multiplicity="0..1" />
@@ -1208,6 +1222,8 @@
           <EntitySetMapping Name="factura_cliente">
             <EntityTypeMapping TypeName="as2Model.factura_cliente">
               <MappingFragment StoreEntitySet="factura_cliente">
+                <ScalarProperty Name="id_persona_responsable" ColumnName="id_persona_responsable" />
+                <ScalarProperty Name="ids_detalles_cobros_prestamos" ColumnName="ids_detalles_cobros_prestamos" />
                 <ScalarProperty Name="id_factura_cliente" ColumnName="id_factura_cliente" />
                 <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
                 <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
@@ -1318,6 +1334,7 @@
           <EntitySetMapping Name="detalle_forma_cobro">
             <EntityTypeMapping TypeName="as2Model.detalle_forma_cobro">
               <MappingFragment StoreEntitySet="detalle_forma_cobro">
+                <ScalarProperty Name="id_cobro_prestamo" ColumnName="id_cobro_prestamo" />
                 <ScalarProperty Name="fecha_documento" ColumnName="fecha_documento" />
                 <ScalarProperty Name="nombre_retencion_bien_servicio" ColumnName="nombre_retencion_bien_servicio" />
                 <ScalarProperty Name="id_tarjeta_credito" ColumnName="id_tarjeta_credito" />
@@ -1435,6 +1452,7 @@
           <EntitySetMapping Name="factura_proveedorSRI">
             <EntityTypeMapping TypeName="as2Model.factura_proveedorSRI">
               <MappingFragment StoreEntitySet="factura_proveedorSRI">
+                <ScalarProperty Name="fecha_autorizacion_proveedor_sri" ColumnName="fecha_autorizacion_proveedor_sri" />
                 <ScalarProperty Name="id_autorizacion_empresa_SRI" ColumnName="id_autorizacion_empresa_SRI" />
                 <ScalarProperty Name="id_tipo_identificacion" ColumnName="id_tipo_identificacion" />
                 <ScalarProperty Name="id_tipo_comprobante" ColumnName="id_tipo_comprobante" />
@@ -1642,6 +1660,9 @@
           <EntitySetMapping Name="categoria_empresa">
             <EntityTypeMapping TypeName="as2Model.categoria_empresa">
               <MappingFragment StoreEntitySet="categoria_empresa">
+                <ScalarProperty Name="hora_hasta" ColumnName="hora_hasta" />
+                <ScalarProperty Name="hora_desde" ColumnName="hora_desde" />
+                <ScalarProperty Name="dias_despacho" ColumnName="dias_despacho" />
                 <ScalarProperty Name="valor_minimo" ColumnName="valor_minimo" />
                 <ScalarProperty Name="valor_maximo" ColumnName="valor_maximo" />
                 <ScalarProperty Name="prefijo" ColumnName="prefijo" />

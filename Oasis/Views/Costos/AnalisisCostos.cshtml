@@ -3,7 +3,7 @@
 @using Oasis.Models.Login
 
 @{
-    ViewBag.Title = "Detalle de Ventas por Producto y Precio";
+    ViewBag.Title = "Analisis de Costos";
     var id_usuario = (User as CustomPrincipal).id_usuario;
     var as2 = new AS2Context();
     var db = new as2oasis();
@@ -11,22 +11,10 @@
         .Where(x => x.id_usuario == id_usuario)
         .GroupBy(x => x.sucursalOasis.nombre)
         .Select(x => x.Key);
-    var empresas = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.empresaOasis.nombre)
-        .OrderBy(x => x.Key)
-        .Select(x => x.Key);
-    var categoria_cliente = as2.categoria_empresa
-        .GroupBy(x => x.nombre)
-        .Select(x => x.Key);
-    var producto = db.productos
-        .GroupBy(x => x.descripcion)
-        .Select(x => x.Key);
-    var cliente = db.Clientes2
-        .GroupBy(x => x.nombre_comercial)
-        .OrderBy(x => x.Key)
-        .Select(x => x.Key);
-
+    var empresas = as2.organizacion
+        .Where(x => x.id_organizacion == 1)
+        .Select(x => x.nombre_comercial);
+    
 
 }
 
@@ -35,7 +23,7 @@
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h2 class="card-title">Detalle de Ventas por Producto y Precio</h2>
+                <h2 class="card-title">Analisis de Costos</h2>
                 <div class="card-tools">
                     <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -52,7 +40,6 @@
                         <div class="form-group">
                             <label for="empresa">Empresa</label>
                             <select class="form-control" id="empresa" name="empresa">
-                                <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
                                     <option value="@emp">@emp</option>
@@ -60,80 +47,32 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="col-md-6">
-                        <div class="col" style=" text-align: center; ">
-                            <label>Fecha</label>
-                            <div class="row" style="
+                            <div class="col" style=" text-align: center; ">
+                                <label>Fecha de facturación</label>
+                                <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                <div class="col-md-10">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
+                                    <div class="col-md-10">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control float-right" id="fecha_corte">
                                         </div>
-                                        <input type="text" class="form-control float-right" id="fecha_corte">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Región</label>
-                            <select class="form-control" id="sucursal_ind">
-                                <option value="0">Todas las regiones</option>
-                                @foreach (var suc in sucursales)
-                                {
-                                    <option value="@suc">@suc</option>
-                                }
-                            </select>
-                        </div>
                     </div>
 
-                    <div class="col" style=" text-align: center; ">
-                         <label>Producto</label>
-                         <div class="row" style="
-						            text-align: center;
-						            place-content: center;
-					                ">
-                             <div class="col-md-10">
-                                 <div class="input-group">
-                                     <select class="form-control" id="producto_ind" name="producto">
-                                         <option value="0">Todos los productos</option>
-                                         @foreach (var pro in producto)
-                                         {
-                                             <option value="@pro">@pro</option>
-                                         }
-                                     </select>
-                                 </div>
-                             </div>
-                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Cliente</label>
-                            <select class="form-control" id="cliente_ind" name="cliente">
-                                <option value="0">Todos los clientes</option>
-                                @foreach (var cli in cliente)
-                                {
-                                    <option value="@cli">@cli</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="button" id="GenerarDatosProducto" class="btn btn-primary  float-right">Generar</button>
+                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
             </div>
         </div>
     </div>
@@ -141,28 +80,21 @@
 
 
 @section Scripts {
-    <script src="~/Content/js/CreditoProducto.js"></script>
     <script>
 
-        console.log("Ingresa al cs")
-        $("#GenerarDatosProducto").click(function () {
+        $("#GenerarDatos").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             var empresa = $('#empresa').val();
-            var sucursal = $("#sucursal_ind").val(); 
-            var producto = $("#producto_ind").val(); 
-            var cliente = $("#cliente_ind").val();
+            iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerVentasProducto',
+                url: 'ObtenerCostos',
                 type: 'POST',
                 data: JSON.stringify({
                     fecha_desde: fecha_desde,
                     fecha_hasta: fecha_hasta,
-                    empresa: empresa,
-                    sucursal: sucursal,
-                    producto: producto,
-                    cliente: cliente
+                    empresa: empresa
                 }),
                 dataType: "JSON",
                 contentType: "application/JSON",
@@ -176,12 +108,13 @@
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
                     var col = [];
-                    var encabezado = ["EMPRESA",
-                        "LOCALIDAD", "TIPO DOCUMENTO", "FECHA", "IDENTIFICACION",
-                        "CLIENTE", "FACTURA", "CODIGO", "PRODUCTO", "CANTIDAD",
-                        "BONIFICACION", "% BON.",
-                        "VALORES", "PRECIO",
-                        "PRECIO ESPECIAL"];
+                    var encabezado = ["Mes Cierre",
+                        "O.P.", "Lote", "Planta", "Tipo Orden",
+                        "Cod. Producto", "Producto", "Unidades a Elaborar", "Unidades Elaboradas",
+                        "Cajas Elaboradas", "Costo Unitario",
+                        "Costo Unitario x Caja", "Costo Total",
+                        "Costo MP", "Costo ME",
+                        "Costo MOD", "Costo OTROS", "Rendimiento"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -288,8 +221,7 @@
             },
             startDate: firstDay,
             endDate: lastDay
-
         });
-        console.log("Sale cs")
+
     </script>
 }

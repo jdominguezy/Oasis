@@ -24,8 +24,6 @@ namespace Oasis.Controllers
     {
         
 
-
-
         //// GET: Account
         //public void Index()
         //{
@@ -159,7 +157,7 @@ namespace Oasis.Controllers
 
             if (Membership.ValidateUser(loginView.username, pwd))
             {
-                var usuario = (CustomMemberShipUser)Membership.GetUser(loginView.username,false);
+                var usuario = (CustomMemberShipUser)Membership.GetUser(loginView.username, false);
                 if (usuario != null)
                 {
                     CustomSerializeModel userModel = new CustomSerializeModel()
@@ -191,6 +189,7 @@ namespace Oasis.Controllers
             ModelState.AddModelError("", "Credenciales incorrectas");
             return View(loginView);
             
+
         }
 
         [HttpGet]

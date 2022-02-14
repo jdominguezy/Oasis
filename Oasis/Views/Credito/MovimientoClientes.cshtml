@@ -2,8 +2,7 @@
 @using Oasis.Models
 @using Oasis.Models.Login
 
-@{
-    ViewBag.Title = "Movimiento Clintes";
+@{ ViewBag.Title = "Movimiento Clintes";
     var id_usuario = (User as CustomPrincipal).id_usuario;
     var as2 = new AS2Context();
     var db = new as2oasis();
@@ -14,12 +13,13 @@
     var empresas = db.detalle_usuario_empresa_sucursal
         .Where(x => x.id_usuario == id_usuario)
         .GroupBy(x => x.empresaOasis.nombre)
+        .OrderBy(x => x.Key)
         .Select(x => x.Key);
-    var categoria_cliente = as2.categoria_empresa 
-        .GroupBy(x => x.nombre)
+    var cliente = db.Clientes2
+        .GroupBy(x => x.nombre_comercial)
+        .OrderBy(x => x.Key)
         .Select(x => x.Key);
-
-}
+    }
 
 
 <div class="row">
@@ -46,33 +46,65 @@
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                                    <option value="@emp">@emp</option>
+                    <option value="@emp">@emp</option>
+}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col" style=" text-align: center; ">
+                            <label>Fecha de facturación</label>
+                            <div class="row" style="
+                                                text-align: center;
+                                                place-content: center;
+                                            ">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" class="form-control float-right" id="fecha_corte">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Region</label>
+                            <select class="form-control" id="sucursal" name="sucursal">
+                                <option value="0">Todas las regiones</option>
+                                @foreach (var suc in sucursales)
+                                {
+                                <option value="@suc">@suc</option>
                                 }
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                            <div class="col" style=" text-align: center; ">
-                                <label>Fecha de facturación</label>
-                                <div class="row" style="
+                        <div class="col" style=" text-align: center; ">
+                            <label>Cliente</label>
+                            <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                    <div class="col-md-10">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="fecha_corte">
-                                        </div>
-                                    </div>
+                                <div class="col-md-10">
+                                    <select class="form-control" id="cliente" name="cliente">
+                                        <option value="0">Todos los clientes</option>
+                                        @foreach (var cli in cliente)
+                                        {
+                                    <option value="@cli">@cli</option>}
+                                    </select>
                                 </div>
                             </div>
+                        </div>
                     </div>
-
                 </div>
+
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -84,21 +116,26 @@
 
 
 @section Scripts {
+    <script src="~/Content/js/CreditoProducto.js"></script>
     <script>
 
         $("#GenerarDatos").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            var cliente = $('#cliente').val();
             iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerDVP',
+                url: 'ObtenerClientes',
                 type: 'POST',
                 data: JSON.stringify({
                     fecha_desde: fecha_desde,
                     fecha_hasta: fecha_hasta,
-                    empresa: empresa
+                    empresa: empresa,
+                    sucursal: sucursal,
+                    cliente: cliente
                 }),
                 dataType: "JSON",
                 contentType: "application/JSON",

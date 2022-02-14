@@ -18,11 +18,15 @@ namespace Oasis.Models
             byte[] bs = System.Text.Encoding.UTF8.GetBytes(input);
             bs = x.ComputeHash(bs);
             System.Text.StringBuilder s = new System.Text.StringBuilder();
+            string password="";
+
             foreach (byte b in bs)
             {
                 s.Append(b.ToString("x2").ToLower());
             }
-            string password = s.ToString();
+
+                password = s.ToString();
+            
             return password;
         }
 
@@ -36,7 +40,9 @@ namespace Oasis.Models
                 foreach (byte b in hash)
                 {
                     // can be "x2" if you want lowercase
+                    
                     sb.Append(b.ToString("x2"));
+                    
                 }
 
                 return sb.ToString();

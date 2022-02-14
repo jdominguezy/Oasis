@@ -2,24 +2,22 @@
 @using Oasis.Models
 @using Oasis.Models.Login
 
-@{
-    ViewBag.Title = "Detalle de venta por producto";
-    var id_usuario = (User as CustomPrincipal).id_usuario;
-    var as2 = new AS2Context();
-    var db = new as2oasis();
-    var sucursales = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.sucursalOasis.nombre)
-        .Select(x => x.Key);
-    var empresas = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.empresaOasis.nombre)
-        .Select(x => x.Key);
-    var categoria_cliente = as2.categoria_empresa 
-        .GroupBy(x => x.nombre)
-        .Select(x => x.Key);
-
-}
+@{ ViewBag.Title = "Detalle de venta por producto";
+                var id_usuario = (User as CustomPrincipal).id_usuario;
+                var as2 = new AS2Context();
+                var db = new as2oasis();
+                var sucursales = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.sucursalOasis.nombre)
+                    .Select(x => x.Key);
+                var empresas = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.empresaOasis.nombre)
+                    .OrderBy(x => x.Key)
+                    .Select(x => x.Key);
+                var categoria_cliente = as2.categoria_empresa
+                    .GroupBy(x => x.nombre)
+                    .Select(x => x.Key); }
 
 
 <div class="row">
@@ -46,30 +44,29 @@
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                                    <option value="@emp">@emp</option>
-                                }
+                    <option value="@emp">@emp</option>}
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                            <div class="col" style=" text-align: center; ">
-                                <label>Fecha de facturación</label>
-                                <div class="row" style="
+                        <div class="col" style=" text-align: center; ">
+                            <label>Fecha de facturación</label>
+                            <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                    <div class="col-md-10">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
                                         </div>
+                                        <input type="text" class="form-control float-right" id="fecha_corte">
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
                 </div>
@@ -84,6 +81,7 @@
 
 
 @section Scripts {
+    <script src="~/Content/js/CreditoProducto.js"></script>
     <script>
 
         $("#GenerarDatos").click(function () {
@@ -93,7 +91,7 @@
             iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerDVP',
+                url: 'ObtenerCobrosConsolidado',
                 type: 'POST',
                 data: JSON.stringify({
                     fecha_desde: fecha_desde,

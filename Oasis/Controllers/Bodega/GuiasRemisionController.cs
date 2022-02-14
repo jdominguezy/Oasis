@@ -192,40 +192,43 @@ namespace Oasis.Controllers.Bodega
                                 x.fecha_guia <= fecha_hasta);
                     }
 
-                    if (!String.IsNullOrEmpty(empresa))
+                    if (empresa != "0")
                     {
                         guias = guias.Where(x => x.empresa == empresa);
 
                         var guias_json = guias.ToList()
-                         .Select(x => new
-                         {
-                             x.empresa,
-                             x.nombre_comercial,
-                             x.secuencial_factura,
-                             fecha_factura = x.fecha_factura.Value.ToString(),
-                             x.secuencial_guia,
-                             fecha_guia = x.fecha_guia == null ? "" : x.fecha_guia.Value.ToString(),
-                             x.ciudad,
-                             peso = x.peso == null ? 0 : x.peso,
-                             bultos = x.bultos == null ? 0 : x.bultos,
-                             serial_urbano = x.serial_urbano == null ? "" : x.serial_urbano,
-                             nota_guia = x.nota_guia == null ? "" : x.nota_guia
-                         });
+                        .Select(x => new
+                        {
+                            x.empresa,
+                            x.nombre_comercial,
+                            x.secuencial_factura,
+                            //fecha_factura = x.fecha_factura.Value.ToString(),
+                            fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.Value.ToString(),
+                            x.secuencial_guia,
+                            fecha_guia = x.fecha_guia == null ? "" : x.fecha_guia.Value.ToString(),
+                            x.ciudad,
+                            peso = x.peso == null ? 0 : x.peso,
+                            bultos = x.bultos == null ? 0 : x.bultos,
+                            serial_urbano = x.serial_urbano == null ? "" : x.serial_urbano,
+                            nota_guia = x.nota_guia == null ? "" : x.nota_guia
+                        });
 
 
                         var resultado = JsonConvert.SerializeObject(guias_json, Formatting.Indented);
 
                         return Json(resultado, JsonRequestBehavior.AllowGet);
+                    
                     }
+
                     else
                     {
-                        return Json(guias.ToList()
+                        var guias_json= Json(guias.ToList()
                            .Select(x => new
                            {
                                x.empresa,
                                x.nombre_comercial,
                                x.secuencial_factura,
-                               fecha_factura = x.fecha_factura== null ? "": x.fecha_factura.Value.ToString(),
+                               fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.Value.ToString(),
                                x.secuencial_guia,
                                fecha_guia = x.fecha_guia == null ? "" : x.fecha_guia.Value.ToString(),
                                x.ciudad,
@@ -233,12 +236,15 @@ namespace Oasis.Controllers.Bodega
                                bultos = x.bultos == null ? 0 : x.bultos,
                                serial_urbano = x.serial_urbano == null ? "" : x.serial_urbano,
                                nota_guia = x.nota_guia == null ? "" : x.nota_guia
-                           })
-                           .OrderBy(x => x.empresa),
+                           }),
                            JsonRequestBehavior.AllowGet);
-                    }
-                }
 
+                        guias_json.MaxJsonLength = 500000000;
+                        return guias_json;
+
+                    }
+
+                }
                 
             }
             catch (Exception e)

@@ -400,6 +400,16 @@ namespace Oasis.Controllers.Credito
             return View();
         }
 
+        public ActionResult GestionCarteraVcda()
+        {
+            return View();
+        }
+
+        public ActionResult AnalisisCierreCaja()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult ObtenerDVP(string fecha_desde, string fecha_hasta, string empresa)
         {
@@ -535,7 +545,7 @@ namespace Oasis.Controllers.Credito
 
             using (var context = new as2oasis())
             {
-                var presupuesto = context.Presupuesto_Consolidado(empresa, sucursal, fecha_desde_, fecha_hasta_,tipoCliente_);
+                var presupuesto = context.Presupuesto(empresa, sucursal, fecha_desde_, fecha_hasta_,tipoCliente_);
                 
                 var presupuesto_json = JsonConvert.SerializeObject(presupuesto, Formatting.Indented);
 
@@ -593,48 +603,124 @@ namespace Oasis.Controllers.Credito
         public JsonResult ObtenerCartera(
             string empresa,
             string sucursal,
-            string tipoCliente)
+            string tipoCliente,
+            string fecha_desde,
+            string fecha_hasta)
         {
-            var tipoC = JsonConvert.DeserializeObject(tipoCliente);
-            var tipoCliente_ = tipoCliente.Replace(@"[", string.Empty).Replace(@"]", string.Empty).Replace("\"", string.Empty);
-            var lista_tipoCliente = tipoCliente_.Split(',');
-            using (var context = new as2oasis())
+            try
             {
-                //context.Database.CommandTimeout = 320;
-                var cartera =
-                    context.Cartera.Where(
-                        x => 
-                        x.empresa == empresa &&
-                        x.sucursal == sucursal && 
+                var tipoC = JsonConvert.DeserializeObject(tipoCliente);
+                var tipoCliente_ = tipoCliente.Replace(@"[", string.Empty).Replace(@"]", string.Empty).Replace("\"", string.Empty);
+                var lista_tipoCliente = tipoCliente_.Split(',');                
+
+                using (var context = new as2oasis())
+                {
+                    //context.Database.CommandTimeout = 320;
+                    IQueryable<Reporte_Cartera> cartera;
+
+                    var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                    var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+                    cartera = context.Reporte_Cartera.Where(
+                        x => x.fecha_factura >= _fecha_inicio &&
+                        x.fecha_factura <= _fecha_fin &&
                         lista_tipoCliente.Contains(x.categoria)
-                        )
-                    .ToList()   
-                    .Select(x => new
+                        );
+
+                    var cuenta = cartera.Count();
+
+                    if (empresa != "0" && sucursal != "0")
                     {
-                        x.empresa,
-                        x.sucursal,
-                        x.identificacion,
-                        x.nombre_comercial,
-                        x.categoria,
-                        x.vendedor_cliente,
-                        x.vendedor_factura,
-                        secuencial_factura = (x.secuencial_factura.Replace("-", string.Empty)),
-                        x.descripcion,
-                        fecha_factura = x.fecha_factura.ToShortDateString(),
-                        fecha_vencimiento = x.fecha_vencimiento.Value.ToShortDateString(),
-                        x.provincia,
-                        x.ciudad,
-                        x.parroquia,
-                        x.direccion,
-                        valor_factura = x.valor_factura,
-                        totalChequePost = x.totalChequePost,
-                        saldo_pendiente = x.saldo_pendiente,
-                        x.dias_emitida,
-                        x.dias_diferencia 
-                    });
-                         
-                return Json(cartera, JsonRequestBehavior.AllowGet);
+                        cartera = cartera.Where(x => x.empresa == empresa);
+                        cartera = cartera.Where(x => x.sucursal == sucursal);
+
+                        var data_json = cartera.ToList()
+                        .Select(x => new
+                        {
+                            x.empresa,
+                            x.sucursal,
+                            x.identificacion,
+                            x.nombre_comercial,
+                            x.categoria,
+                            x.vendedor_cliente,
+                            x.vendedor_factura,
+                            secuencial_factura = (x.secuencial_factura.Replace("-", string.Empty)),
+                            x.descripcion,
+                            //fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.ToShortDateString(),
+                            fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.ToString("yyyy-MM-dd"),
+                            fecha_vencimiento = x.fecha_vencimiento == null ? "" : x.fecha_vencimiento,
+                            x.provincia,
+                            x.ciudad,
+                            x.parroquia,
+                            x.direccion,
+                            valor_factura = x.valor_factura,
+                            totalChequePost = x.totalChequePost,
+                            saldo_pendiente = x.saldo_pendiente,
+                            x.dias_emitida,
+                            x.dias_diferencia
+                        });
+
+                        var resultado = JsonConvert.SerializeObject(data_json, Formatting.Indented);
+
+                        return Json(resultado, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+
+                        if (empresa != "0")
+                        {
+                            cartera = cartera.Where(x => x.empresa == empresa);
+                        }
+
+                        if (sucursal != "0")
+                        {
+                            cartera = cartera.Where(x => x.sucursal == sucursal);
+                        }
+
+                        //cartera = cartera.OrderBy(x => new {x.empresa, x.sucursal});
+
+                        var data_json = Json(cartera.ToList()
+                        .Select(x => new
+                        {
+                            x.empresa,
+                            x.sucursal,
+                            x.identificacion,
+                            x.nombre_comercial,
+                            x.categoria,
+                            x.vendedor_cliente,
+                            x.vendedor_factura,
+                            secuencial_factura = (x.secuencial_factura.Replace("-", string.Empty)),
+                            x.descripcion,
+                            //fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.ToShortDateString(),
+                            //fecha_vencimiento = x.fecha_vencimiento == null ? "" : x.fecha_vencimiento.Value.ToShortDateString(),
+                            fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.ToString("yyyy-MM-dd"),
+                            fecha_vencimiento = x.fecha_vencimiento == null ? "" : x.fecha_vencimiento,
+                            x.provincia,
+                            x.ciudad,
+                            x.parroquia,
+                            x.direccion,
+                            valor_factura = x.valor_factura,
+                            totalChequePost = x.totalChequePost,
+                            saldo_pendiente = x.saldo_pendiente,
+                            x.dias_emitida,
+                            x.dias_diferencia
+                        }), JsonRequestBehavior.AllowGet
+                        );
+
+                        data_json.MaxJsonLength = 500000000;
+
+                        return data_json;
+                    }
+                }
             }
+            catch (Exception e)
+            {
+                var resultado = 0;
+                e.InnerException.ToString();
+                return Json(resultado, JsonRequestBehavior.AllowGet);
+
+            }
+            
         }
 
         [HttpGet]
@@ -1127,7 +1213,7 @@ namespace Oasis.Controllers.Credito
         }
 
         [HttpPost]
-        public JsonResult ObtenerVentasProducto(string fecha_desde, string fecha_hasta, string empresa)
+        public JsonResult ObtenerVentasProducto(string fecha_desde, string fecha_hasta, string empresa, string sucursal, string producto, string cliente)
         {
 
             using (var db = new as2oasis())
@@ -1135,9 +1221,131 @@ namespace Oasis.Controllers.Credito
                 var _fecha_inicio = Convert.ToDateTime(fecha_desde);
                 var _fecha_fin = Convert.ToDateTime(fecha_hasta);
 
-                IQueryable<DVP> data = db.DVP.Where(
-                    x => x.Fecha_factura >= _fecha_inicio &&
-                    x.Fecha_factura <= _fecha_fin
+                IQueryable<Ventas_Producto_Precio> data = db.Ventas_Producto_Precio.Where(
+                    x => x.fecha_factura >= _fecha_inicio &&
+                    x.fecha_factura <= _fecha_fin
+                    );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.Empresa == empresa);
+                }
+
+                if (sucursal != "0")
+                {
+                    data = data.Where(x => x.localidad == sucursal);
+                }
+
+                if (producto != "0")
+                {
+                    data = data.Where(x => x.producto == producto);
+                }
+
+                if (cliente != "0")
+                {
+                    data = data.Where(x => x.Cliente == cliente);
+                }
+
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.Empresa,
+                        x.localidad,
+                        x.tipo_documento,
+                        Fecha_factura = x.fecha_factura.Value.ToShortDateString(),
+                        x.identificacion,
+                        x.Cliente,
+                        x.factura,
+                        x.codigo_producto,
+                        x.producto,
+                        x.cantidad,
+                        x.bonificacion,
+                        x.porc_bonifica,
+                        x.valores,
+                        x.precio,
+                        x.precio_especial
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                data_json.MaxJsonLength = 500000000;
+
+                return data_json;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerClientes(string fecha_desde, string fecha_hasta, string empresa, string sucursal, string cliente)
+        {
+
+            using (var db = new as2oasis())
+            {
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+                IQueryable<Ventas_Producto_Precio> data = db.Ventas_Producto_Precio.Where(
+                    x => x.fecha_factura >= _fecha_inicio &&
+                    x.fecha_factura <= _fecha_fin
+                    );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.Empresa == empresa);
+                }
+
+                if (sucursal != "0")
+                {
+                    data = data.Where(x => x.localidad == sucursal);
+                }
+
+                if (cliente != "0")
+                {
+                    data = data.Where(x => x.Cliente == cliente);
+                }
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.Empresa,
+                        x.localidad,
+                        x.tipo_documento,
+                        Fecha_factura = x.fecha_factura.Value.ToShortDateString(),
+                        x.identificacion,
+                        x.Cliente,
+                        x.factura,
+                        x.codigo_producto,
+                        x.producto,
+                        x.cantidad,
+                        x.bonificacion,
+                        x.porc_bonifica,
+                        x.valores,
+                        x.precio,
+                        x.precio_especial
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                data_json.MaxJsonLength = 500000000;
+
+                return data_json;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerCobrosConsolidado(string fecha_desde, string fecha_hasta, string empresa)
+        {
+
+            using (var db = new as2oasis())
+            {
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+                IQueryable<Ventas_Producto_Precio> data = db.Ventas_Producto_Precio.Where(
+                    x => x.fecha_factura >= _fecha_inicio &&
+                    x.fecha_factura <= _fecha_fin
                     );
 
                 if (empresa != "0")
@@ -1152,19 +1360,20 @@ namespace Oasis.Controllers.Credito
                     .Select(x => new
                     {
                         x.Empresa,
-                        x.Tipo_documento,
-                        Fecha_factura = x.Fecha_factura.Value.ToShortDateString(),
-                        x.Ciudad,
-                        x.Provincia,
-                        x.Parroquia,
-                        x.Tipo_cliente,
-                        x.Canal,
-                        x.RUC,
+                        x.localidad,
+                        x.tipo_documento,
+                        Fecha_factura = x.fecha_factura.Value.ToShortDateString(),
+                        x.identificacion,
                         x.Cliente,
-                        x.id_motivo_nota_credito_cliente,
-                        x.Secuencial_documento,
-                        x.indicador_afecta_devolucion,
-                        x.Código_producto
+                        x.factura,
+                        x.codigo_producto,
+                        x.producto,
+                        x.cantidad,
+                        x.bonificacion,
+                        x.porc_bonifica,
+                        x.valores,
+                        x.precio,
+                        x.precio_especial
                     }), JsonRequestBehavior.AllowGet
                     );
 
@@ -1173,5 +1382,6 @@ namespace Oasis.Controllers.Credito
                 return data_json;
             }
         }
+    
     }
 }

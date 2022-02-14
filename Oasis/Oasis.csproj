@@ -693,6 +693,9 @@
     <Compile Include="Models\relacion_cotizacion_ganadora_perdedora.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reporte_Cartera.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Reporte_GuiasRemision.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
@@ -760,6 +763,9 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ventas_Consolidado_Di.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Ventas_Producto_Precio.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -3138,6 +3144,9 @@
     <Content Include="Views\Credito\VentasProducto.cshtml" />
     <Content Include="Views\Credito\MovimientoClientes.cshtml" />
     <Content Include="Views\Credito\PresupuestoCobrosCons.cshtml" />
+    <Content Include="Views\Credito\GestionCarteraVcda.cshtml" />
+    <Content Include="Views\Credito\AnalisisCierreCaja.cshtml" />
+    <Content Include="Views\Costos\AnalisisCostos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

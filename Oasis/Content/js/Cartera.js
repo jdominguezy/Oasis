@@ -4,6 +4,20 @@ var sucursal;
 var localidad;
 var id_visitador;
 var tipoCliente = [];
+var fecha_desde;
+var fecha_hasta;
+
+function ConvertirFecha(fecha) {
+    var date = fecha;
+    var day = date.getDate();       // yields date
+    var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
+    var year = date.getFullYear();  // yields year
+    var hour = date.getHours();     // yields hours
+    var minute = date.getMinutes(); // yields minutes
+    var second = date.getSeconds(); // yields seconds
+    return day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+}
+
 
 function ParametrosCartera() {
     tipoCliente = [];
@@ -25,6 +39,9 @@ function ParametrosCartera() {
     $('.tipoCliente:checkbox:checked').each(function () {
         tipoCliente.push($(this).attr('name'));
     });
+
+     fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
+     fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
 }
 
 
@@ -41,6 +58,7 @@ $('#DetalleIndividual').click(function () {
             //localidad: this.localidad,
             tipoCliente: JSON.stringify(tipoCliente),
             visitador: id_visitador
+            
         },
         dataType: "JSON",
         contentType: "application/JSON",
@@ -384,12 +402,15 @@ $('#DetalleIndividual').click(function () {
 });
 
 $("#GenerarCartera").click(function () {
+    console.log("Ingresa al js")
     ParametrosCartera();
-
+    console.log("pasar parametros")
     var eleccion_cartera_general = $('#cartera_general')[0].checked;
 
     if (eleccion_cartera_general) {
+        console.log("ingresa al if")
         iniciaLoading();
+        console.log("sale de la carga")
         $.ajax({
             url: 'ObtenerCartera',
             type: 'GET',
@@ -397,7 +418,9 @@ $("#GenerarCartera").click(function () {
                 empresa: empresa,
                 sucursal: sucursal,
                 //localidad: this.localidad,
-                tipoCliente: JSON.stringify(tipoCliente)
+                tipoCliente: JSON.stringify(tipoCliente),
+                fecha_desde: fecha_desde,
+                fecha_hasta: fecha_hasta
             },
             dataType: "JSON",
             contentType: "application/JSON",
@@ -410,6 +433,12 @@ $("#GenerarCartera").click(function () {
                 row.className = "row";
                 row.appendChild(contenedorTabla);
                 $('#contenedorPrimario').append(row);
+
+                console.log(d)
+                if (empresa != '0' && sucursal != '0') {
+                    d = JSON.parse(d);
+                    console.log("Imprime")
+                }
                 //d = JSON.parse(d);
                 var col = [];
                 var encabezado = ['EMPRESA', 'SUCURSAL',
@@ -420,6 +449,9 @@ $("#GenerarCartera").click(function () {
                     'PROVINCIA', 'CIUDAD', 'PARROQUIA', 'DIRECCION',
                     'VALOR FACTURA', 'CHQ. POST.', 'SALDO PENDIENTE',
                     'DIAS EMITIDAS', 'DIAS VENCIDA'];
+
+                //console.log(d)
+                console.log(encabezado)
                 for (var i = 0; i < d.length; i++) {
                     for (var key in d[i]) {
                         if (col.indexOf(key) === -1) {
@@ -428,6 +460,7 @@ $("#GenerarCartera").click(function () {
                     }
                 }
 
+                console.log("sale setea los datos")
                 // CREATE DYNAMIC TABLE.
                 var div = document.createElement("div");
                 var row = document.createElement("div");
@@ -608,3 +641,4 @@ $("#GenerarCartera").click(function () {
         })
     }
 });
+

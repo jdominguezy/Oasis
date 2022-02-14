@@ -367,6 +367,9 @@ $("#GenerarPresupuesto").click(function () {
     var empresa = $("#empresa").val();
     var sucursal = $("#sucursal").val();
     var localidad;
+
+    console.log("Ingresa al js")
+
     if ($('#chkLocalidad').is(":checked")) {
         localidad = null
     } else {
@@ -379,9 +382,12 @@ $("#GenerarPresupuesto").click(function () {
     var fecha_hasta = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').endDate._d);
     iniciaLoading();
 
+    console.log("Pasa parametros")
+
     var escogeDistribuidor = $(".DISTRIBUIDORES")[0].checked;
     if (escogeDistribuidor) {
         // PROCEDIMIENTO CON DISTRIBUIDOR
+        console.log("Entra al proc Distribuidores")
         var codigoVendedor = $(".js-data-vendedor-ajax").val();
         $.ajax({
             url: 'ObtenerPresupuestoDistribuidor',
@@ -430,13 +436,10 @@ $("#GenerarPresupuesto").click(function () {
                 sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
                 sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
                 sTxt += '<tbody>';
-                //$.each(JSON.parse(d), function (index, p) {
-                $.each(function (index, p) {
+                $.each(JSON.parse(d), function (index, p) {
                     sTxt += '<tr>';
                     sTxt += '<td style="text-align:center">';
                     sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + empresa + '" data-sucursal="' + sucursal + '" data-fecha_desde="' + fecha_desde + '" data-fecha_hasta="' + fecha_hasta + '" data-tipocliente="' + tipoCliente + '" hidden></span>';
-                    sTxt += '' + p.empresa + '</td>';
-                    sTxt += '' + p.sucursal + '</td>';
                     sTxt += '' + p.id_vendedor + '</td>';
                     sTxt += '<td style="text-align:center">' + p.nombre_vendedor + '</td>';
                     sTxt += '<td style="text-align:center">' + formatoValor(p.valor_venta) + '</td>';
@@ -485,19 +488,19 @@ $("#GenerarPresupuesto").click(function () {
                     "buttons": [
                         {
                             "extend": 'copy', "text": 'Copiar', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                         },
                         {
                             "extend": 'pdf', "text": 'PDF', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                         },
                         {
                             "extend": 'excel', "text": 'Excel', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                         },
                         {
                             "extend": 'print', "text": 'Imprimir', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                         },
                     ],
                     initComplete: function () {
@@ -526,6 +529,7 @@ $("#GenerarPresupuesto").click(function () {
         })
     } else {
 
+        console.log("Entra al proc Obtener Presupuesto")
         $.ajax({
         url: 'ObtenerPresupuesto',
         type: 'GET',
@@ -551,6 +555,8 @@ $("#GenerarPresupuesto").click(function () {
             row.id = "rowcontenedorTabla";
             $('#contenedorPrimario').append(row);
 
+            console.log("12")
+
             var div = document.createElement("div");
             var row = document.createElement("div");
             row.className = "row col-md-4";
@@ -567,19 +573,23 @@ $("#GenerarPresupuesto").click(function () {
             var totalCobros = 0;
             var totalAlcanceCobros = 0;
 
+            console.log("13")
 
             var sTxt = '<table class="table table-hover" id="tablePresupuesto">';
-            sTxt += '<thead><tr><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
+            sTxt += '<thead><tr><th style="text-align:center">Empresa</th><th style = "text-align:center">Sucursal</th ><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
             sTxt += '<th style="text-align:center">Ventas</th><th style="text-align:center">%</th>';
             sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
             sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
             sTxt += '<tbody>';
-            $.each(function (index, p) {
+
+            console.log(sTxt)
+            console.log(d)
+            $.each(JSON.parse(d), function (index, p) {
                 sTxt += '<tr>';
                 sTxt += '<td style="text-align:center">';
                 sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + empresa+'" data-sucursal="'+sucursal+'" data-fecha_desde="'+fecha_desde+'" data-fecha_hasta="'+fecha_hasta+'" data-tipocliente="'+tipoCliente+'" hidden></span>';
-                sTxt += '' + p.empresa + '</td>';
-                sTxt += '' + p.sucursal + '</td>';
+                sTxt += '<td style="text-align:center">' + p.empresa + '</td>';
+                sTxt += '<td style="text-align:center">' + p.sucursal + '</td>';
                 sTxt += '' + p.id_vendedor + '</td>';
                 sTxt += '<td style="text-align:center">' + p.nombre_vendedor + '</td>';
                 sTxt += '<td style="text-align:center">' + formatoValor(p.valor_venta)  + '</td>';
@@ -615,6 +625,8 @@ $("#GenerarPresupuesto").click(function () {
             sTxt += '</tr></tfoot>';
             sTxt += '</table>';
 
+            console.log(sTxt)
+
             cardbody.append($.parseHTML(sTxt)[0]);
             card.appendChild(cardbody);
             div.appendChild(card);
@@ -628,19 +640,19 @@ $("#GenerarPresupuesto").click(function () {
                 "buttons": [
                     {
                         "extend": 'copy', "text": 'Copiar', "className": 'btn btn-default btn-xs'
-                        , exportOptions: { columns: [0,1,2,3,4,5,6,7]}
+                        , exportOptions: { columns: [0,1,2,3,4,5,6,7,8,9]}
                     },
                     {
                         "extend": 'pdf', "text": 'PDF', "className": 'btn btn-default btn-xs'
-                        , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                     },
                     {
                         "extend": 'excel', "text": 'Excel', "className": 'btn btn-default btn-xs'
-                        , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                     },
                     {
                         "extend": 'print', "text": 'Imprimir', "className": 'btn btn-default btn-xs'
-                        , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
                     },
                 ],
                 initComplete: function () {
@@ -653,10 +665,13 @@ $("#GenerarPresupuesto").click(function () {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
                 }
             });
+
+            console.log(d)
             var presupuesto = JSON.parse(d);
             var vendedores = presupuesto.map(presupuesto => presupuesto.nombre_vendedor);
             var ventas = presupuesto.map(presupuesto => presupuesto.ventas_neta);
             var cobros = presupuesto.map(presupuesto => presupuesto.total_cobros);
+            console.log("Inicia Graficos")
             GeneraGraficos(presupuesto);
             cierraLoading();
         },
