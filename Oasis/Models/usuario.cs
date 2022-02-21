@@ -24,6 +24,8 @@ public partial class usuario
 
         this.factura_cliente = new HashSet<factura_cliente>();
 
+        this.cierre_caja = new HashSet<cierre_caja>();
+
     }
 
 
@@ -130,6 +132,10 @@ public partial class usuario
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<factura_cliente> factura_cliente { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<cierre_caja> cierre_caja { get; set; }
 
 }
 

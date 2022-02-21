@@ -21,6 +21,14 @@
         <AssociationConnector Association="as2Model.FK_if5q14tu796i2kk6cndnttj7w" />
         <EntityTypeShape EntityType="as2Model.categoria_empresa" Width="1.5" PointX="2.75" PointY="24" />
         <AssociationConnector Association="as2Model.FK_q5s9ubay5dnv2lj9iydghy6uk" />
+        <EntityTypeShape EntityType="as2Model.caja" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="as2Model.cierre_caja" Width="1.5" PointX="12.25" PointY="8.875" />
+        <AssociationConnector Association="as2Model.FK_ijel3hf4a4kloohgf90ko7xmm" />
+        <AssociationConnector Association="as2Model.FK_jnt3x4hkt16rgfxa880v1x0m0" />
+        <AssociationConnector Association="as2Model.FK_fi3or6vdjydr0onm7p6llokpt" />
+        <EntityTypeShape EntityType="as2Model.detalle_cierre_caja" Width="1.5" PointX="14.5" PointY="5.5" />
+        <AssociationConnector Association="as2Model.FK_bi9vecexyqhls14gpoc417yql" />
+        <AssociationConnector Association="as2Model.FK_t8ntccnk9jr9073gjp59f3l7e" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

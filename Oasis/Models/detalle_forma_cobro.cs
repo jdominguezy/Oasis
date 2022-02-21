@@ -18,6 +18,15 @@ using System;
 public partial class detalle_forma_cobro
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public detalle_forma_cobro()
+    {
+
+        this.detalle_cierre_caja = new HashSet<detalle_cierre_caja>();
+
+    }
+
+
     public int id_detalle_forma_cobro { get; set; }
 
     public Nullable<System.DateTime> fecha_creacion { get; set; }
@@ -135,6 +144,14 @@ public partial class detalle_forma_cobro
     public Nullable<System.DateTime> fecha_documento { get; set; }
 
     public Nullable<int> id_cobro_prestamo { get; set; }
+
+
+
+    public virtual caja caja { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<detalle_cierre_caja> detalle_cierre_caja { get; set; }
 
 }
 

@@ -239,6 +239,8 @@ public partial class factura_cliente
 
     public Nullable<int> id_persona_responsable { get; set; }
 
+    public decimal porcentaje_descuento_promocion { get; set; }
+
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

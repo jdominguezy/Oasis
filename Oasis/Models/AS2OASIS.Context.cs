@@ -207,6 +207,12 @@ public partial class as2oasis : DbContext
 
     public virtual DbSet<Reporte_Cartera> Reporte_Cartera { get; set; }
 
+    public virtual DbSet<Reporte_Analisis_Costos> Reporte_Analisis_Costos { get; set; }
+
+    public virtual DbSet<Cierre_Caja_Cabecera> Cierre_Caja_Cabecera { get; set; }
+
+    public virtual DbSet<Recetas> Recetas { get; set; }
+
 
     [DbFunction("as2oasis", "SplitString")]
     public virtual IQueryable<SplitString_Result> SplitString(string input, string character)

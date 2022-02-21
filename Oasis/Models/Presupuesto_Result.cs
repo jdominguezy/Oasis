@@ -37,9 +37,6 @@ public partial class Presupuesto_Result
 
     public Nullable<double> alcance_cobro { get; set; }
 
-    public string empresa { get; set; }
+}
 
-    public string sucursal { get; set; }
-
-    }
 }

@@ -64,15 +64,22 @@ namespace Oasis.Controllers
                     var encabezado_tabla = FontFactory.GetFont("SEGOE UI", 8,Font.BOLD, BaseColor.BLACK);
                     var detalle = FontFactory.GetFont("SEGOE UI", 7, Font.NORMAL, BaseColor.BLACK);
 
-                    var MP = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP01" || x.codigo_categoria_producto == "GRP05"
-                    || x.codigo_categoria_producto == "GRP07");
-                    var ME = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP02" || x.codigo_categoria_producto == "GRP03");
-                    
-                    var suma_mp = MP.Sum(x => x.costo_total)??0;
-                    var suma_me = ME.Sum(x => x.costo_total)??0;
+                    var MP = costos_mp_me.Where(x => x.codigo_categoria_producto.Replace("","") == "GRP01" ||
+                            x.codigo_categoria_producto.Replace("", "") == "GRP05"
+                            || x.codigo_categoria_producto.Replace("", "") == "GRP07");
+                    //var MP = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP01" || x.codigo_categoria_producto == "GRP05"
+                    //|| x.codigo_categoria_producto == "GRP07");
+                    //|| x.codigo_categoria_producto == "GRP07");
+                    //var ME = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP02" || x.codigo_categoria_producto == "GRP03");
+                    var ME = costos_mp_me.Where(x => x.codigo_categoria_producto.Replace("", "") == "GRP02" ||
+                            x.codigo_categoria_producto.Replace("", "") == "GRP03");
+
+                    var suma_mp = MP.Sum(x => x.costo_total==null?0: x.costo_total);
+                    //var suma_mp = MP.Sum(x => x.costo_total) ?? 0;
+                    var suma_me = ME.Sum(x => x.costo_total==null?0: x.costo_total) ??0;
                     var suma_mod = costos_mod.Select(x=>x.costo_total).First()??0;
                     //var suma_maq = costos_mod.Sum(x => x.costo_total)??0;
-                    var suma_otros_costos = costos_indirectos.Sum(x => x.costo_total)??0;
+                    var suma_otros_costos = costos_indirectos.Sum(x => x.costo_total==null?0: x.costo_total) ??0;
 
         
                     var suma_costos_total =  
@@ -319,7 +326,8 @@ namespace Oasis.Controllers
 
                     table1.AddCell(cell1);
                     
-                    if(MP.Count()>0)
+                    //if(MP.Count()>0)
+                    if(suma_mp > 0)
                         doc.Add(table1);
 
 
@@ -345,7 +353,8 @@ namespace Oasis.Controllers
                         detalle_mp.AddCell(new Phrase(string.Format("{0:n4}", item.costo_total), detalle));
                     }
 
-                    if (MP.Count() > 0)
+                    //if (MP.Count() > 0)
+                    if (suma_mp > 0)
                         doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
                     table1.FlushContent();
@@ -375,7 +384,8 @@ namespace Oasis.Controllers
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_mp.AddCell(cell1);
 
-                    if (MP.Count() > 0)
+                    //if (MP.Count() > 0)
+                    if (suma_mp > 0)
                         doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
 
@@ -401,7 +411,8 @@ namespace Oasis.Controllers
 
                     table1.AddCell(cell1);
 
-                    if (ME.Count() > 0)
+                    //if (ME.Count() > 0)
+                    if (suma_me > 0)
                         doc.Add(table1); 
 
                     detalle_mp.AddCell(new Phrase("Cod.", subtitulo));
@@ -426,7 +437,8 @@ namespace Oasis.Controllers
                         detalle_mp.AddCell(new Phrase(string.Format("{0:n4}", item.costo_total), detalle));
                     }
 
-                    if (ME.Count() > 0)
+                    //if (ME.Count() > 0)
+                    if (suma_me > 0)
                         doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
                     table1.FlushContent();
@@ -456,7 +468,8 @@ namespace Oasis.Controllers
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_mp.AddCell(cell1);
 
-                    if (ME.Count() > 0)
+                    //if (ME.Count() > 0)
+                    if (suma_me > 0)
                         doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
 
@@ -761,15 +774,10 @@ namespace Oasis.Controllers
                 var _fecha_inicio = Convert.ToDateTime(fecha_desde);
                 var _fecha_fin = Convert.ToDateTime(fecha_hasta);
 
-                IQueryable<DVP> data = db.DVP.Where(
-                    x => x.Fecha_factura >= _fecha_inicio &&
-                    x.Fecha_factura <= _fecha_fin
+                IQueryable<Reporte_Analisis_Costos> data = db.Reporte_Analisis_Costos.Where(
+                    x => x.fecha_cierre >= _fecha_inicio &&
+                    x.fecha_cierre <= _fecha_fin
                     );
-
-                if (empresa != "0")
-                {
-                    data = data.Where(x => x.Empresa == empresa);
-                }
 
 
                 var data_json = Json(
@@ -777,24 +785,28 @@ namespace Oasis.Controllers
                     .ToList()
                     .Select(x => new
                     {
-                        x.Empresa,
-                        x.Tipo_documento,
-                        Fecha_factura = x.Fecha_factura.Value.ToShortDateString(),
-                        x.Ciudad,
-                        x.Provincia,
-                        x.Parroquia,
-                        x.Tipo_cliente,
-                        x.Canal,
-                        x.RUC,
-                        x.Cliente,
-                        x.id_motivo_nota_credito_cliente,
-                        x.Secuencial_documento,
-                        x.indicador_afecta_devolucion,
-                        x.Código_producto,
-                        x.Código_MBA,
-                        x.Producto,
-                        x.Categoría,
-                        x.Subcategoría
+                        x.empresa,
+                        x.mes_cierre,
+                        x.orden_pro,
+                        x.lote,
+                        x.planta,
+                        x.tipo_orden,
+                        x.codigo_pro,
+                        x.producto,
+                        x.cant_elaborar,
+                        x.cantidad_fabricada,
+                        x.cajas_elaboradas,
+                        costo_un = ((x.costo_mp==null?0: x.costo_mp) + (x.costo_me==null?0: x.costo_me) + 
+                                   (x.costo_mod==null?0: x.costo_mod) + (x.costo_otros==null?0: x.costo_otros)) /x.cantidad_fabricada,
+                        costo_caja = ((x.costo_mp == null ? 0 : x.costo_mp) + (x.costo_me == null ? 0 : x.costo_me) +
+                                   (x.costo_mod == null ? 0 : x.costo_mod) + (x.costo_otros == null ? 0 : x.costo_otros)) / x.cantidad_fabricada,
+                        costo_total = (x.costo_mp == null ? 0 : x.costo_mp) + (x.costo_me == null ? 0 : x.costo_me) +
+                                   (x.costo_mod == null ? 0 : x.costo_mod) + (x.costo_otros == null ? 0 : x.costo_otros),
+                        costo_mp = x.costo_mp==null?0: x.costo_mp,
+                        costo_me= x.costo_me==null?0: x.costo_me,
+                        costo_mod = x.costo_mod==null?0: x.costo_mod,
+                        costo_otros = x.costo_otros==null?0: x.costo_otros,
+                        x.rendimiento
                     }), JsonRequestBehavior.AllowGet
                     );
 

@@ -3,14 +3,21 @@
 @using Oasis.Models.Login
 
 @{
-    ViewBag.Title = "Analisis Cierre de Caja";
+    ViewBag.Title = "Consolidado Cierre de Caja";
     var id_usuario = (User as CustomPrincipal).id_usuario;
     var as2 = new AS2Context();
     var db = new as2oasis();
+    var empresas = db.detalle_usuario_empresa_sucursal
+        .Where(x => x.id_usuario == id_usuario)
+        .GroupBy(x => x.empresaOasis.nombre)
+        .Select(x => x.Key);
     var sucursales = db.detalle_usuario_empresa_sucursal
         .Where(x => x.id_usuario == id_usuario)
         .GroupBy(x => x.sucursalOasis.nombre)
         .OrderBy(x => x.Key)
+        .Select(x => x.Key);
+    var caja = as2.caja
+        .GroupBy(x => x.nombre)
         .Select(x => x.Key);
     var vendedor = as2.usuario
         .Where(x => x.activo == true && x.indicador_agente_comercial == true)
@@ -26,7 +33,7 @@
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h2 class="card-title">Analisis Cierre de Caja</h2>
+                <h2 class="card-title">Consolidado Cierre de Caja</h2>
                 <div class="card-tools">
                     <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -41,12 +48,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Region</label>
-                            <select class="form-control" id="sucursal" name="sucursal">
-                                <option value="0">Todas las regiones</option>
-                                @foreach (var suc in sucursales)
+                            <label>Empresa</label>
+                            <select class="form-control" id="empresa" name="empresa">
+                                <option value="0">Todas las empresas</option>
+                                @foreach (var emp in empresas)
                                 {
-                    <option value="@suc">@suc</option>}
+                                <option value="@emp">@emp</option>}
                             </select>
                         </div>
                     </div>
@@ -74,13 +81,36 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Usuario</label>
-                            <select class="form-control" id="vendedor" name="vendedor">
-                                <option value="0">Todos los usuarios</option>
-                                @foreach (var usu in vendedor)
-                                {
-                    <option value="@usu">@usu</option>
-}
+                            <label for="exampleInputEmail1">Usuario</label>
+                            <select class="form-control js-data-usuarios-ajax" id="vendedor">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col" style=" text-align: center; ">
+                            <label>Region</label>
+                            <div class="row" style="
+                                                text-align: center;
+                                                place-content: center;
+                                            ">
+                                <div class="col-md-10">
+                                    <select class="form-control" id="sucursal" name="sucursal">
+                                        <option value="0">Todas las regiones</option>
+                                        @foreach (var suc in sucursales)
+                                        {
+                                            <option value="@suc">@suc</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Cierre de Caja</label>
+                            <select class="form-control js-data-cierres-ajax" id="cierre">
                             </select>
                         </div>
                     </div>
@@ -94,26 +124,13 @@
                                 <div class="col-md-10">
                                     <select class="form-control" id="caja" name="caja">
                                         <option value="0">Todas las cajas</option>
-                                        @foreach (var ca in sucursales)
+                                        @foreach (var ca in caja)
                                         {
-                            <option value="@ca">@ca</option>
-}
+                                            <option value="@ca">@ca</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Cierre de Caja</label>
-                            <select class="form-control" id="cierre" name="cierre">
-                                <option value="0">Todos los Cierres Caja</option>
-                                @foreach (var usu in vendedor)
-                                {
-                                <option value="@usu">@usu</option>}
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -129,20 +146,111 @@
 
 @section Scripts {
     <script>
+        ActivarUsuarios();
+        ActivarCierres();
+
+        function ActivarUsuarios() {
+            $('.js-data-usuarios-ajax').select2({
+                //selectOnClose: true,
+                minimumInputLength: 2,
+                language: {
+                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
+                },
+                tags: [],
+                ajax: {
+                    url: '/Usuario/ObtenerUsuarios',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.username,
+                                    id: item.id_usuario
+                                }
+                            })
+                        };
+                    },
+                    dataType: 'json',
+                    data: function (params) {
+                        var query = {
+                            textoBusqueda: params.term
+                        }
+                        return query;
+                    }
+                }
+            }).on('change', function (e) {
+                limpiarRolesSelect();
+                ObtenerRolesPorUsuario();
+                ObtenerSucursalesPorUsuario();
+            });
+        }
+
+        function ActivarCierres() {
+            $('.js-data-cierres-ajax').select2({
+                //selectOnClose: true,
+                minimumInputLength: 2,
+                language: {
+                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
+                },
+                tags: [],
+                ajax: {
+                    url: 'ObtenerCierres',
+                    type: 'POST',
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.username,
+                                    id: item.id_usuario
+                                }
+                            })
+                        };
+                    },
+                    dataType: 'json',
+                    data: function (params) {
+                        var query = {
+                            textoBusqueda: params.term
+                        }
+                        return query;
+                    }
+                }
+            }).on('change', function (e) {
+                limpiarRolesSelect();
+                ObtenerRolesPorUsuario();
+                ObtenerSucursalesPorUsuario();
+            });
+        }
+
+        function VerCobros(id_organizacion, numero) {
+            window.open("VerCobros?id_organizacion=" + id_organizacion, "VerCobros?numero=" +numero, '_blank');
+        }
+
+        function Seleccionar(iid_organizacion, numero) {
+            window.open("VerCobros?id_organizacion=" + id_organizacion, "VerCobros?numero=" + numero, '_blank');
+        }
 
         $("#GenerarDatos").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            var usuario = $('#vendedor').val();
+            var caja = $('#caja').val();
+            var numero = $('#cierre').val();
+
             iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerDVP',
+                url: 'ObtenerCierreCaja',
                 type: 'POST',
                 data: JSON.stringify({
                     fecha_desde: fecha_desde,
                     fecha_hasta: fecha_hasta,
+                    sucursal: sucursal,
+                    usuario: usuario,
+                    caja: caja,
+                    numero: numero,
                     empresa: empresa
+
                 }),
                 dataType: "JSON",
                 contentType: "application/JSON",
@@ -156,17 +264,9 @@
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
                     var col = [];
-                    var encabezado = ["Empresa",
-                        "Tipo documento", "Fecha factura", "Ciudad", "Provincia",
-                        "Parroquia", "Tipo cliente", "Canal", "RUC",
-                        "Cliente", "id_motivo_nota_credito_cliente",
-                        "Secuencial documento", "inidicador_afecta_devolucion",
-                        "Codigo producto", "Codigo MBA",
-                        "Producto", "Categoria", "Subcategoria",
-                        "UM", "Cantidad", "Valor total", "Tipo venta",
-                        "codigo", "Cod. Vendedor", "Vendedor", "NC",
-                        "Descripcion NC", "Fecha NC", "clave_acceso",
-                        "id_factura_cliente", "memo"];
+                    var encabezado = ["Emresa", "Numero",
+                        "Usuario", "Sucursal", "Caja", "Fecha Hasta",
+                        "Valor Usuario", "Estado", "Codigo Movil", " "];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -174,6 +274,7 @@
                             }
                         }
                     }
+
 
                     // CREATE DYNAMIC TABLE.
                     var div = document.createElement("div");
@@ -188,6 +289,7 @@
                     table.className = 'table table-hover tableDetalle';
                     table.id = "tableDetalle";
                     table.style = '';
+
 
                     // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
                     var thead = document.createElement("thead");
@@ -212,8 +314,14 @@
                             tabCell.innerHTML = d[i][col[j]];
                             tabCell.style = ' white-space: nowrap;';
                         }
+
+                        var tabCell = tr_body.insertCell(-1);
+                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerCobros(\'' + d[i][col[10]] + '\')" >Ver Cobros</button>';
+                        //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[11]] + '\')" >Seleccionar>';
+                        tabCell.style = ' white-space: nowrap;';
+
                         //var tabCell = tr_body.insertCell(-1);
-                        //tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="imprimirOrden(\'' + d[i][col[0]] + '\')" >Imprimir</button>';
+                        //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[9]] + '\')" >Seleccionar>';
                         //tabCell.style = ' white-space: nowrap;';
                         tbody.appendChild(tr_body);
                     }

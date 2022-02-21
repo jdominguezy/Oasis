@@ -5,6 +5,25 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="as2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="caja">
+          <Key>
+            <PropertyRef Name="id_caja" />
+          </Key>
+          <Property Name="id_caja" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="activo" Type="bit" Nullable="false" />
+          <Property Name="codigo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="predeterminado" Type="bit" Nullable="false" />
+          <Property Name="id_punto_de_venta" Type="int" />
+        </EntityType>
         <EntityType Name="categoria_empresa">
           <Key>
             <PropertyRef Name="id_categoria_empresa" />
@@ -46,6 +65,52 @@
           <Property Name="dias_despacho" Type="int" />
           <Property Name="hora_desde" Type="int" />
           <Property Name="hora_hasta" Type="int" />
+        </EntityType>
+        <EntityType Name="cierre_caja">
+          <Key>
+            <PropertyRef Name="id_cierre_caja" />
+          </Key>
+          <Property Name="id_cierre_caja" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="caja_chica" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="canje" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="diferencia" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="fecha_hasta" Type="date" Nullable="false" />
+          <Property Name="id_dispositivo_sincronizacion" Type="int" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="nombre_sucursal" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="total_usuario" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="valor" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="id_caja" Type="int" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="codigo_movil" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="detalle_cierre_caja">
+          <Key>
+            <PropertyRef Name="id_detalle_cierre_caja" />
+          </Key>
+          <Property Name="id_detalle_cierre_caja" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="id_entidad_origen" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="id_dispositivo_sincronizacion" Type="int" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="valor" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="id_anticipo_cliente" Type="int" />
+          <Property Name="id_cierre_caja" Type="int" />
+          <Property Name="id_detalle_denominacion_forma_cobro" Type="int" />
+          <Property Name="id_detalle_forma_cobro" Type="int" />
+          <Property Name="id_interfaz_contable_proceso" Type="int" />
         </EntityType>
         <EntityType Name="detalle_forma_cobro">
           <Key>
@@ -300,6 +365,7 @@
           <Property Name="indicador_recepcion_automatica" Type="bit" Nullable="false" />
           <Property Name="ids_detalles_cobros_prestamos" Type="varchar" MaxLength="255" />
           <Property Name="id_persona_responsable" Type="int" />
+          <Property Name="porcentaje_descuento_promocion" Type="numeric" Precision="12" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="factura_proveedorSRI">
           <Key>
@@ -489,6 +555,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_bi9vecexyqhls14gpoc417yql">
+          <End Role="cierre_caja" Type="Self.cierre_caja" Multiplicity="0..1" />
+          <End Role="detalle_cierre_caja" Type="Self.detalle_cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cierre_caja">
+              <PropertyRef Name="id_cierre_caja" />
+            </Principal>
+            <Dependent Role="detalle_cierre_caja">
+              <PropertyRef Name="id_cierre_caja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_comkrnihn5g538cddgr6804xt">
           <End Role="direccion_empresa" Type="Self.direccion_empresa" Multiplicity="1" />
           <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="*" />
@@ -510,6 +588,18 @@
             </Principal>
             <Dependent Role="factura_cliente">
               <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_fi3or6vdjydr0onm7p6llokpt">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="cierre_caja" Type="Self.cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="cierre_caja">
+              <PropertyRef Name="id_usuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -537,6 +627,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ijel3hf4a4kloohgf90ko7xmm">
+          <End Role="caja" Type="Self.caja" Multiplicity="0..1" />
+          <End Role="cierre_caja" Type="Self.cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caja">
+              <PropertyRef Name="id_caja" />
+            </Principal>
+            <Dependent Role="cierre_caja">
+              <PropertyRef Name="id_caja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jnt3x4hkt16rgfxa880v1x0m0">
+          <End Role="caja" Type="Self.caja" Multiplicity="0..1" />
+          <End Role="detalle_forma_cobro" Type="Self.detalle_forma_cobro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caja">
+              <PropertyRef Name="id_caja" />
+            </Principal>
+            <Dependent Role="detalle_forma_cobro">
+              <PropertyRef Name="id_caja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_jushfig5ma5q7cel0ew17kmf8">
           <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="0..1" />
           <End Role="factura_cliente1" Type="Self.factura_cliente" Multiplicity="*" />
@@ -561,8 +675,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_t8ntccnk9jr9073gjp59f3l7e">
+          <End Role="detalle_forma_cobro" Type="Self.detalle_forma_cobro" Multiplicity="0..1" />
+          <End Role="detalle_cierre_caja" Type="Self.detalle_cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="detalle_forma_cobro">
+              <PropertyRef Name="id_detalle_forma_cobro" />
+            </Principal>
+            <Dependent Role="detalle_cierre_caja">
+              <PropertyRef Name="id_detalle_forma_cobro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="as2ModelStoreContainer">
+          <EntitySet Name="caja" EntityType="Self.caja" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="categoria_empresa" EntityType="Self.categoria_empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cierre_caja" EntityType="Self.cierre_caja" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalle_cierre_caja" EntityType="Self.detalle_cierre_caja" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="detalle_forma_cobro" EntityType="Self.detalle_forma_cobro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="direccion_empresa" EntityType="Self.direccion_empresa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="empresa" EntityType="Self.empresa" Schema="dbo" store:Type="Tables" />
@@ -575,6 +704,10 @@
             <End Role="usuario" EntitySet="usuario" />
             <End Role="factura_cliente" EntitySet="factura_cliente" />
           </AssociationSet>
+          <AssociationSet Name="FK_bi9vecexyqhls14gpoc417yql" Association="Self.FK_bi9vecexyqhls14gpoc417yql">
+            <End Role="cierre_caja" EntitySet="cierre_caja" />
+            <End Role="detalle_cierre_caja" EntitySet="detalle_cierre_caja" />
+          </AssociationSet>
           <AssociationSet Name="FK_comkrnihn5g538cddgr6804xt" Association="Self.FK_comkrnihn5g538cddgr6804xt">
             <End Role="direccion_empresa" EntitySet="direccion_empresa" />
             <End Role="factura_cliente" EntitySet="factura_cliente" />
@@ -582,6 +715,10 @@
           <AssociationSet Name="FK_esbk89j1qg2d7svl7hp3fx68u" Association="Self.FK_esbk89j1qg2d7svl7hp3fx68u">
             <End Role="empresa" EntitySet="empresa" />
             <End Role="factura_cliente" EntitySet="factura_cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_fi3or6vdjydr0onm7p6llokpt" Association="Self.FK_fi3or6vdjydr0onm7p6llokpt">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="cierre_caja" EntitySet="cierre_caja" />
           </AssociationSet>
           <AssociationSet Name="FK_hev5glia823b69gu5e0e6l97u" Association="Self.FK_hev5glia823b69gu5e0e6l97u">
             <End Role="empresa" EntitySet="empresa" />
@@ -591,6 +728,14 @@
             <End Role="ubicacion" EntitySet="ubicacion" />
             <End Role="direccion_empresa" EntitySet="direccion_empresa" />
           </AssociationSet>
+          <AssociationSet Name="FK_ijel3hf4a4kloohgf90ko7xmm" Association="Self.FK_ijel3hf4a4kloohgf90ko7xmm">
+            <End Role="caja" EntitySet="caja" />
+            <End Role="cierre_caja" EntitySet="cierre_caja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jnt3x4hkt16rgfxa880v1x0m0" Association="Self.FK_jnt3x4hkt16rgfxa880v1x0m0">
+            <End Role="caja" EntitySet="caja" />
+            <End Role="detalle_forma_cobro" EntitySet="detalle_forma_cobro" />
+          </AssociationSet>
           <AssociationSet Name="FK_jushfig5ma5q7cel0ew17kmf8" Association="Self.FK_jushfig5ma5q7cel0ew17kmf8">
             <End Role="factura_cliente" EntitySet="factura_cliente" />
             <End Role="factura_cliente1" EntitySet="factura_cliente" />
@@ -598,6 +743,10 @@
           <AssociationSet Name="FK_q5s9ubay5dnv2lj9iydghy6uk" Association="Self.FK_q5s9ubay5dnv2lj9iydghy6uk">
             <End Role="categoria_empresa" EntitySet="categoria_empresa" />
             <End Role="empresa" EntitySet="empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t8ntccnk9jr9073gjp59f3l7e" Association="Self.FK_t8ntccnk9jr9073gjp59f3l7e">
+            <End Role="detalle_forma_cobro" EntitySet="detalle_forma_cobro" />
+            <End Role="detalle_cierre_caja" EntitySet="detalle_cierre_caja" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -719,6 +868,7 @@
           <NavigationProperty Name="direccion_empresa" Relationship="as2Model.FK_comkrnihn5g538cddgr6804xt" FromRole="factura_cliente" ToRole="direccion_empresa" />
           <Property Name="ids_detalles_cobros_prestamos" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="id_persona_responsable" Type="Int32" />
+          <Property Name="porcentaje_descuento_promocion" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
         </EntityType>
         <Association Name="FK_jushfig5ma5q7cel0ew17kmf8">
           <End Role="factura_cliente" Type="Self.factura_cliente" Multiplicity="0..1" />
@@ -769,6 +919,29 @@
           <AssociationSet Name="FK_q5s9ubay5dnv2lj9iydghy6uk" Association="as2Model.FK_q5s9ubay5dnv2lj9iydghy6uk">
             <End Role="categoria_empresa" EntitySet="categoria_empresa" />
             <End Role="empresa" EntitySet="empresa" />
+          </AssociationSet>
+          <EntitySet Name="caja" EntityType="as2Model.caja" />
+          <EntitySet Name="cierre_caja" EntityType="as2Model.cierre_caja" />
+          <AssociationSet Name="FK_ijel3hf4a4kloohgf90ko7xmm" Association="as2Model.FK_ijel3hf4a4kloohgf90ko7xmm">
+            <End Role="caja" EntitySet="caja" />
+            <End Role="cierre_caja" EntitySet="cierre_caja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jnt3x4hkt16rgfxa880v1x0m0" Association="as2Model.FK_jnt3x4hkt16rgfxa880v1x0m0">
+            <End Role="caja" EntitySet="caja" />
+            <End Role="detalle_forma_cobro" EntitySet="detalle_forma_cobro" />
+          </AssociationSet>
+          <AssociationSet Name="FK_fi3or6vdjydr0onm7p6llokpt" Association="as2Model.FK_fi3or6vdjydr0onm7p6llokpt">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="cierre_caja" EntitySet="cierre_caja" />
+          </AssociationSet>
+          <EntitySet Name="detalle_cierre_caja" EntityType="as2Model.detalle_cierre_caja" />
+          <AssociationSet Name="FK_bi9vecexyqhls14gpoc417yql" Association="as2Model.FK_bi9vecexyqhls14gpoc417yql">
+            <End Role="cierre_caja" EntitySet="cierre_caja" />
+            <End Role="detalle_cierre_caja" EntitySet="detalle_cierre_caja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t8ntccnk9jr9073gjp59f3l7e" Association="as2Model.FK_t8ntccnk9jr9073gjp59f3l7e">
+            <End Role="detalle_forma_cobro" EntitySet="detalle_forma_cobro" />
+            <End Role="detalle_cierre_caja" EntitySet="detalle_cierre_caja" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="detalle_forma_cobro">
@@ -834,6 +1007,8 @@
           <Property Name="nombre_retencion_bien_servicio" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="fecha_documento" Type="DateTime" Precision="0" />
           <Property Name="id_cobro_prestamo" Type="Int32" />
+          <NavigationProperty Name="caja" Relationship="as2Model.FK_jnt3x4hkt16rgfxa880v1x0m0" FromRole="detalle_forma_cobro" ToRole="caja" />
+          <NavigationProperty Name="detalle_cierre_caja" Relationship="as2Model.FK_t8ntccnk9jr9073gjp59f3l7e" FromRole="detalle_forma_cobro" ToRole="detalle_cierre_caja" />
         </EntityType>
         <EntityType Name="empresa">
           <Key>
@@ -1058,6 +1233,7 @@
           <Property Name="IP_auditoria" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="codigo_fcm" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="factura_cliente" Relationship="as2Model.FK_8xebmbeu08jicjhj6i8in7w3s" FromRole="usuario" ToRole="factura_cliente" />
+          <NavigationProperty Name="cierre_caja" Relationship="as2Model.FK_fi3or6vdjydr0onm7p6llokpt" FromRole="usuario" ToRole="cierre_caja" />
         </EntityType>
         <Association Name="FK_8xebmbeu08jicjhj6i8in7w3s">
           <End Type="as2Model.usuario" Role="usuario" Multiplicity="0..1" />
@@ -1213,6 +1389,138 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="caja">
+          <Key>
+            <PropertyRef Name="id_caja" />
+          </Key>
+          <Property Name="id_caja" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="activo" Type="Boolean" Nullable="false" />
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="predeterminado" Type="Boolean" Nullable="false" />
+          <Property Name="id_punto_de_venta" Type="Int32" />
+          <NavigationProperty Name="cierre_caja" Relationship="as2Model.FK_ijel3hf4a4kloohgf90ko7xmm" FromRole="caja" ToRole="cierre_caja" />
+          <NavigationProperty Name="detalle_forma_cobro" Relationship="as2Model.FK_jnt3x4hkt16rgfxa880v1x0m0" FromRole="caja" ToRole="detalle_forma_cobro" />
+        </EntityType>
+        <EntityType Name="cierre_caja">
+          <Key>
+            <PropertyRef Name="id_cierre_caja" />
+          </Key>
+          <Property Name="id_cierre_caja" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="caja_chica" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="canje" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="diferencia" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="fecha_hasta" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="nombre_sucursal" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="total_usuario" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="valor" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="id_caja" Type="Int32" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="codigo_movil" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="caja" Relationship="as2Model.FK_ijel3hf4a4kloohgf90ko7xmm" FromRole="cierre_caja" ToRole="caja" />
+          <NavigationProperty Name="usuario" Relationship="as2Model.FK_fi3or6vdjydr0onm7p6llokpt" FromRole="cierre_caja" ToRole="usuario" />
+          <NavigationProperty Name="detalle_cierre_caja" Relationship="as2Model.FK_bi9vecexyqhls14gpoc417yql" FromRole="cierre_caja" ToRole="detalle_cierre_caja" />
+        </EntityType>
+        <Association Name="FK_ijel3hf4a4kloohgf90ko7xmm">
+          <End Type="as2Model.caja" Role="caja" Multiplicity="0..1" />
+          <End Type="as2Model.cierre_caja" Role="cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caja">
+              <PropertyRef Name="id_caja" />
+            </Principal>
+            <Dependent Role="cierre_caja">
+              <PropertyRef Name="id_caja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jnt3x4hkt16rgfxa880v1x0m0">
+          <End Type="as2Model.caja" Role="caja" Multiplicity="0..1" />
+          <End Type="as2Model.detalle_forma_cobro" Role="detalle_forma_cobro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caja">
+              <PropertyRef Name="id_caja" />
+            </Principal>
+            <Dependent Role="detalle_forma_cobro">
+              <PropertyRef Name="id_caja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_fi3or6vdjydr0onm7p6llokpt">
+          <End Type="as2Model.usuario" Role="usuario" Multiplicity="1" />
+          <End Type="as2Model.cierre_caja" Role="cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="cierre_caja">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="detalle_cierre_caja">
+          <Key>
+            <PropertyRef Name="id_detalle_cierre_caja" />
+          </Key>
+          <Property Name="id_detalle_cierre_caja" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="id_entidad_origen" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_dispositivo_sincronizacion" Type="Int32" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="valor" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="id_anticipo_cliente" Type="Int32" />
+          <Property Name="id_cierre_caja" Type="Int32" />
+          <Property Name="id_detalle_denominacion_forma_cobro" Type="Int32" />
+          <Property Name="id_detalle_forma_cobro" Type="Int32" />
+          <Property Name="id_interfaz_contable_proceso" Type="Int32" />
+          <NavigationProperty Name="cierre_caja" Relationship="as2Model.FK_bi9vecexyqhls14gpoc417yql" FromRole="detalle_cierre_caja" ToRole="cierre_caja" />
+          <NavigationProperty Name="detalle_forma_cobro" Relationship="as2Model.FK_t8ntccnk9jr9073gjp59f3l7e" FromRole="detalle_cierre_caja" ToRole="detalle_forma_cobro" />
+        </EntityType>
+        <Association Name="FK_bi9vecexyqhls14gpoc417yql">
+          <End Type="as2Model.cierre_caja" Role="cierre_caja" Multiplicity="0..1" />
+          <End Type="as2Model.detalle_cierre_caja" Role="detalle_cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cierre_caja">
+              <PropertyRef Name="id_cierre_caja" />
+            </Principal>
+            <Dependent Role="detalle_cierre_caja">
+              <PropertyRef Name="id_cierre_caja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t8ntccnk9jr9073gjp59f3l7e">
+          <End Type="as2Model.detalle_forma_cobro" Role="detalle_forma_cobro" Multiplicity="0..1" />
+          <End Type="as2Model.detalle_cierre_caja" Role="detalle_cierre_caja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="detalle_forma_cobro">
+              <PropertyRef Name="id_detalle_forma_cobro" />
+            </Principal>
+            <Dependent Role="detalle_cierre_caja">
+              <PropertyRef Name="id_detalle_forma_cobro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1222,6 +1530,7 @@
           <EntitySetMapping Name="factura_cliente">
             <EntityTypeMapping TypeName="as2Model.factura_cliente">
               <MappingFragment StoreEntitySet="factura_cliente">
+                <ScalarProperty Name="porcentaje_descuento_promocion" ColumnName="porcentaje_descuento_promocion" />
                 <ScalarProperty Name="id_persona_responsable" ColumnName="id_persona_responsable" />
                 <ScalarProperty Name="ids_detalles_cobros_prestamos" ColumnName="ids_detalles_cobros_prestamos" />
                 <ScalarProperty Name="id_factura_cliente" ColumnName="id_factura_cliente" />
@@ -1697,6 +2006,74 @@
                 <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
                 <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
                 <ScalarProperty Name="id_categoria_empresa" ColumnName="id_categoria_empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="caja">
+            <EntityTypeMapping TypeName="as2Model.caja">
+              <MappingFragment StoreEntitySet="caja">
+                <ScalarProperty Name="id_punto_de_venta" ColumnName="id_punto_de_venta" />
+                <ScalarProperty Name="predeterminado" ColumnName="predeterminado" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_caja" ColumnName="id_caja" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cierre_caja">
+            <EntityTypeMapping TypeName="as2Model.cierre_caja">
+              <MappingFragment StoreEntitySet="cierre_caja">
+                <ScalarProperty Name="codigo_movil" ColumnName="codigo_movil" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id_caja" ColumnName="id_caja" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="total_usuario" ColumnName="total_usuario" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="nombre_sucursal" ColumnName="nombre_sucursal" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_dispositivo_sincronizacion" ColumnName="id_dispositivo_sincronizacion" />
+                <ScalarProperty Name="fecha_hasta" ColumnName="fecha_hasta" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="diferencia" ColumnName="diferencia" />
+                <ScalarProperty Name="canje" ColumnName="canje" />
+                <ScalarProperty Name="caja_chica" ColumnName="caja_chica" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_cierre_caja" ColumnName="id_cierre_caja" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalle_cierre_caja">
+            <EntityTypeMapping TypeName="as2Model.detalle_cierre_caja">
+              <MappingFragment StoreEntitySet="detalle_cierre_caja">
+                <ScalarProperty Name="id_interfaz_contable_proceso" ColumnName="id_interfaz_contable_proceso" />
+                <ScalarProperty Name="id_detalle_forma_cobro" ColumnName="id_detalle_forma_cobro" />
+                <ScalarProperty Name="id_detalle_denominacion_forma_cobro" ColumnName="id_detalle_denominacion_forma_cobro" />
+                <ScalarProperty Name="id_cierre_caja" ColumnName="id_cierre_caja" />
+                <ScalarProperty Name="id_anticipo_cliente" ColumnName="id_anticipo_cliente" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_dispositivo_sincronizacion" ColumnName="id_dispositivo_sincronizacion" />
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="id_entidad_origen" ColumnName="id_entidad_origen" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_detalle_cierre_caja" ColumnName="id_detalle_cierre_caja" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

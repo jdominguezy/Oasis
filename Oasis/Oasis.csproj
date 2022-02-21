@@ -452,6 +452,9 @@
     </Compile>
     <Compile Include="Models\ATS\comprobanteRetencion.cs" />
     <Compile Include="Models\ATS\comprobanteRetencionFisica.cs" />
+    <Compile Include="Models\caja.cs">
+      <DependentUpon>AS2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Cartera.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
@@ -468,6 +471,12 @@
       <DependentUpon>AS2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cheques_Postfechados.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cierre_caja.cs">
+      <DependentUpon>AS2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cierre_Caja_Cabecera.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Clientes.cs">
@@ -529,6 +538,9 @@
     </Compile>
     <Compile Include="Models\DetalleOCEnlazada.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\detalle_cierre_caja.cs">
+      <DependentUpon>AS2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\detalle_forma_cobro.cs">
       <DependentUpon>AS2.tt</DependentUpon>
@@ -687,10 +699,16 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ATS\Retenciones.cs" />
+    <Compile Include="Models\Recetas.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Registros_Contabilidad.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\relacion_cotizacion_ganadora_perdedora.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reporte_Analisis_Costos.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Reporte_Cartera.cs">
@@ -3145,7 +3163,7 @@
     <Content Include="Views\Credito\MovimientoClientes.cshtml" />
     <Content Include="Views\Credito\PresupuestoCobrosCons.cshtml" />
     <Content Include="Views\Credito\GestionCarteraVcda.cshtml" />
-    <Content Include="Views\Credito\AnalisisCierreCaja.cshtml" />
+    <Content Include="Views\Credito\ConsolidadoCierreCaja.cshtml" />
     <Content Include="Views\Costos\AnalisisCostos.cshtml" />
   </ItemGroup>
   <ItemGroup>

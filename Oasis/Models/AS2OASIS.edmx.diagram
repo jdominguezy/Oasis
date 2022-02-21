@@ -115,6 +115,9 @@
         <EntityTypeShape EntityType="oasisModel1.Cartera_Proveedor" Width="1.5" PointX="29.375" PointY="9.75" />
         <EntityTypeShape EntityType="oasisModel1.Ventas_Producto_Precio" Width="1.5" PointX="29.375" PointY="14.75" />
         <EntityTypeShape EntityType="oasisModel1.Reporte_Cartera" Width="1.5" PointX="30.375" PointY="20.75" />
+        <EntityTypeShape EntityType="oasisModel1.Reporte_Analisis_Costos" Width="1.5" PointX="30.375" PointY="26.75" />
+        <EntityTypeShape EntityType="oasisModel1.Cierre_Caja_Cabecera" Width="1.5" PointX="31.375" PointY="0.75" />
+        <EntityTypeShape EntityType="oasisModel1.Recetas" Width="1.5" PointX="31.375" PointY="5.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

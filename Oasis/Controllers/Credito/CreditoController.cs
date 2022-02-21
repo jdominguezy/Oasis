@@ -405,7 +405,7 @@ namespace Oasis.Controllers.Credito
             return View();
         }
 
-        public ActionResult AnalisisCierreCaja()
+        public ActionResult ConsolidadoCierreCaja()
         {
             return View();
         }
@@ -1382,6 +1382,105 @@ namespace Oasis.Controllers.Credito
                 return data_json;
             }
         }
-    
+
+        [HttpPost]
+        public JsonResult ObtenerCierreCaja(string fecha_desde, string fecha_hasta, string sucursal, string usuario, string caja, string numero, string empresa)
+        {
+
+            using (var db = new as2oasis())
+            {
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+                IQueryable<Cierre_Caja_Cabecera> data = db.Cierre_Caja_Cabecera.Where(
+                    x => x.fecha_creacion >= _fecha_inicio &&
+                    x.fecha_creacion <= _fecha_fin
+                    );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.empresa == empresa);
+                }
+
+                if (sucursal != "0")
+                {
+                    data = data.Where(x => x.sucursal == sucursal);
+                }
+
+                if (usuario != null)
+                {
+                    int codigo_usuario = Convert.ToInt32(usuario);
+                    data = data.Where(x => x.id_usuario == codigo_usuario);
+                }
+
+                if (caja != "0")
+                {
+                    data = data.Where(x => x.caja == caja);
+                }
+
+                if (numero != null)
+                {
+                    data = data.Where(x => x.numero == numero);
+                }
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.empresa,
+                        x.numero,
+                        x.usuario,
+                        x.sucursal,
+                        x.caja,
+                        fecha_hasta = x.fecha_hasta==null?null:x.fecha_hasta.ToString("yyyy-MM-dd"),
+                        x.valor_usuario,
+                        x.estado,
+                        x.codigo_movil
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                data_json.MaxJsonLength = 500000000;
+
+                return data_json;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerCierres(string textoBusqueda)
+        {
+            using (var db = new AS2Context())
+            {
+                return Json(db.cierre_caja.Where(x => x.numero.Contains(textoBusqueda) 
+               ).Take(5).Select(x => new
+               {
+                   x.numero
+               }).ToList(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult VerCobros()
+        {
+            int precio = 1;
+            as2oasis oasis = new as2oasis();
+            var dato_a_editar = oasis.detalle_lista_precio
+                .Where(x => x.id_detalle_lista_precio == precio)
+                .FirstOrDefault();
+            return View(dato_a_editar);
+        }
+
+        [HttpGet]
+        public ActionResult Seleccionar()
+        {
+            int precio = 1;
+            as2oasis oasis = new as2oasis();
+            var dato_a_editar = oasis.detalle_lista_precio
+                .Where(x => x.id_detalle_lista_precio == precio)
+                .FirstOrDefault();
+            return View(dato_a_editar);
+        }
+
+
     }
 }
