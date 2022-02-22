@@ -699,9 +699,6 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ATS\Retenciones.cs" />
-    <Compile Include="Models\Recetas.cs">
-      <DependentUpon>AS2OASIS.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Registros_Contabilidad.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>

@@ -1394,23 +1394,17 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Proveedores' no tiene definida nin
           <Property Name="categoria_empresa" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'oasis.dbo.Recetas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6013: La tabla o vista 'oasis.dbo.Recetas' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
         <EntityType Name="Recetas">
-          <Key>
-            <PropertyRef Name="nombre_pt" />
-            <PropertyRef Name="id_material" />
-            <PropertyRef Name="codigo_categoria_producto" />
-            <PropertyRef Name="nombre_material" />
-            <PropertyRef Name="um" />
-          </Key>
           <Property Name="id_pt" Type="int" />
-          <Property Name="nombre_pt" Type="varchar" MaxLength="300" Nullable="false" />
-          <Property Name="id_material" Type="int" Nullable="false" />
-          <Property Name="codigo_categoria_producto" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="nombre_material" Type="varchar" MaxLength="300" Nullable="false" />
-          <Property Name="um" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombre_pt" Type="varchar" MaxLength="300" />
+          <Property Name="id_material" Type="int" />
+          <Property Name="codigo_categoria_producto" Type="varchar" MaxLength="255" />
+          <Property Name="nombre_material" Type="varchar" MaxLength="300" />
+          <Property Name="um" Type="varchar" MaxLength="50" />
           <Property Name="cantidad" Type="float" />
-        </EntityType>
+          <Property Name="st" Type="int" />
+        </EntityType>-->
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Registros_Contabilidad' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Registros_Contabilidad">
@@ -2937,17 +2931,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Proveedores].[correo] AS [correo], 
     [Proveedores].[categoria_empresa] AS [categoria_empresa]
     FROM [dbo].[Proveedores] AS [Proveedores]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Recetas" EntityType="Self.Recetas" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Recetas].[id_pt] AS [id_pt], 
-    [Recetas].[nombre_pt] AS [nombre_pt], 
-    [Recetas].[id_material] AS [id_material], 
-    [Recetas].[codigo_categoria_producto] AS [codigo_categoria_producto], 
-    [Recetas].[nombre_material] AS [nombre_material], 
-    [Recetas].[um] AS [um], 
-    [Recetas].[cantidad] AS [cantidad]
-    FROM [dbo].[Recetas] AS [Recetas]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Registros_Contabilidad" EntityType="Self.Registros_Contabilidad" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -4996,7 +4979,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySet Name="Reporte_Cartera" EntityType="oasisModel1.Reporte_Cartera" />
           <EntitySet Name="Reporte_Analisis_Costos" EntityType="oasisModel1.Reporte_Analisis_Costos" />
           <EntitySet Name="Cierre_Caja_Cabecera" EntityType="oasisModel1.Cierre_Caja_Cabecera" />
-          <EntitySet Name="Recetas" EntityType="oasisModel1.Recetas" />
           </EntityContainer>
         <ComplexType Name="CobrosPorVendedor_Result">
           <Property Type="String" Name="codigo" Nullable="false" MaxLength="20" />
@@ -5719,22 +5701,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="id_organizacion" Type="Int32" Nullable="false" />
           <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="id_usuario" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Recetas">
-          <Key>
-            <PropertyRef Name="nombre_pt" />
-            <PropertyRef Name="id_material" />
-            <PropertyRef Name="codigo_categoria_producto" />
-            <PropertyRef Name="nombre_material" />
-            <PropertyRef Name="um" />
-          </Key>
-          <Property Name="id_pt" Type="Int32" />
-          <Property Name="nombre_pt" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="id_material" Type="Int32" Nullable="false" />
-          <Property Name="codigo_categoria_producto" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="nombre_material" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="um" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cantidad" Type="Double" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7387,19 +7353,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
                 <ScalarProperty Name="numero" ColumnName="numero" />
                 <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
                 <ScalarProperty Name="id_cierre_caja" ColumnName="id_cierre_caja" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Recetas">
-            <EntityTypeMapping TypeName="oasisModel1.Recetas">
-              <MappingFragment StoreEntitySet="Recetas">
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-                <ScalarProperty Name="um" ColumnName="um" />
-                <ScalarProperty Name="nombre_material" ColumnName="nombre_material" />
-                <ScalarProperty Name="codigo_categoria_producto" ColumnName="codigo_categoria_producto" />
-                <ScalarProperty Name="id_material" ColumnName="id_material" />
-                <ScalarProperty Name="nombre_pt" ColumnName="nombre_pt" />
-                <ScalarProperty Name="id_pt" ColumnName="id_pt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
