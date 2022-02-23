@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c93f1513b6e748bc9f4152f5afa70442" Name="Diagram1" ZoomLevel="74">
+      <Diagram DiagramId="c93f1513b6e748bc9f4152f5afa70442" Name="Diagram1" ZoomLevel="50">
         <EntityTypeShape EntityType="oasisModel1.C__EFMigrationsHistory" Width="1.5" PointX="2.75" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.AspNetRoleClaims" Width="1.5" PointX="8" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.AspNetRoles" Width="1.5" PointX="5.75" PointY="11.75" IsExpanded="true" />
