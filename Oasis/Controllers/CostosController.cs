@@ -91,6 +91,10 @@ namespace Oasis.Controllers
                     var pnd_otros_costos = string.Format("{0:0.00%}", ((suma_otros_costos) / suma_costos_total));
                     var costo_unitario = string.Format("{0:0.00000}",
                         suma_costos_total / cabecera.cantidad_fabricada);
+                    //25-02-2022 presentacion producto I JD
+                    var costo_unitario2 = string.Format("{0:0.00000}",
+                        suma_costos_total / (cabecera.cantidad_fabricada * cabecera.presentacion_producto));
+                    //25-02-2022 presentacion producto F JD
 
                     var suma_horas_mod = costos_mod.Sum(x => x.horas_hombre);
 
@@ -100,16 +104,17 @@ namespace Oasis.Controllers
                     doc.Open();
 
                     //doc.Add(R.ImagenFondo(empresa));
-
+                    //500 totw
                     var encabezado = new PdfPTable(6)
                     {
-                        LockedWidth = true,
-                        TotalWidth = 500f,
+                        LockedWidth = true,                        
+                        TotalWidth = 500f,  
                         SpacingBefore = 5f,
                         SpacingAfter = 20f
                     };
 
                     encabezado.SetWidths(new float[] { 66f, 100f, 66f, 150f, 66f, 52f });
+                    //encabezado.SetWidths(new float[] { 66f, 70f, 66f, 100f, 66f, 52f, 66f, 50f });
 
                     var table1 = new PdfPTable(3)
                     {
@@ -157,8 +162,7 @@ namespace Oasis.Controllers
                     cell1.Border = PdfPCell.NO_BORDER;
                     encabezado.AddCell(cell1);
 
-                    cell1 = new PdfPCell(new Phrase(
-                       cabecera.codigo_producto, detalle));
+                    cell1 = new PdfPCell(new Phrase(cabecera.codigo_producto, detalle));
                     cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
                     cell1.Border = PdfPCell.NO_BORDER;
                     encabezado.AddCell(cell1);
@@ -198,10 +202,22 @@ namespace Oasis.Controllers
                     cell1.Border = PdfPCell.NO_BORDER;
                     encabezado.AddCell(cell1);
 
-                    cell1 = new PdfPCell(new Phrase(costo_unitario.ToString(), detalle));
+                    //03-03-2022 JD I
+                    cell1 = new PdfPCell(new Phrase(Convert.ToString(costo_unitario) + "   Costo unit2.: " + Convert.ToString(costo_unitario2), detalle));
+                    //03-03-2022 JD F
                     cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
                     cell1.Border = PdfPCell.NO_BORDER;
                     encabezado.AddCell(cell1);
+
+                    //cell1 = new PdfPCell(new Phrase("Costo unit2.:", subtitulo));
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+                    //encabezado.AddCell(cell1);
+
+                    //cell1 = new PdfPCell(new Phrase(costo_unitario2.ToString(), detalle));
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+                    //encabezado.AddCell(cell1);
 
                     cell1 = new PdfPCell(new Phrase("Costo total:", subtitulo));
                     cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
@@ -275,7 +291,7 @@ namespace Oasis.Controllers
                     cell1.Border = PdfPCell.NO_BORDER;
                     encabezado.AddCell(cell1);
 
-
+                    
                     //cell1 = new PdfPCell(new Phrase("", detalle));
                     //cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
                     //cell1.Border = PdfPCell.NO_BORDER;

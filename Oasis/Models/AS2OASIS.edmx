@@ -1205,6 +1205,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Orden_Produccion' no tiene definid
           <Property Name="cantidad_utilizada" Type="numeric" Precision="14" Scale="6" />
           <Property Name="nombre" Type="varchar" MaxLength="300" />
           <Property Name="unidad_medida_op" Type="varchar" MaxLength="50" />
+          <Property Name="presentacion_producto" Type="numeric" Precision="12" Scale="2" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Orden_Produccion_Cabecera' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -2793,7 +2794,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Orden_Produccion].[cantidad_devuelta] AS [cantidad_devuelta], 
     [Orden_Produccion].[cantidad_utilizada] AS [cantidad_utilizada], 
     [Orden_Produccion].[nombre] AS [nombre], 
-    [Orden_Produccion].[unidad_medida_op] AS [unidad_medida_op]
+    [Orden_Produccion].[unidad_medida_op] AS [unidad_medida_op], 
+    [Orden_Produccion].[presentacion_producto] AS [presentacion_producto]
     FROM [dbo].[Orden_Produccion] AS [Orden_Produccion]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Orden_Produccion_Cabecera" EntityType="Self.Orden_Produccion_Cabecera" store:Type="Views" store:Schema="dbo">
@@ -5322,6 +5324,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="cantidad_utilizada" Type="Decimal" Precision="14" Scale="6" />
           <Property Name="nombre" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="unidad_medida_op" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="presentacion_producto" Type="Decimal" Precision="12" Scale="2" />
         </EntityType>
         <EntityType Name="Costos_MP_ME">
           <Key>
@@ -6977,6 +6980,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySetMapping Name="Orden_Produccion">
             <EntityTypeMapping TypeName="oasisModel1.Orden_Produccion">
               <MappingFragment StoreEntitySet="Orden_Produccion">
+                <ScalarProperty Name="presentacion_producto" ColumnName="presentacion_producto" />
                 <ScalarProperty Name="unidad_medida_op" ColumnName="unidad_medida_op" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="cantidad_utilizada" ColumnName="cantidad_utilizada" />

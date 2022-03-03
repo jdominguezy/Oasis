@@ -44,5 +44,6 @@ namespace Oasis.Models
         public Nullable<decimal> cantidad_utilizada { get; set; }
         public string nombre { get; set; }
         public string unidad_medida_op { get; set; }
+        public Nullable<decimal> presentacion_producto { get; set; }
     }
 }
