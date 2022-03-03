@@ -53,7 +53,8 @@
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                                <option value="@emp">@emp</option>}
+                                    <option value="@emp">@emp</option>
+                                }
                             </select>
                         </div>
                     </div>
@@ -135,9 +136,13 @@
                     </div>
                 </div>
             </div>
-                <!-- /.card-body -->
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Buscar</button>
+            </div>
+            <div class="col" style=" text-align: center; ">
                 <div class="card-footer">
-                    <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Buscar</button>
+                    <button type="button" id="ImprimirDatos" class="btn btn-primary  float-right">Imprimir</button>
                 </div>
             </div>
         </div>
@@ -220,8 +225,8 @@
             });
         }
 
-        function VerCobros(id_organizacion, numero) {
-            window.open("VerCobros?id_organizacion=" + id_organizacion, "VerCobros?numero=" +numero, '_blank');
+        function VerDepositoCaja(id_organizacion, numero) {
+            window.open("VerDepositoCaja?id_organizacion=" + id_organizacion, "VerDepositoCaja?numero=" +numero, '_blank');
         }
 
         function Seleccionar(iid_organizacion, numero) {
@@ -266,7 +271,7 @@
                     var col = [];
                     var encabezado = ["Emresa", "Numero",
                         "Usuario", "Sucursal", "Caja", "Fecha Hasta",
-                        "Valor Usuario", "Estado", "Codigo Movil", " "];
+                        "Valor Usuario", "Estado", "Codigo Movil", " ", " "];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -316,9 +321,11 @@
                         }
 
                         var tabCell = tr_body.insertCell(-1);
-                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerCobros(\'' + d[i][col[10]] + '\')" >Ver Cobros</button>';
-                        //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[11]] + '\')" >Seleccionar>';
+                        var tabCell_c = tr_body.insertCell(-1);
+                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerDepositoCaja(\'' + d[i][col[10]] + '\')" >Ver Cobros</button>';
+                        tabCell_c.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[11]] + '\')" >Seleccionar';
                         tabCell.style = ' white-space: nowrap;';
+                        tabCell_c.style = ' white-space: nowrap;';
 
                         //var tabCell = tr_body.insertCell(-1);
                         //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[9]] + '\')" >Seleccionar>';
@@ -351,6 +358,131 @@
                 }
             })
         });
+
+        $("#ImprimirDatos").click(function () {
+            var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
+            var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
+            var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            var usuario = $('#vendedor').val();
+            var caja = $('#caja').val();
+            var numero = $('#cierre').val();
+
+            $.ajax({
+                url: 'ObtenerCierreCaja',
+                type: 'POST',
+                data: JSON.stringify({
+                    fecha_desde: fecha_desde,
+                    fecha_hasta: fecha_hasta,
+                    sucursal: sucursal,
+                    usuario: usuario,
+                    caja: caja,
+                    numero: numero,
+                    empresa: empresa
+
+                }),
+                dataType: "JSON",
+                contentType: "application/JSON",
+                success: function (d) {
+                    $('#contenedorTabla').remove();
+                    var contenedorTabla = document.createElement("div");
+                    contenedorTabla.className = "col-md-12";
+                    contenedorTabla.id = "contenedorTabla"
+                    var row = document.createElement("div");
+                    row.className = "row";
+                    row.appendChild(contenedorTabla);
+                    $('#contenedorPrimario').append(row);
+                    var col = [];
+                    var encabezado = ["Emresa", "Numero",
+                        "Usuario", "Sucursal", "Caja", "Fecha Hasta",
+                        "Valor Usuario", "Estado", "Codigo Movil", " ", " "];
+                    for (var i = 0; i < d.length; i++) {
+                        for (var key in d[i]) {
+                            if (col.indexOf(key) === -1) {
+                                col.push(key);
+                            }
+                        }
+                    }
+
+
+                    // CREATE DYNAMIC TABLE.
+                    var div = document.createElement("div");
+                    var row = document.createElement("div");
+                    row.className = "row col-md-4";
+                    var card = document.createElement("div");
+                    card.className = "card";
+                    card.style = "font-size: 15px;overflow-x: scroll;";
+                    var cardbody = document.createElement("div");
+                    cardbody.className = "card-body";
+                    var table = document.createElement("table");
+                    table.className = 'table table-hover tableDetalle';
+                    table.id = "tableDetalle";
+                    table.style = '';
+
+
+                    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
+                    var thead = document.createElement("thead");
+                    table.appendChild(thead);
+                    var tr_head = document.createElement("tr");
+                    for (var i = 0; i < encabezado.length; i++) {
+                        var th = document.createElement("th");      // TABLE HEADER.
+                        th.innerHTML = encabezado[i];
+                        tr_head.appendChild(th);
+                    }
+
+                    thead.appendChild(tr_head);
+
+                    var tbody = document.createElement("tbody");
+                    table.appendChild(tbody);
+                    var tr_body = document.createElement("tr");
+                    // ADD JSON DATA TO THE TABLE AS ROWS.
+                    for (var i = 0; i < d.length; i++) {
+                        tr_body = document.createElement("tr");
+                        for (var j = 0; j < col.length; j++) {
+                            var tabCell = tr_body.insertCell(-1);
+                            tabCell.innerHTML = d[i][col[j]];
+                            tabCell.style = ' white-space: nowrap;';
+                        }
+
+                        var tabCell = tr_body.insertCell(-1);
+                        var tabCell_c = tr_body.insertCell(-1);
+                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerCobros(\'' + d[i][col[10]] + '\')" >Ver Cobros</button>';
+                        tabCell_c.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[11]] + '\')" >Seleccionar';
+                        tabCell.style = ' white-space: nowrap;';
+                        tabCell_c.style = ' white-space: nowrap;';
+
+                        //var tabCell = tr_body.insertCell(-1);
+                        //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[9]] + '\')" >Seleccionar>';
+                        //tabCell.style = ' white-space: nowrap;';
+                        tbody.appendChild(tr_body);
+                    }
+
+                    cardbody.appendChild(table);
+                    card.appendChild(cardbody);
+                    div.appendChild(card);
+                    //CrearTablaDetalle(div.outerHTML, titulo);
+                    $('#contenedorTabla').append(div);
+                    $('#tableDetalle').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ],
+                        language: {
+                            url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+                        }
+                    });
+                    cierraLoading();
+                },
+                error: function (e) {
+                    cierraLoading();
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Hubo un error al intentar generar.'
+                    })
+                }
+            })
+        });
+
 
         $('#fecha_corte').daterangepicker({
             locale: {

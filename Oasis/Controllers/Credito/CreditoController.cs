@@ -546,7 +546,7 @@ namespace Oasis.Controllers.Credito
             using (var context = new as2oasis())
             {
                 var presupuesto = context.Presupuesto(empresa, sucursal, fecha_desde_, fecha_hasta_,tipoCliente_);
-                
+
                 var presupuesto_json = JsonConvert.SerializeObject(presupuesto, Formatting.Indented);
 
                 return Json(presupuesto_json,JsonRequestBehavior.AllowGet);
@@ -1460,7 +1460,7 @@ namespace Oasis.Controllers.Credito
         }
 
         [HttpGet]
-        public ActionResult VerCobros()
+        public ActionResult VerDepositoCaja()
         {
             int precio = 1;
             as2oasis oasis = new as2oasis();
@@ -1479,6 +1479,48 @@ namespace Oasis.Controllers.Credito
                 .Where(x => x.id_detalle_lista_precio == precio)
                 .FirstOrDefault();
             return View(dato_a_editar);
+        }
+
+        public JsonResult ObtenerPresupuestoEmpresa(
+           string empresa,
+           string sucursal,
+           string fecha_desde,
+           string fecha_hasta,
+           string tipoCliente)
+        {
+
+            DateTime fecha_desde_ = DateTime.Parse(fecha_desde);
+            DateTime fecha_hasta_ = DateTime.Parse(fecha_hasta);
+
+            //var tipoC = JsonConvert.DeserializeObject(tipoCliente);
+            //string csv = jsonToCSV(tipoCliente, ",");
+
+            //var lista = tipoC.Split(',');
+            var tipoCliente_ = tipoCliente.Replace(@"[", string.Empty).Replace(@"]", string.Empty).Replace("\"", string.Empty);
+
+            if (empresa == "0")
+            {
+                empresa = "";
+            }
+
+            if (sucursal == "0")
+            {
+                sucursal = "";
+            }
+
+            using (var context = new as2oasis())
+            {
+                //var presupuesto = context.Presupuesto_Consolidado(empresa, sucursal, fecha_desde_, fecha_hasta_,tipoCliente_);
+
+                var presupuesto = context.Presupuesto_Consolidado(empresa, sucursal, fecha_desde_, fecha_hasta_, tipoCliente_).ToList();
+
+                var presupuesto_json = JsonConvert.SerializeObject(presupuesto, Formatting.Indented);
+
+                return Json(presupuesto_json, JsonRequestBehavior.AllowGet);
+
+
+            }
+            //return View();
         }
 
 

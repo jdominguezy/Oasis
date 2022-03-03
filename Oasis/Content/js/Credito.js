@@ -98,20 +98,30 @@ function addAllColumnHeaders(myList, selector) {
     return columnSet;
 }
 
-function GenerarDatos(id_vendedor, direccionURL, titulo) {
+function GenerarDatos(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta, direccionURL, titulo) {
     let spanOculto;
-    spanOculto = $('.table-hover tbody tr td span.datosLinea[data-id_vendedor="' + id_vendedor + '"]')[0].dataset;
+    console.log("Entra")
+    console.log(id_vendedor)
+    console.log(empresa)
+    console.log(sucursal)
+    console.log(fecha_desde)
+    console.log(fecha_hasta)
+    console.log(JSON.stringify(tipoCliente))
+    //spanOculto = $('.table-hover tbody tr td span.datosLinea[data-id_vendedor="' + id_vendedor + '"]')[0].dataset;
+
+
     var indicadorDI_ = window.location.href.includes("ConsolidadoDI");
     $.ajax({
         url: direccionURL,
         type: 'GET',
         data: {
-            empresa: spanOculto.empresa,
-            sucursal: spanOculto.sucursal,
-            fecha_desde: spanOculto.fecha_desde,
-            fecha_hasta: spanOculto.fecha_hasta,
-            tipoCliente: JSON.stringify(spanOculto.tipocliente),
-            vendedor: spanOculto.id_vendedor, 
+            empresa: empresa,
+            sucursal: sucursal,
+            fecha_desde: fecha_desde,
+            fecha_hasta: fecha_hasta,
+            //tipoCliente: JSON.stringify(spanOculto.tipocliente),
+            tipoCliente: JSON.stringify(tipoCliente),
+            vendedor: id_vendedor, 
             indicadorDI: indicadorDI_
         },
         dataType: "JSON",
@@ -198,22 +208,23 @@ function GenerarDatos(id_vendedor, direccionURL, titulo) {
 
 }
 
-function verVentasXVendedor(id_vendedor) {
+function verVentasXVendedor(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta) {
+    //console.log(id_vendedor)
     event.preventDefault();
     let direccionUrl = 'ObtenerVentasPorVendedor';
-    GenerarDatos(id_vendedor, direccionUrl, "Detalle de ventas");
+    GenerarDatos(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta, direccionUrl, "Detalle de ventas");
 }
 
-function verNCXVendedor(id_vendedor) {
+function verNCXVendedor(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta) {
     event.preventDefault();
     let direccionUrl = 'ObtenerNCPorVendedor';
-    GenerarDatos(id_vendedor, direccionUrl, "Detalle de NC");
+    GenerarDatos(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta, direccionUrl, "Detalle de NC");
 }
 
-function verCobrosXVendedor(id_vendedor) {
+function verCobrosXVendedor(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta) {
     event.preventDefault();
     let direccionUrl = 'ObtenerCobrosPorVendedor';
-    GenerarDatos(id_vendedor, direccionUrl, "Detalle de cobros");
+    GenerarDatos(id_vendedor, empresa, sucursal, fecha_desde, fecha_hasta, direccionUrl, "Detalle de cobros");
 }
 
 $("botonVerDetalle").click(function () {
@@ -378,6 +389,7 @@ $("#GenerarPresupuesto").click(function () {
     var fecha_desde = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').startDate._d);
     var fecha_hasta = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').endDate._d);
     iniciaLoading();
+    console.log("Ingresa al js")
 
     var escogeDistribuidor = $(".DISTRIBUIDORES")[0].checked;
     if (escogeDistribuidor) {
@@ -527,7 +539,7 @@ $("#GenerarPresupuesto").click(function () {
     } else {
 
         $.ajax({
-        url: 'ObtenerPresupuesto',
+            url: 'ObtenerPresupuestoEmpresa',
         type: 'GET',
         data: {
             empresa: empresa,
@@ -551,6 +563,8 @@ $("#GenerarPresupuesto").click(function () {
             row.id = "rowcontenedorTabla";
             $('#contenedorPrimario').append(row);
 
+            console.log("Pasa la carga datos")
+
             var div = document.createElement("div");
             var row = document.createElement("div");
             row.className = "row col-md-4";
@@ -567,17 +581,30 @@ $("#GenerarPresupuesto").click(function () {
             var totalCobros = 0;
             var totalAlcanceCobros = 0;
 
+            console.log("Pasa variables")
+
 
             var sTxt = '<table class="table table-hover" id="tablePresupuesto">';
-            sTxt += '<thead><tr><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
+            sTxt += '<thead><tr><th style="text-align:center">EMPRESA</th><th style="text-align:center">SUCURSAL</th><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
             sTxt += '<th style="text-align:center">Ventas</th><th style="text-align:center">%</th>';
             sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
             sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
             sTxt += '<tbody>';
-            $.each(function (index, p) {
+
+            console.log(d)
+
+            //if (empresa != '0'|| sucursal != '0') {
+            //    var data = JSON.parse(d);
+            //}
+            //else {
+            //    var data = d;
+            //}
+            
+            //$.each(data, function (index, p) {
+            $.each(JSON.parse(d), function (index, p) {
                 sTxt += '<tr>';
                 sTxt += '<td style="text-align:center">';
-                sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + empresa+'" data-sucursal="'+sucursal+'" data-fecha_desde="'+fecha_desde+'" data-fecha_hasta="'+fecha_hasta+'" data-tipocliente="'+tipoCliente+'" hidden></span>';
+                sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + p.empresa+'" data-sucursal="'+ p.sucursal+'" data-fecha_desde="'+fecha_desde+'" data-fecha_hasta="'+fecha_hasta+'" data-tipocliente="'+tipoCliente+'" hidden></span>';
                 sTxt += '' + p.empresa + '</td>';
                 sTxt += '' + p.sucursal + '</td>';
                 sTxt += '' + p.id_vendedor + '</td>';
@@ -604,6 +631,10 @@ $("#GenerarPresupuesto").click(function () {
                 totalPresupuestoCobros += p.valor_cobro;
                 totalCobros += p.total_cobros;
             });
+
+            console.log("Pasa fn")
+            console.log(sTxt)
+
             sTxt += '</tbody>';
             sTxt += '<tfoot style="font-weight: 800;"><tr><td></td><td class="centrar" >TOTAL</td><td class="centrar">' + formatoValor(totalPresupuestoVentas)+ '</td>';
             sTxt += '<td class="centrar">' + formatoValor(totalVentas) + '</td>';
@@ -614,6 +645,9 @@ $("#GenerarPresupuesto").click(function () {
             sTxt += '<td class="centrar"></td>';
             sTxt += '</tr></tfoot>';
             sTxt += '</table>';
+
+            console.log("arma cabecera")
+            console.log(sTxt)
 
             cardbody.append($.parseHTML(sTxt)[0]);
             card.appendChild(cardbody);
@@ -653,11 +687,18 @@ $("#GenerarPresupuesto").click(function () {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
                 }
             });
-            var presupuesto = JSON.parse(d);
+
+            console.log("sale datos")
+            //var presupuesto = JSON.parse(d);
+            var presupuesto = d;
             var vendedores = presupuesto.map(presupuesto => presupuesto.nombre_vendedor);
             var ventas = presupuesto.map(presupuesto => presupuesto.ventas_neta);
             var cobros = presupuesto.map(presupuesto => presupuesto.total_cobros);
+
+            console.log("entra a armar graficos")
             GeneraGraficos(presupuesto);
+
+            console.log("sale de graficos")
             cierraLoading();
         },
         error: function (e) {
@@ -670,6 +711,330 @@ $("#GenerarPresupuesto").click(function () {
     }
     
 });
+
+$("#GenerarPresupuestoEmpresa").click(function () {
+
+    var tipoCliente = [];
+    var empresa = $("#empresa").val();
+    var sucursal = $("#sucursal").val();
+    var localidad;
+    if ($('#chkLocalidad').is(":checked")) {
+        localidad = null
+    } else {
+        localidad = $("#localidad").val();
+    }
+    $('.tipoCliente:checkbox:checked').each(function () {
+        tipoCliente.push($(this).attr('name'));
+    });
+    var fecha_desde = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').startDate._d);
+    var fecha_hasta = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').endDate._d);
+
+    iniciaLoading();
+
+    var escogeDistribuidor = $(".DISTRIBUIDORES")[0].checked;
+
+    if (escogeDistribuidor) {
+        // PROCEDIMIENTO CON DISTRIBUIDOR
+        var codigoVendedor = $(".js-data-vendedor-ajax").val();
+        $.ajax({
+            url: 'ObtenerPresupuestoDistribuidor',
+            type: 'GET',
+            data: {
+                empresa: empresa,
+                sucursal: sucursal,
+                fecha_desde: fecha_desde,
+                fecha_hasta: fecha_hasta,
+                codigo_vendedor: codigoVendedor
+            },
+            dataType: "JSON",
+            contentType: "application/JSON",
+            success: function (d) {
+
+                $('#rowcontenedorTabla').remove();
+                var contenedorTabla = document.createElement("div");
+                contenedorTabla.className = "col-md-12";
+                contenedorTabla.id = "contenedorTabla"
+                var row = document.createElement("div");
+                row.className = "row";
+                row.appendChild(contenedorTabla);
+                row.id = "rowcontenedorTabla";
+                $('#contenedorPrimario').append(row);
+
+                var div = document.createElement("div");
+                var row = document.createElement("div");
+                row.className = "row col-md-4";
+                var card = document.createElement("div");
+                card.className = "card";
+                card.style = "font-size: 15px;overflow-x: scroll;";
+                var cardbody = document.createElement("div");
+                cardbody.className = "card-body";
+
+                var totalPresupuestoVentas = 0;
+                var totalVentas = 0;
+                var totalAlcanceVentas = 0;
+                var totalPresupuestoCobros = 0;
+                var totalCobros = 0;
+                var totalAlcanceCobros = 0;
+
+
+                var sTxt = '<table class="table table-hover" id="tablePresupuesto">';
+                sTxt += '<thead><tr><th style="text-align:center">ID</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
+                sTxt += '<th style="text-align:center">Ventas</th><th style="text-align:center">%</th>';
+                sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
+                sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
+                sTxt += '<tbody>';
+                //$.each(JSON.parse(d), function (index, p) {
+                $.each(function (index, p) {
+                    sTxt += '<tr>';
+                    sTxt += '<td style="text-align:center">';
+                    sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + empresa + '" data-sucursal="' + sucursal + '" data-fecha_desde="' + fecha_desde + '" data-fecha_hasta="' + fecha_hasta + '" data-tipocliente="' + tipoCliente + '" hidden></span>';
+                    sTxt += '' + p.empresa + '</td>';
+                    sTxt += '' + p.sucursal + '</td>';
+                    sTxt += '' + p.id_vendedor + '</td>';
+                    sTxt += '<td style="text-align:center">' + p.nombre_vendedor + '</td>';
+                    sTxt += '<td style="text-align:center">' + formatoValor(p.valor_venta) + '</td>';
+                    sTxt += '<td style="text-align:center">' + formatoValor(p.ventas_neta) + '</td>';
+                    sTxt += '<td style="text-align:center">' + p.alcance_venta.toFixed(2) + '%</td>';
+                    sTxt += '<td style="text-align:center">' + formatoValor(p.valor_cobro) + '</td>';
+                    sTxt += '<td style="text-align:center">' + formatoValor(p.total_cobros) + '</td>';
+                    sTxt += '<td style="text-align:center">' + p.alcance_cobro.toFixed(2) + '%</td>';
+                    sTxt += '<td style="text-align:center" class="noExl"> <div class="btn-group">';
+                    sTxt += '<button type="button" class="btn btn-info" data-toggle="dropdown" id="botonVerDetalle"><i class="fas fa-search"></i></button>';
+                    sTxt += '    <button type = "button" class="btn btn-info dropdown-toggle dropdown-hover dropdown-icon" data-toggle="dropdown" aria-expanded="false"> ';
+                    sTxt += '    <span class="sr-only"> Toggle Dropdown</span> ';
+                    sTxt += '</button> ';
+                    sTxt += '    <div class="dropdown-menu" role = "menu" style = ""> ';
+                    sTxt += '    <a class="dropdown-item" href = "#" onClick="verVentasXVendedor(' + p.id_vendedor + ');" > Ventas </a> ';
+                    sTxt += '    <a class="dropdown-item" href = "#" onClick="verCobrosXVendedor(' + p.id_vendedor + ');" > Cobros </a> ';
+                    sTxt += '    <a class="dropdown-item" href = "#" onClick="verNCXVendedor(' + p.id_vendedor + ');"> N/C</a> ';
+                    sTxt += '</div></td>';
+                    sTxt += '</tr> ';
+                    totalPresupuestoVentas += p.valor_venta;
+                    totalVentas += p.ventas_neta;
+                    totalPresupuestoCobros += p.valor_cobro;
+                    totalCobros += p.total_cobros;
+                });
+                sTxt += '</tbody>';
+                sTxt += '<tfoot style="font-weight: 800;"><tr><td></td><td class="centrar" >TOTAL</td><td class="centrar">' + formatoValor(totalPresupuestoVentas) + '</td>';
+                sTxt += '<td class="centrar">' + formatoValor(totalVentas) + '</td>';
+                sTxt += '<td class="centrar">' + ((totalVentas / totalPresupuestoVentas) * 100).toFixed(2) + '%</td>';
+                sTxt += '<td class="centrar">' + formatoValor(totalPresupuestoCobros) + '</td>';
+                sTxt += '<td class="centrar">' + formatoValor(totalCobros) + '</td>';
+                sTxt += '<td class="centrar">' + ((totalCobros / totalPresupuestoCobros) * 100).toFixed(2) + '%</td>';
+                sTxt += '<td class="centrar"></td>';
+                sTxt += '</tr></tfoot>';
+                sTxt += '</table>';
+
+                cardbody.append($.parseHTML(sTxt)[0]);
+                card.appendChild(cardbody);
+                div.appendChild(card);
+                $('#contenedorTabla').append(div);
+                $('#tablePresupuesto').DataTable({
+                    "processing": true, // for show progress bar
+                    "paging": false,
+                    "bInfo": false,
+                    //"scrollY": "500px",
+                    dom: 'Bfrtip',
+                    "buttons": [
+                        {
+                            "extend": 'copy', "text": 'Copiar', "className": 'btn btn-default btn-xs'
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        },
+                        {
+                            "extend": 'pdf', "text": 'PDF', "className": 'btn btn-default btn-xs'
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        },
+                        {
+                            "extend": 'excel', "text": 'Excel', "className": 'btn btn-default btn-xs'
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        },
+                        {
+                            "extend": 'print', "text": 'Imprimir', "className": 'btn btn-default btn-xs'
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] }
+                        },
+                    ],
+                    initComplete: function () {
+                        $('.buttons-pdf').html('<i class="far fa-file-excel"></i>')
+                    },
+                    //buttons: [
+                    //    'copy', 'csv', 'excel', 'pdf', 'print'
+                    //],
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+                    }
+                });
+                var presupuesto = JSON.parse(d);
+                var vendedores = presupuesto.map(presupuesto => presupuesto.nombre_vendedor);
+                var ventas = presupuesto.map(presupuesto => presupuesto.ventas_neta);
+                var cobros = presupuesto.map(presupuesto => presupuesto.total_cobros);
+                GeneraGraficos(presupuesto);
+                cierraLoading();
+            },
+            error: function (e) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Hubo un error al intentar generar.'
+                })
+            }
+        })
+    } else {
+
+    $.ajax({
+        url: 'ObtenerPresupuestoEmpresa',
+        type: 'GET',
+        data: {
+            empresa: empresa,
+            sucursal: sucursal,
+            //localidad: this.localidad,
+            fecha_desde: fecha_desde,
+            fecha_hasta: fecha_hasta,
+            tipoCliente: JSON.stringify(tipoCliente)
+        },
+        dataType: "JSON",
+        contentType: "application/JSON",
+        success: function (d) {
+            $('#contenedorTabla').remove();
+            var contenedorTabla = document.createElement("div");
+            contenedorTabla.className = "col-md-12";
+            contenedorTabla.id = "contenedorTabla"
+            var row = document.createElement("div");
+            row.className = "row";
+            row.appendChild(contenedorTabla);
+            $('#contenedorPrimario').append(row);
+
+            var col = [];
+            var encabezado = ["Empresa",
+                "Sucursal", "ID", "Vendedor", "Cuota Ventas",
+                "Ventas", "%", "Cuota Cobros", "Cobros", "%", ""];
+
+            console.log(encabezado)
+            console.log(d)
+
+            d = JSON.parse(d);
+
+            for (var i = 0; i < d.length; i++) {
+                for (var key in d[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            var div = document.createElement("div");
+            var row = document.createElement("div");
+            row.className = "row col-md-4";
+            var card = document.createElement("div");
+            card.className = "card";
+            card.style = "font-size: 15px;overflow-x: scroll;";
+            var cardbody = document.createElement("div");
+            cardbody.className = "card-body";
+            var table = document.createElement("table");
+            table.className = 'table table-hover tableDetalle';
+            table.id = "tableDetalle";
+            table.style = '';
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
+            var thead = document.createElement("thead");
+            table.appendChild(thead);
+            var tr_head = document.createElement("tr");
+            for (var i = 0; i < encabezado.length; i++) {
+                var th = document.createElement("th");      // TABLE HEADER.
+                th.innerHTML = encabezado[i];
+                tr_head.appendChild(th);
+            }
+
+            thead.appendChild(tr_head);
+
+            var tbody = document.createElement("tbody");
+            table.appendChild(tbody);
+            var tr_body = document.createElement("tr");
+            var cod_vendedor;
+            var cod_empresa;
+            var cod_sucursal;
+
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (var i = 0; i < d.length; i++) {
+                tr_body = document.createElement("tr");
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr_body.insertCell(-1);
+                    tabCell.innerHTML = d[i][col[j]];
+                    tabCell.style = ' white-space: nowrap;';
+
+                    if (j == 0) {
+                        cod_empresa = d[i][col[j]];
+                    }
+
+                    if (j == 1) {
+                        cod_sucursal = d[i][col[j]];
+                    }
+
+                    if (j == 2) {
+                        cod_vendedor = d[i][col[j]];
+                    }
+                    
+                }
+
+                var tabCell = tr_body.insertCell(-1);
+                //console.log(cod_vendedor);
+                var cadenaB;
+                cadenaB = '<button type="button" class="btn btn-info" data-toggle="dropdown" id="botonVerDetalle"><i class="fas fa-search"></i></button>';
+                cadenaB = cadenaB + '<button type="button" class="btn btn-info dropdown-toggle dropdown-hover dropdown-icon" data-toggle="dropdown" aria-expanded="false"> ';
+                cadenaB = cadenaB + '<span class="sr-only"> Toggle Dropdown</span> ';
+                cadenaB = cadenaB + '</button> ';
+                cadenaB = cadenaB + '<div class="dropdown-menu" role = "menu" style = ""> ';
+                cadenaB = cadenaB + '    <a class="dropdown-item" href = "#" onClick="verVentasXVendedor(' + cod_vendedor + cod_empresa + cod_sucursal + fecha_desde + fecha_hasta + ');" > Ventas </a> ';
+                cadenaB = cadenaB + '    <a class="dropdown-item" href = "#" onClick="verCobrosXVendedor(' + cod_vendedor + cod_empresa + cod_sucursal + fecha_desde + fecha_hasta +');" > Cobros </a> ';
+                cadenaB = cadenaB + '    <a class="dropdown-item" href = "#" onClick="verNCXVendedor(' + cod_vendedor + cod_empresa + cod_sucursal + fecha_desde + fecha_hasta +');"> N/C</a> ';
+                cadenaB = cadenaB + '</div>';
+                
+                tabCell.innerHTML = cadenaB;
+                //tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="imprimirOrden(\'' + d[i][col[0]] + '\')" >Imprimir</button>';
+                //tabCell.innerHTML = '<button type="button" class="btn btn-info" data-toggle="dropdown" id="botonVerDetalle"><i class="fas fa-search"></i></button>'+
+                tabCell.style = ' white-space: nowrap;';
+                
+                tbody.appendChild(tr_body);
+            }
+
+            cardbody.appendChild(table);
+            card.appendChild(cardbody);
+            div.appendChild(card);
+            //CrearTablaDetalle(div.outerHTML, titulo);
+            $('#contenedorTabla').append(div);
+            $('#tableDetalle').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+                }
+            });
+
+            console.log("sale datos")
+            //var presupuesto = JSON.parse(d);
+            var presupuesto = d;
+            var vendedores = presupuesto.map(presupuesto => presupuesto.nombre_vendedor);
+            var ventas = presupuesto.map(presupuesto => presupuesto.ventas_neta);
+            var cobros = presupuesto.map(presupuesto => presupuesto.total_cobros);
+
+            console.log("entra a armar graficos")
+            GeneraGraficos(presupuesto);
+
+            cierraLoading();
+        },
+        error: function (e) {
+            cierraLoading();
+            Toast.fire({
+                icon: 'error',
+                title: 'Hubo un error al intentar generar.'
+            })
+        }
+    })
+    }
+});
+
+
 
 function SugerirFecha() {
     var empresa = $("#empresa").val();

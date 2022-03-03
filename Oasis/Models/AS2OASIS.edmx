@@ -1163,7 +1163,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.NC_Diario' no tiene definida ningu
           <Property Name="vendedor" Type="varchar" MaxLength="50" />
           <Property Name="nombre_agente_comercial" Type="varchar" MaxLength="101" />
           <Property Name="nota" Type="varchar" MaxLength="2000" />
-          <Property Name="valor_factura" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_factura" Type="numeric" Precision="15" Scale="2" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Orden_Produccion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1205,6 +1205,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Orden_Produccion' no tiene definid
           <Property Name="cantidad_utilizada" Type="numeric" Precision="14" Scale="6" />
           <Property Name="nombre" Type="varchar" MaxLength="300" />
           <Property Name="unidad_medida_op" Type="varchar" MaxLength="50" />
+          <Property Name="presentacion_producto" Type="numeric" Precision="12" Scale="2" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Orden_Produccion_Cabecera' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1393,18 +1394,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Proveedores' no tiene definida nin
           <Property Name="correo" Type="varchar" MaxLength="100" />
           <Property Name="categoria_empresa" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'oasis.dbo.Recetas' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="Recetas">
-          <Property Name="id_pt" Type="int" />
-          <Property Name="nombre_pt" Type="varchar" MaxLength="300" />
-          <Property Name="id_material" Type="int" />
-          <Property Name="codigo_categoria_producto" Type="varchar" MaxLength="255" />
-          <Property Name="nombre_material" Type="varchar" MaxLength="300" />
-          <Property Name="um" Type="varchar" MaxLength="50" />
-          <Property Name="cantidad" Type="float" />
-          <Property Name="st" Type="int" />
-        </EntityType>-->
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Registros_Contabilidad' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Registros_Contabilidad">
@@ -2805,7 +2794,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Orden_Produccion].[cantidad_devuelta] AS [cantidad_devuelta], 
     [Orden_Produccion].[cantidad_utilizada] AS [cantidad_utilizada], 
     [Orden_Produccion].[nombre] AS [nombre], 
-    [Orden_Produccion].[unidad_medida_op] AS [unidad_medida_op]
+    [Orden_Produccion].[unidad_medida_op] AS [unidad_medida_op], 
+    [Orden_Produccion].[presentacion_producto] AS [presentacion_producto]
     FROM [dbo].[Orden_Produccion] AS [Orden_Produccion]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Orden_Produccion_Cabecera" EntityType="Self.Orden_Produccion_Cabecera" store:Type="Views" store:Schema="dbo">
@@ -4094,7 +4084,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="nombre_agente_comercial" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
           <Property Name="nota" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="valor_factura" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_factura" Type="Decimal" Precision="15" Scale="2" />
         </EntityType>
         <EntityType Name="Orden_Produccion_Cabecera">
           <Key>
@@ -4968,17 +4958,17 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
             <Parameter Name="tipoCliente" Mode="In" Type="String" />
             <Parameter Name="idvendedor" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="Presupuesto_Consolidado">
+          <EntitySet Name="Ventas_Producto_Precio" EntityType="oasisModel1.Ventas_Producto_Precio" />
+          <EntitySet Name="Reporte_Cartera" EntityType="oasisModel1.Reporte_Cartera" />
+          <EntitySet Name="Reporte_Analisis_Costos" EntityType="oasisModel1.Reporte_Analisis_Costos" />
+          <EntitySet Name="Cierre_Caja_Cabecera" EntityType="oasisModel1.Cierre_Caja_Cabecera" />
+          <FunctionImport Name="Presupuesto_Consolidado" ReturnType="Collection(oasisModel1.Presupuesto_Consolidado_Result)">
             <Parameter Name="empresa" Mode="In" Type="String" />
             <Parameter Name="sucursal" Mode="In" Type="String" />
             <Parameter Name="fecha_desde" Mode="In" Type="DateTime" />
             <Parameter Name="fecha_hasta" Mode="In" Type="DateTime" />
             <Parameter Name="tipoCliente" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Ventas_Producto_Precio" EntityType="oasisModel1.Ventas_Producto_Precio" />
-          <EntitySet Name="Reporte_Cartera" EntityType="oasisModel1.Reporte_Cartera" />
-          <EntitySet Name="Reporte_Analisis_Costos" EntityType="oasisModel1.Reporte_Analisis_Costos" />
-          <EntitySet Name="Cierre_Caja_Cabecera" EntityType="oasisModel1.Cierre_Caja_Cabecera" />
           </EntityContainer>
         <ComplexType Name="CobrosPorVendedor_Result">
           <Property Type="String" Name="codigo" Nullable="false" MaxLength="20" />
@@ -5006,7 +4996,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Type="String" Name="vendedor" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="Presupuesto_Result">
-          <Property Type="Int32" Name="id_vendedor" Nullable="false" />
+          <Property Type="Int64" Name="id_vendedor" Nullable="false" />
           <Property Type="String" Name="nombre_vendedor" Nullable="true" MaxLength="50" />
           <Property Type="Double" Name="valor_venta" Nullable="true" />
           <Property Type="Decimal" Name="ventas_brutas" Nullable="true" Precision="38" Scale="2" />
@@ -5334,6 +5324,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="cantidad_utilizada" Type="Decimal" Precision="14" Scale="6" />
           <Property Name="nombre" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="unidad_medida_op" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="presentacion_producto" Type="Decimal" Precision="12" Scale="2" />
         </EntityType>
         <EntityType Name="Costos_MP_ME">
           <Key>
@@ -5702,6 +5693,18 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="id_usuario" Type="Int32" />
         </EntityType>
+        <ComplexType Name="Presupuesto_Consolidado_Result" >
+          <Property Type="Double" Name="alcance_cobro" Nullable="true" />
+          <Property Type="Double" Name="alcance_venta" Nullable="true" />
+          <Property Type="Int32" Name="id_vendedor" Nullable="false" />
+          <Property Type="String" Name="nombre_vendedor" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="total_cobros" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Double" Name="valor_cobro" Nullable="true" />
+          <Property Type="Double" Name="valor_venta" Nullable="true" />
+          <Property Type="Decimal" Name="ventas_neta" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="empresa" Nullable="false" />
+          <Property Type="String" Name="sucursal" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6989,6 +6992,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySetMapping Name="Orden_Produccion">
             <EntityTypeMapping TypeName="oasisModel1.Orden_Produccion">
               <MappingFragment StoreEntitySet="Orden_Produccion">
+                <ScalarProperty Name="presentacion_producto" ColumnName="presentacion_producto" />
                 <ScalarProperty Name="unidad_medida_op" ColumnName="unidad_medida_op" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="cantidad_utilizada" ColumnName="cantidad_utilizada" />
@@ -7254,7 +7258,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Presupuesto_Consolidado" FunctionName="oasisModel1.Store.Presupuesto_Consolidado"/>
           <EntitySetMapping Name="Ventas_Producto_Precio">
             <EntityTypeMapping TypeName="oasisModel1.Ventas_Producto_Precio">
               <MappingFragment StoreEntitySet="Ventas_Producto_Precio">
@@ -7356,6 +7359,22 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Presupuesto_Consolidado" FunctionName="oasisModel1.Store.Presupuesto_Consolidado" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.Presupuesto_Consolidado_Result">
+                <ScalarProperty Name="alcance_cobro" ColumnName="alcance_cobro" />
+                <ScalarProperty Name="alcance_venta" ColumnName="alcance_venta" />
+                <ScalarProperty Name="id_vendedor" ColumnName="id_vendedor" />
+                <ScalarProperty Name="nombre_vendedor" ColumnName="nombre_vendedor" />
+                <ScalarProperty Name="total_cobros" ColumnName="total_cobros" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="valor_venta" ColumnName="valor_venta" />
+                <ScalarProperty Name="ventas_neta" ColumnName="ventas_neta" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

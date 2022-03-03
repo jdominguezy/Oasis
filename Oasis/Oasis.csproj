@@ -670,7 +670,9 @@
     <Compile Include="Models\presupuesto_cabecera.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Presupuesto_Consolidado_Result.cs" />
+    <Compile Include="Models\Presupuesto_Consolidado_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\presupuesto_detalle.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
@@ -3162,6 +3164,7 @@
     <Content Include="Views\Credito\GestionCarteraVcda.cshtml" />
     <Content Include="Views\Credito\ConsolidadoCierreCaja.cshtml" />
     <Content Include="Views\Costos\AnalisisCostos.cshtml" />
+    <Content Include="Views\Credito\VerDepositoCaja.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
