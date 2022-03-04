@@ -15,37 +15,71 @@ namespace Oasis.Models
 using System;
     using System.Collections.Generic;
     
-    public partial class Orden_Produccion
-    {
-        public int id_orden_fabricacion { get; set; }
-        public string lote { get; set; }
-        public string OP { get; set; }
-        public Nullable<System.DateTime> Fecha_creacion_OP { get; set; }
-        public Nullable<System.DateTime> fecha_modificacion { get; set; }
-        public Nullable<System.DateTime> fecha_cierre { get; set; }
-        public string codigo_producto { get; set; }
-        public string descripcion_producto { get; set; }
-        public string codigo_categoria_producto { get; set; }
-        public string planta { get; set; }
-        public string descripcion_op { get; set; }
-        public Nullable<decimal> cantidad { get; set; }
-        public Nullable<decimal> cantidad_fabricada { get; set; }
-        public Nullable<decimal> cantidad_formulacion { get; set; }
-        public Nullable<decimal> cantidad_inicial { get; set; }
-        public string responsable { get; set; }
-        public string nombre_ruta { get; set; }
-        public bool indicador_suborden { get; set; }
-        public Nullable<int> id_orden_fabricacion_padre { get; set; }
-        public string codigo_lote { get; set; }
-        public Nullable<int> id_producto { get; set; }
-        public string cod__producto_material { get; set; }
-        public string nombre_material { get; set; }
-        public string um_material { get; set; }
-        public Nullable<decimal> cantidad_producto_mp_me { get; set; }
-        public Nullable<decimal> cantidad_despachada { get; set; }
-        public Nullable<decimal> cantidad_devuelta { get; set; }
-        public Nullable<decimal> cantidad_utilizada { get; set; }
-        public string nombre { get; set; }
-        public string unidad_medida_op { get; set; }
-    }
+public partial class Orden_Produccion
+{
+
+    public int id_orden_fabricacion { get; set; }
+
+    public string lote { get; set; }
+
+    public string OP { get; set; }
+
+    public Nullable<System.DateTime> Fecha_creacion_OP { get; set; }
+
+    public Nullable<System.DateTime> fecha_modificacion { get; set; }
+
+    public Nullable<System.DateTime> fecha_cierre { get; set; }
+
+    public string codigo_producto { get; set; }
+
+    public string descripcion_producto { get; set; }
+
+    public string codigo_categoria_producto { get; set; }
+
+    public string planta { get; set; }
+
+    public string descripcion_op { get; set; }
+
+    public Nullable<decimal> cantidad { get; set; }
+
+    public Nullable<decimal> cantidad_fabricada { get; set; }
+
+    public Nullable<decimal> cantidad_formulacion { get; set; }
+
+    public Nullable<decimal> cantidad_inicial { get; set; }
+
+    public string responsable { get; set; }
+
+    public string nombre_ruta { get; set; }
+
+    public bool indicador_suborden { get; set; }
+
+    public Nullable<int> id_orden_fabricacion_padre { get; set; }
+
+    public string codigo_lote { get; set; }
+
+    public Nullable<int> id_producto { get; set; }
+
+    public string cod__producto_material { get; set; }
+
+    public string nombre_material { get; set; }
+
+    public string um_material { get; set; }
+
+    public Nullable<decimal> cantidad_producto_mp_me { get; set; }
+
+    public Nullable<decimal> cantidad_despachada { get; set; }
+
+    public Nullable<decimal> cantidad_devuelta { get; set; }
+
+    public Nullable<decimal> cantidad_utilizada { get; set; }
+
+    public string nombre { get; set; }
+
+    public string unidad_medida_op { get; set; }
+
+    public Nullable<decimal> presentacion_producto { get; set; }
+
+}
+
 }

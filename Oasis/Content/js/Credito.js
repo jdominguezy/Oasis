@@ -783,8 +783,9 @@ $("#GenerarPresupuestoEmpresa").click(function () {
                 sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
                 sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
                 sTxt += '<tbody>';
-                //$.each(JSON.parse(d), function (index, p) {
-                $.each(function (index, p) {
+
+                $.each(JSON.parse(d), function (index, p) {
+                //$.each(function (index, p) {
                     sTxt += '<tr>';
                     sTxt += '<td style="text-align:center">';
                     sTxt += '<span class="datosLinea" data-id_vendedor=' + p.id_vendedor + ' data-empresa="' + empresa + '" data-sucursal="' + sucursal + '" data-fecha_desde="' + fecha_desde + '" data-fecha_hasta="' + fecha_hasta + '" data-tipocliente="' + tipoCliente + '" hidden></span>';
