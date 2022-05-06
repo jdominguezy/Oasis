@@ -117,6 +117,7 @@ namespace Oasis
             return doc;
         }
 
+
         public Image ImagenFondo(string empresa)
         {
             string imageFilePath = System.Web.HttpContext.Current.Server.MapPath($"/Resources/Hojas membretadas/{empresa}.jpg");

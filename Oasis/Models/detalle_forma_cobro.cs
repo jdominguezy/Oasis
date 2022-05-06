@@ -145,6 +145,10 @@ public partial class detalle_forma_cobro
 
     public Nullable<int> id_cobro_prestamo { get; set; }
 
+    public Nullable<int> estado_consolidado { get; set; }
+
+    public Nullable<System.DateTime> fecha_consolidado { get; set; }
+
 
 
     public virtual caja caja { get; set; }
@@ -152,6 +156,10 @@ public partial class detalle_forma_cobro
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<detalle_cierre_caja> detalle_cierre_caja { get; set; }
+
+    public virtual cobro cobro { get; set; }
+
+    public virtual cobro cobro1 { get; set; }
 
 }
 

@@ -56,6 +56,16 @@ public partial class organizacion
 
     public Nullable<int> id_tipo_identificacion_representante { get; set; }
 
+    public string api_clave_microcobro_bp { get; set; }
+
+    public string distribuidor_clave_microcobro_bp { get; set; }
+
+    public string email_boton_pago { get; set; }
+
+    public bool indicador_microcobro_bp { get; set; }
+
+    public string nombre_boton_pago { get; set; }
+
 }
 
 }

@@ -374,7 +374,7 @@
     <Compile Include="Controllers\Bodega\GuiasRemisionController.cs" />
     <Compile Include="Controllers\Bodega\PickingController.cs" />
     <Compile Include="Controllers\Contabilidad\ContabilidadController.cs" />
-    <Compile Include="Controllers\CostosController.cs" />
+    <Compile Include="Controllers\Costos\CostosController.cs" />
     <Compile Include="Controllers\Credito\CreditoController.cs" />
     <Compile Include="Controllers\Credito\IntercompanyController.cs" />
     <Compile Include="Controllers\Credito\PresupuestoController.cs" />
@@ -488,6 +488,9 @@
     <Compile Include="Models\clientes_actualizacion.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\cobro.cs">
+      <DependentUpon>AS2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CobrosPorVendedorDi_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
@@ -506,7 +509,22 @@
     <Compile Include="Models\cobros_no_aplicable.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cobros_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cobros_tmp.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cobros_Vendedor.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\concentracion.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\consolidado_cierre.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Consulta_Consolidado_Cierres.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Costos_Indirectos.cs">
@@ -539,8 +557,20 @@
     <Compile Include="Models\DetalleOCEnlazada.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Detalle_Cheques.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\detalle_cierre_caja.cs">
       <DependentUpon>AS2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Detalle_Cobros.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Detalle_Cobros_Vendedor.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\detalle_consolidado_cierre.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\detalle_forma_cobro.cs">
       <DependentUpon>AS2.tt</DependentUpon>
@@ -554,6 +584,15 @@
     <Compile Include="Models\detalle_usuario_empresa_sucursal.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Detalle_Vendedor.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Detalle_Vendedores.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\devolucion_consolidado_cierre.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\direccion_empresa.cs">
       <DependentUpon>AS2.tt</DependentUpon>
     </Compile>
@@ -564,6 +603,9 @@
       <DependentUpon>AS2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\empresaOasis.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Estado_Cobros.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\facturas_no_aplicable.cs">
@@ -613,6 +655,9 @@
     <Compile Include="Models\Login\IdentityModels.cs" />
     <Compile Include="Models\Login\LoginView.cs" />
     <Compile Include="Models\Login\UserTable.cs" />
+    <Compile Include="Models\Mano_Obra.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MateriaPrima_Lote.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
@@ -682,10 +727,16 @@
     <Compile Include="Models\Presupuesto_Vendedor_Detalle.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\producto.cs">
+      <DependentUpon>AS2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\productos.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductosMP.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Productos_precio.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\producto_instituciones.cs">
@@ -710,7 +761,10 @@
     <Compile Include="Models\Reporte_Analisis_Costos.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Reporte_Cartera.cs">
+    <Compile Include="Models\Reporte_Cartera_2.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reporte_Consolidado_Cierre.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Reporte_GuiasRemision.cs">
@@ -719,13 +773,34 @@
     <Compile Include="Models\roles.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\secuencia.cs">
+      <DependentUpon>AS2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SplitString_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Cobros_Vendedor_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Detalle_Cobros_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Detalle_Vendedor_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Guarda_Cobros_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Mano_Obra_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Reporte_Cartera_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Stock.cs">
@@ -783,6 +858,9 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ventas_Producto_Precio.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_cobros_tmp.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -3162,9 +3240,12 @@
     <Content Include="Views\Credito\MovimientoClientes.cshtml" />
     <Content Include="Views\Credito\PresupuestoCobrosCons.cshtml" />
     <Content Include="Views\Credito\GestionCarteraVcda.cshtml" />
-    <Content Include="Views\Credito\ConsolidadoCierreCaja.cshtml" />
+    <Content Include="Views\Credito\DetalleCobros.cshtml" />
     <Content Include="Views\Costos\AnalisisCostos.cshtml" />
     <Content Include="Views\Credito\VerDepositoCaja.cshtml" />
+    <Content Include="Views\Credito\DevolucionDetalleCobro.cshtml" />
+    <Content Include="Views\Costos\ManoObra.cshtml" />
+    <Content Include="Views\Credito\CarteraVendedor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

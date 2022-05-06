@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using static Oasis.Reporte;
 
 namespace Oasis.Controllers
@@ -26,6 +27,10 @@ namespace Oasis.Controllers
             return View();
         }
 
+        public ActionResult ManoObra()
+        {
+            return View();
+        }
         public ActionResult ImprimirHojaCostos(int id_orden_fabricacion)
         {
             using(var db = new as2oasis())
@@ -831,6 +836,71 @@ namespace Oasis.Controllers
                 return data_json;
             }
         }
-    
+
+        [HttpPost]
+        public JsonResult ObtenerManoObra(string fecha_desde, string fecha_hasta, string empresa)
+        {
+            DateTime fecha_desde_ = DateTime.Parse(fecha_desde);
+            DateTime fecha_hasta_ = DateTime.Parse(fecha_hasta);
+
+            if (empresa == "0")
+            {
+                empresa = "";
+            }
+
+            using (var context = new as2oasis())
+            {
+
+                //var datos = context.SP_Mano_Obra(empresa, fecha_desde_, fecha_hasta_);
+
+                //var datos_json = JsonConvert.SerializeObject(datos, Formatting.Indented);
+                //var json_data = Json(datos_json, JsonRequestBehavior.AllowGet);
+                //json_data.MaxJsonLength = 50000000;
+                //return json_data;
+
+                IQueryable<Mano_Obra> data = context.Mano_Obra.Where(
+                   x => x.fecha >= fecha_desde_ &&
+                   x.fecha <= fecha_hasta_
+                   );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.empresa == empresa);
+                }
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.empresa,
+                        x.planta,
+                        x.orden_fa,
+                        //fecha = x.fecha.ToString("yyyy-MM-dd"),
+                        fecha = (x.fecha==null?null:x.fecha.ToString("yyyy-MM-dd")),
+                        x.codigo_pro,
+                        x.producto,
+                        x.lote,
+                        x.cantidad_fabricada,
+                        x.cod_tarea,
+                        x.tarea,
+                        x.maquina,
+                        x.numero_maquinas,
+                        x.numero_persona,
+                        x.horas_hombre_es,
+                        x.horas_maquina,
+                        x.horas_hombre,
+                        x.responsable
+                    }), JsonRequestBehavior.AllowGet
+                    ); 
+
+                data_json.MaxJsonLength = 50000000;
+
+                return data_json;
+
+            }
+
+        }
+
     }
 }

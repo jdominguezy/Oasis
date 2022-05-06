@@ -127,6 +127,20 @@ public partial class usuario
 
     public string codigo_fcm { get; set; }
 
+    public Nullable<bool> indicador_anular_etiqueta { get; set; }
+
+    public Nullable<bool> indicador_cargar_pedidos_fijos { get; set; }
+
+    public Nullable<bool> indicador_flor_dia { get; set; }
+
+    public Nullable<bool> indicador_permitir_caja_mix { get; set; }
+
+    public Nullable<bool> indicador_reimprimir_etiqueta { get; set; }
+
+    public Nullable<bool> indicador_reservar_flor { get; set; }
+
+    public Nullable<bool> indicador_modifica_valor_promocion_mas { get; set; }
+
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

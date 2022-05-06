@@ -38,10 +38,10 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Empresa</label>
                             <select class="form-control" id="empresa_ind" name="empresa_ind">
+                                <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                                    <option value="@emp">@emp</option>
-                                }
+                            <option value="@emp">@emp</option>}
                             </select>
                         </div>
                     </div>
@@ -49,10 +49,10 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Región</label>
                             <select class="form-control" id="sucursal_ind">
+                                <option value="0">Todas las regiones</option>
                                 @foreach (var suc in sucursales)
                                 {
-                                    <option value="@suc">@suc</option>
-                                }
+                            <option value="@suc">@suc</option>}
                             </select>
                         </div>
                     </div>
@@ -213,6 +213,7 @@
             var fecha_hasta = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').endDate._d);
             iniciaLoading();
 
+            console.log("entra")
             if ($('#chkLocalidad').is(":checked")) {
                 localidad = null
             } else {
@@ -229,6 +230,8 @@
                 id_visitador = $('.js-data-vendedor-ajax').children("option:selected").val();
             }
 
+            console.log("entra 1")
+
             $.ajax({
                 url: 'ReporteFacturas',
                 type: 'GET',
@@ -243,6 +246,7 @@
                 dataType: "JSON",
                 contentType: "application/JSON",
                 success: function (d) {
+
                     $('#contenedorTabla').remove();
                     var contenedorTabla = document.createElement("div");
                     contenedorTabla.className = "col-md-12";
@@ -251,7 +255,13 @@
                     row.className = "row";
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
-                    d = JSON.parse(d);
+
+                    console.log(d)
+                    //if (empresa != '0' || sucursal !=  '0') {
+                    //    d = JSON.parse(d);
+                    //}
+                   
+                    
                     var col = [];
                     var encabezado = ["EMPRESA", "SUCURSAL", "CATEGORIA",
                         "RUC", "CLIENTE",
@@ -264,6 +274,8 @@
                             }
                         }
                     }
+
+                    console.log("entra 2")
 
                     // CREATE DYNAMIC TABLE.
                     var div = document.createElement("div");
@@ -279,6 +291,8 @@
                     table.id = "tableDetalle";
                     table.style = '';
 
+                    console.log("entra 3")
+
                     // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
                     var thead = document.createElement("thead");
                     table.appendChild(thead);
@@ -288,6 +302,8 @@
                         th.innerHTML = encabezado[i];
                         tr_head.appendChild(th);
                     }
+
+                    console.log("entra 4")
 
                     thead.appendChild(tr_head);
 
@@ -304,6 +320,8 @@
                         }
                         tbody.appendChild(tr_body);
                     }
+
+                    console.log("entra 5")
 
                     cardbody.appendChild(table);
                     card.appendChild(cardbody);

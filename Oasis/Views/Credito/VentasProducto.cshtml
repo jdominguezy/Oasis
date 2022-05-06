@@ -19,9 +19,10 @@
     var categoria_cliente = as2.categoria_empresa
         .GroupBy(x => x.nombre)
         .Select(x => x.Key);
-    var producto = db.productos
-        .GroupBy(x => x.descripcion)
-        .Select(x => x.Key);
+    var producto = db.Productos_precio
+        //.GroupBy(x => x.nombre)
+        .OrderBy(x => x.nombre)
+        .Select(x => x.nombre);
     var cliente = db.Clientes2
         .GroupBy(x => x.nombre_comercial)
         .OrderBy(x => x.Key)

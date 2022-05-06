@@ -5,10 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Oasis.Models;
 using Oasis.Models.Login;
 using OpenXmlPowerTools;
+using static Oasis.Reporte;
 
 namespace Oasis.Controllers.Credito
 {
@@ -53,6 +57,53 @@ namespace Oasis.Controllers.Credito
             public string cliente;
             public string motivo;
             public string valor_nc;
+        }
+
+        public class SP_Reporte_Cartera
+        {
+            public string empresa;
+            public string sucursal;
+            public string identificacion;
+
+            public string nombre_comercial;
+
+            public string categoria;
+
+            public Nullable<int> id_vendedor_cliente;
+
+            public string vendedor_cliente;
+
+            public Nullable<int> id_vendedor_factura;
+
+            public string vendedor_factura;
+
+            public string secuencial_factura;
+
+            public string fecha_factura;
+
+            public string fecha_vencimiento;
+
+            public string provincia;
+
+            public string ciudad;
+
+            public string parroquia;
+
+            public string direccion;
+
+            public Nullable<decimal> valor_factura;
+
+            public decimal totalChequePost;
+
+            public Nullable<decimal> saldo_pendiente;
+
+            public Nullable<int> dias_emitida;
+
+            public Nullable<int> dias_diferencia;
+
+            public string descripcion;
+
+            public string contacto;
         }
 
         public JsonResult ObtenerVentasPorVendedor(
@@ -116,7 +167,6 @@ namespace Oasis.Controllers.Credito
                 }
             }
         }
-
 
         public JsonResult ObtenerCobrosPorVendedor(
             string empresa,
@@ -269,15 +319,33 @@ namespace Oasis.Controllers.Credito
 
             using (var context = new as2oasis())
             {
+                //var facturas =
+                //    context.Ventas_Consolidado
+                //    .ToList()
+                //    .Where(x => x.empresa == empresa &&
+                //                x.sucursal == sucursal &&
+                //                categoriaCliente.Contains(x.categoria) &&
+                //                x.fecha_factura >= DateTime.Parse(fecha_desde) &&
+                //                x.fecha_factura <= DateTime.Parse(fecha_hasta)
+                //            );
+
                 var facturas =
-                    context.Ventas_Consolidado
-                    .ToList()
-                    .Where(x => x.empresa == empresa &&
-                                x.sucursal == sucursal &&
-                                categoriaCliente.Contains(x.categoria) &&
-                                x.fecha_factura >= DateTime.Parse(fecha_desde) &&
-                                x.fecha_factura <= DateTime.Parse(fecha_hasta)
-                            );
+                   context.Ventas_Consolidado
+                   .ToList()
+                   .Where(x => categoriaCliente.Contains(x.categoria) &&
+                               x.fecha_factura >= DateTime.Parse(fecha_desde) &&
+                               x.fecha_factura <= DateTime.Parse(fecha_hasta)
+                           );
+
+                if (empresa != "0")
+                {
+                    facturas = facturas.Where(x => x.empresa == empresa);
+                }
+
+                if (sucursal != "0")
+                {
+                    facturas = facturas.Where(x => x.sucursal == sucursal);
+                }
 
                 if (!String.IsNullOrEmpty(visitador))
                 {
@@ -285,27 +353,42 @@ namespace Oasis.Controllers.Credito
                     facturas = facturas.Where(x => x.id_vendedor == codigo_visitador);
                 }
 
-                var listaFacturas = facturas
-                    .ToList()
-                    .Select(x => new
-                    {
-                        x.empresa,
-                        x.sucursal,
-                        x.categoria,
-                        x.identificacion,
-                        x.nombre_comercial,
-                        x.secuencial_factura,
-                        fecha_factura = x.fecha_factura.ToShortDateString(),
-                        valor = x.valor_factura,
-                        x.vendedor,
-                        x.descripcion,
-                        x.estado
-                    });
+                //var listaFacturas = facturas
+                //    .ToList()
+                //    .Select(x => new
+                //    {
+                //        x.empresa,
+                //        x.sucursal,
+                //        x.categoria,
+                //        x.identificacion,
+                //        x.nombre_comercial,
+                //        x.secuencial_factura,
+                //        fecha_factura = (x.fecha_factura == null? null: x.fecha_factura.ToShortDateString()),
+                //        valor = x.valor_factura,
+                //        x.vendedor,
+                //        x.descripcion,
+                //        x.estado
+                //    });
 
+                var listaFacturas = Json(facturas.ToList()
+                           .Select(x => new
+                           {
+                               x.empresa,
+                               x.sucursal,
+                               x.categoria,
+                               x.identificacion,
+                               x.nombre_comercial,
+                               x.secuencial_factura,
+                               fecha_factura = (x.fecha_factura == null ? null : x.fecha_factura.ToShortDateString()),
+                               valor = x.valor_factura,
+                               x.vendedor,
+                               x.descripcion,
+                               x.estado
+                           }),
+                           JsonRequestBehavior.AllowGet);
 
-                var listaFacturas_json = JsonConvert.SerializeObject(listaFacturas, Formatting.Indented);
-
-                return Json(listaFacturas_json, JsonRequestBehavior.AllowGet);
+                listaFacturas.MaxJsonLength = 500000000;
+                return listaFacturas;
 
             }
         }
@@ -405,7 +488,12 @@ namespace Oasis.Controllers.Credito
             return View();
         }
 
-        public ActionResult ConsolidadoCierreCaja()
+        public ActionResult DetalleCobros()
+        {
+            return View();
+        }
+
+        public ActionResult DevolucionDetalleCobro()
         {
             return View();
         }
@@ -616,12 +704,12 @@ namespace Oasis.Controllers.Credito
                 using (var context = new as2oasis())
                 {
                     //context.Database.CommandTimeout = 320;
-                    IQueryable<Reporte_Cartera> cartera;
+                    IQueryable<Reporte_Cartera_2> cartera;
 
                     var _fecha_inicio = Convert.ToDateTime(fecha_desde);
                     var _fecha_fin = Convert.ToDateTime(fecha_hasta);
 
-                    cartera = context.Reporte_Cartera.Where(
+                    cartera = context.Reporte_Cartera_2.Where(
                         x => x.fecha_factura >= _fecha_inicio &&
                         x.fecha_factura <= _fecha_fin &&
                         lista_tipoCliente.Contains(x.categoria)
@@ -859,6 +947,11 @@ namespace Oasis.Controllers.Credito
         public ActionResult Cartera()
         {
             ViewBag.Opciones = ListaEmpresas();
+            return View();
+        }
+
+        public ActionResult CarteraVendedor()
+        {
             return View();
         }
 
@@ -1238,7 +1331,7 @@ namespace Oasis.Controllers.Credito
 
                 if (producto != "0")
                 {
-                    data = data.Where(x => x.producto == producto);
+                    data = data.Where(x => x.producto.Contains(producto));
                 }
 
                 if (cliente != "0")
@@ -1384,65 +1477,49 @@ namespace Oasis.Controllers.Credito
         }
 
         [HttpPost]
-        public JsonResult ObtenerCierreCaja(string fecha_desde, string fecha_hasta, string sucursal, string usuario, string caja, string numero, string empresa)
+        public JsonResult ObtenerDetalleCobros(string sucursal, string usuario, string estado, string numero, string empresa, string fecha_desde, string fecha_hasta)
         {
+            int codigo_usuario = 10;
 
             using (var db = new as2oasis())
             {
                 var _fecha_inicio = Convert.ToDateTime(fecha_desde);
                 var _fecha_fin = Convert.ToDateTime(fecha_hasta);
 
-                IQueryable<Cierre_Caja_Cabecera> data = db.Cierre_Caja_Cabecera.Where(
-                    x => x.fecha_creacion >= _fecha_inicio &&
-                    x.fecha_creacion <= _fecha_fin
-                    );
+                //IQueryable<Detalle_Cobros> data = db.Detalle_Cobros.Where(
+                //    x => x.fecha_cobro >= _fecha_inicio &&
+                //    x.fecha_cobro <= _fecha_fin &&
+                //    x.estado_consolidado != 5
+                //    );
 
-                if (empresa != "0")
+                if (empresa == "0")
                 {
-                    data = data.Where(x => x.empresa == empresa);
+                    empresa = "";
                 }
 
-                if (sucursal != "0")
+                if (sucursal == "0")
                 {
-                    data = data.Where(x => x.sucursal == sucursal);
+                    sucursal = "";
                 }
 
                 if (usuario != null)
                 {
-                    int codigo_usuario = Convert.ToInt32(usuario);
-                    data = data.Where(x => x.id_usuario == codigo_usuario);
+                    codigo_usuario = Convert.ToInt32(usuario);
+                    //data = data.Where(x => x.id_usuario == codigo_usuario);
                 }
 
-                if (caja != "0")
+                if (estado == "10")
                 {
-                    data = data.Where(x => x.caja == caja);
+                    estado = "";
                 }
 
-                if (numero != null)
-                {
-                    data = data.Where(x => x.numero == numero);
-                }
+                var data = db.SP_Detalle_Cobros(1,empresa, sucursal, _fecha_inicio, _fecha_fin, codigo_usuario, estado, 0,null);
 
-                var data_json = Json(
-                    data
-                    .ToList()
-                    .Select(x => new
-                    {
-                        x.empresa,
-                        x.numero,
-                        x.usuario,
-                        x.sucursal,
-                        x.caja,
-                        fecha_hasta = x.fecha_hasta==null?null:x.fecha_hasta.ToString("yyyy-MM-dd"),
-                        x.valor_usuario,
-                        x.estado,
-                        x.codigo_movil
-                    }), JsonRequestBehavior.AllowGet
-                    );
-
-                data_json.MaxJsonLength = 500000000;
-
-                return data_json;
+                var data_json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                var json_data = Json(data_json, JsonRequestBehavior.AllowGet);
+                json_data.MaxJsonLength = 5000000;
+                return json_data;
+                 
             }
         }
 
@@ -1518,11 +1595,1091 @@ namespace Oasis.Controllers.Credito
 
                 return Json(presupuesto_json, JsonRequestBehavior.AllowGet);
 
-
             }
             //return View();
         }
 
+        public JsonResult ObtenerConsolidadoCobros(int id_consolidado)
+        {
+          
+            using (var context = new as2oasis())
+            {
+                
+                if (id_consolidado > 0)
+                {
+                    IQueryable<Reporte_Consolidado_Cierre> data = context.Reporte_Consolidado_Cierre.Where(
+                    x => x.id_consolidado_cierre == id_consolidado
+                    );
 
+                    var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.empresa,
+                        fecha_creacion = x.fecha_creacion==null?null:x.fecha_creacion,
+                        x.numero_consolidado,
+                        x.numero_cobro,
+                        x.recaudador,
+                        x.valor_cobro,
+                        x.valor_total
+                       
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                    data_json.MaxJsonLength = 500000000;
+
+                    return data_json;
+                }
+                else
+                {
+                    var resultado = 0;
+                    return Json(resultado, JsonRequestBehavior.AllowGet);
+                }
+                
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GuardarConsolidado(string empresa, string sucursal, string fecha_desde, string fecha_hasta)
+        {
+            try
+            {
+                int codigo_consolidado = 0;
+                string secuencia = "";
+                int cod_cobro = 0;
+                int cod_secuencia = 0;
+                int numero_sec = 0;
+                var db = new as2oasis();
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+                int id_organizacion = 0;
+                int id_sucursal = 0;
+                int id_cobro = 0;
+                int c_cobros = 0;
+                string _usuario = User.Identity.GetUserName();
+
+
+                if (empresa == "0")
+                {
+                    return new HttpStatusCodeResult(400);
+                }
+
+                if (sucursal == "0")
+                {
+                    return new HttpStatusCodeResult(400);
+                }
+
+                var lista_numero = db.V_cobros_tmp.Where(x=> x.estado == 1 && x.usuario_creacion == _usuario).ToList();
+                c_cobros = lista_numero.Count();
+
+                if (c_cobros <= 0)
+                {
+                    return new HttpStatusCodeResult(400);
+                }
+
+                foreach (var lis in lista_numero)
+                {
+                    cod_cobro = lis.id_cobro;
+                    
+                    //detalle = db.Detalle_Cobros.Where(x => x.cod_tabla == cod_cobro).FirstOrDefault();
+                    var detalle = db.SP_Guarda_Cobros(2, empresa, sucursal, _fecha_inicio, _fecha_fin, 10, null, cod_cobro, null).ToList();
+
+                    if (detalle == null)
+                    {
+                        return new HttpStatusCodeResult(400);
+                    }
+                    else
+                    {
+                        foreach (var re in detalle)
+                        {
+                            id_organizacion = Convert.ToInt32(re.id_organizacion);
+                            id_sucursal = Convert.ToInt32(re.id_sucursal);
+                            id_cobro = Convert.ToInt32(re.id_cobro);
+                            
+                        }
+                    }
+
+                    using (var as2 = new AS2Context())
+                    {
+                        var cons_secuencia = as2.secuencia.Where(x => x.id_organizacion == id_organizacion &&
+                                    x.prefijo == "CCDC-").FirstOrDefault();
+
+                        numero_sec = cons_secuencia.numero + 1;
+                        cod_secuencia = cons_secuencia.id_secuencia;
+
+                        if (numero_sec >= 1 && numero_sec < 10)
+                        {
+                            secuencia = cons_secuencia.prefijo + "0000" + Convert.ToString(numero_sec);
+                        }
+
+                        if (numero_sec >= 10 && numero_sec < 99)
+                        {
+                            secuencia = cons_secuencia.prefijo + "000" + Convert.ToString(numero_sec);
+                        }
+
+                        if (numero_sec >= 99 && numero_sec < 999)
+                        {
+                            secuencia = cons_secuencia.prefijo + "00" + Convert.ToString(numero_sec);
+                        }
+
+                        if (numero_sec >= 999 && numero_sec < 9999)
+                        {
+                            secuencia = cons_secuencia.prefijo + "0" + Convert.ToString(numero_sec);
+                        }
+
+                    }
+
+                    using (var oasis = new as2oasis())
+                    {
+
+                        var consolidado = oasis.consolidado_cierre.Where(x => x.id_organizacion == id_organizacion &&
+                                        x.numero_consolidado == secuencia).FirstOrDefault();
+
+                        if (consolidado == null && codigo_consolidado <= 0)
+                        {
+                            consolidado_cierre cons_cierre = new consolidado_cierre();
+                            cons_cierre.id_organizacion = id_organizacion;
+                            cons_cierre.id_sucursal = id_sucursal;
+                            cons_cierre.numero_consolidado = secuencia;
+                            cons_cierre.fecha = DateTime.Now;
+                            cons_cierre.estado = 1;
+                            cons_cierre.fecha = DateTime.Now;
+                            cons_cierre.fecha_creacion = DateTime.Now;
+                            cons_cierre.usuario_creacion = User.Identity.GetUserName();
+
+                            oasis.consolidado_cierre.Add(cons_cierre);
+                            oasis.SaveChanges();
+
+                            codigo_consolidado = cons_cierre.id_consolidado_cierre;
+
+                        }
+
+                        //var detalle_cobro = db.Detalle_Cobros.Where(x => x.id_cobro == id_cobro).ToList();
+                        var detalle_cobro = db.SP_Guarda_Cobros(3, empresa, sucursal, _fecha_inicio, _fecha_fin, 10, null, id_cobro, null).ToList();
+                        
+                        if (detalle_cobro == null)
+                        {
+                            return new HttpStatusCodeResult(400);
+                        }
+
+                        detalle_consolidado_cierre detalle_cons = new detalle_consolidado_cierre();
+
+                        foreach (var item in detalle_cobro)
+                        {
+
+                            detalle_cons.id_consolidado_cierre = codigo_consolidado;
+                            detalle_cons.id_organizacion = item.id_organizacion;
+                            detalle_cons.id_sucursal = item.id_sucursal;
+                            detalle_cons.id_cobro = item.id_cobro;
+                            detalle_cons.id_detalle_forma_cobro = item.id_detalle_forma_cobro;
+                            detalle_cons.id_detalle_cobro = item.id_detalle_cobro;
+                            detalle_cons.numero_consolidado = secuencia;
+                            detalle_cons.numero = item.numero;
+                            detalle_cons.numero_ant = item.num_ant;
+                            detalle_cons.valor = item.valor_cobro;
+                            detalle_cons.cobrador = item.cobrador;
+                            detalle_cons.id_forma_pago = item.id_forma_pago;
+                            detalle_cons.fecha_pago = Convert.ToDateTime(item.fecha_pago);
+                            detalle_cons.documento = item.num_documento;
+                            detalle_cons.valor_total = item.valor_total;
+                            detalle_cons.fecha_creacion = DateTime.Now;
+                            detalle_cons.usuario_creacion = User.Identity.GetUserName();
+
+                            oasis.detalle_consolidado_cierre.Add(detalle_cons);
+                            oasis.SaveChanges();
+
+                        }
+
+                    }
+
+                }
+
+                ActualizaConsolidado(numero_sec, cod_secuencia, codigo_consolidado);
+                //ImprimirConsolidado(codigo_consolidado);
+
+                return new HttpStatusCodeResult(200);
+               
+            }
+            catch (Exception err)            
+            {
+                err.InnerException.ToString();
+                return new HttpStatusCodeResult(400);
+            }
+
+        }
+
+        public ActionResult ActualizaConsolidado(int secuencia, int cod_secuencia, int cod_consolidado)
+        {
+            try
+            {
+
+                var consolidado = new consolidado_cierre();
+                decimal total = 0;
+                var db = new as2oasis();
+
+                //using (var db = new as2oasis())
+                //{
+                    consolidado = db.consolidado_cierre.Where(x => x.id_consolidado_cierre == cod_consolidado).FirstOrDefault();
+                    var detalle_consolidado = db.detalle_consolidado_cierre.Where(x => x.id_consolidado_cierre == cod_consolidado).ToList();
+                //}
+                                   
+                using (var as2 = new AS2Context())
+                {
+                    var act_secuencia = as2.secuencia.Where(x => x.id_secuencia == cod_secuencia).FirstOrDefault();
+                    
+                    act_secuencia.numero = secuencia;
+                    act_secuencia.usuario_modificacion = User.Identity.GetUserName();
+                    act_secuencia.fecha_modificacion = DateTime.Now;
+                    as2.SaveChanges();
+
+                    if (consolidado != null && detalle_consolidado != null)
+                    {
+
+                        foreach (var item in detalle_consolidado)
+                        {
+                            total = total + item.valor;
+
+                            var detalle_cobro = as2.detalle_forma_cobro.Where(x => x.id_detalle_forma_cobro == item.id_detalle_forma_cobro).FirstOrDefault();
+
+                            if (detalle_cobro != null)
+                            {
+                                detalle_cobro.estado_consolidado = 5;
+                                detalle_cobro.fecha_consolidado = DateTime.Now;
+                                as2.SaveChanges();
+                            }
+
+                            var act_cobro = as2.cobro.Where(x => x.id_cobro == item.id_cobro).FirstOrDefault();
+                            if (act_cobro != null)
+                            {
+                                act_cobro.estado_consolidado = 5;
+                                act_cobro.usuario_modificacion = User.Identity.GetUserName();
+                                act_cobro.fecha_modificacion = DateTime.Now;
+                                as2.SaveChanges();
+                            }
+                            
+                            var detalle = db.SP_Quita_cobros(item.id_cobro);
+
+                        }                       
+
+                    }
+
+                }
+
+                if (total > 0)
+                {
+                    consolidado.valor_total = total;
+                    db.SaveChanges();
+                }
+
+                return new HttpStatusCodeResult(200);
+
+            }
+            catch (Exception err)
+            {
+                err.InnerException.ToString();
+                return new HttpStatusCodeResult(400);
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerDetalleCheques(string empresa, string sucursal, string fecha_desde, string fecha_hasta, string estado)
+        {
+
+            using (var db = new as2oasis())
+            {
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+                IQueryable<Detalle_Cheques> data = db.Detalle_Cheques.Where(
+                    x =>x.fecha_cheque >= _fecha_inicio &&
+                    x.fecha_cheque <= _fecha_fin
+                    );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.empresa == empresa);
+                }
+
+                if (sucursal != "0")
+                {
+                    data = data.Where(x => x.sucursal == sucursal);
+                }
+
+                if (estado != "10")
+                {
+                    if (estado == "Consolidado")
+                    {
+                        data = data.Where(x => x.nom_estado_cons == estado);
+                    }
+                    else
+                    {
+                        data = data.Where(x => x.nom_estado == estado);
+                    }
+                    
+                }
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.empresa,
+                        x.sucursal,
+                        x.numero,
+                        fecha_cobro = x.fecha_cobro == null ? null : x.fecha_cobro.ToString("yyyy-MM-dd"),
+                        x.cobrador,
+                        x.identificacion,
+                        x.cliente,
+                        num_documento = x.num_documento == null ? null : x.num_documento,
+                        //x.factura,
+                        nom_banco = x.nom_banco == null ? null : x.nom_banco,
+                        x.cta_bancaria,
+                        x.num_cheque,
+                        fecha_cheque = x.fecha_cheque==null?null:Convert.ToString(x.fecha_cheque),
+                        x.memo,
+                        //x.valor_cobro,
+                        x.valor_total,
+                        x.nom_estado,
+                        Fecha_Validacion = x.fecha_consolidado
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                data_json.MaxJsonLength = 500000000;
+
+                return data_json;
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerConsolidadoCierres(string empresa, string numero)
+        {
+
+            using (var db = new as2oasis())
+            {
+                
+                IQueryable<Consulta_Consolidado_Cierres> data = db.Consulta_Consolidado_Cierres.Where(
+                    x => x.estado != 10 
+                    );
+
+                if (empresa != "0")
+                {
+                    data = data.Where(x => x.empresa == empresa);
+                }
+
+                if (numero != "0")
+                {
+                    data = data.Where(x => x.numero_consolidado == numero);
+                }
+
+                var data_json = Json(
+                    data
+                    .ToList()
+                    .Select(x => new
+                    {
+                        x.empresa,
+                        x.sucursal,
+                        fecha = x.fecha == null?null: Convert.ToString(x.fecha),
+                        x.numero_consolidado,
+                        x.valor_total,
+                        x.nom_estado,
+                        codigo_consolidado = x.id_consolidado_cierre
+                    }), JsonRequestBehavior.AllowGet
+                    );
+
+                data_json.MaxJsonLength = 500000000;
+
+                return data_json;
+            }
+        }
+
+        public JsonResult ObtenerCarteraProceso(
+          string empresa,
+            string sucursal,
+            string tipoCliente,
+            string fecha_desde,
+            string fecha_hasta)
+        {
+            DateTime fecha_desde_ = DateTime.Parse(fecha_desde);
+            DateTime fecha_hasta_ = DateTime.Parse(fecha_hasta);
+
+            var tipoC = JsonConvert.DeserializeObject(tipoCliente);
+            var tipoCliente_ = tipoCliente.Replace(@"[", string.Empty).Replace(@"]", string.Empty).Replace("\"", string.Empty);
+            var lista_tipoCliente = tipoCliente_.Split(',');
+
+            if (empresa == "0")
+            {
+                empresa = "";
+            }
+
+            if (sucursal == "0")
+            {
+                sucursal = "";
+            }
+
+            using (var context = new as2oasis())
+            {
+            
+                var nc = context.SP_Reporte_Cartera(empresa, sucursal, fecha_desde_, fecha_hasta_, tipoCliente_).ToList();
+
+                var nc_json = JsonConvert.SerializeObject(nc, Formatting.Indented);
+                var json_data = Json(nc_json, JsonRequestBehavior.AllowGet);
+                json_data.MaxJsonLength = 50000000;
+                return json_data;
+
+            }
+
+
+        }
+
+        public ActionResult ImprimirConsolidado(int codigo_consolidado)
+        {
+
+            using (var db = new as2oasis())
+            {
+                var cabecera = db.Consulta_Consolidado_Cierres
+                    .Where(x => x.id_consolidado_cierre == codigo_consolidado)
+                    .FirstOrDefault();
+
+                string empresa = cabecera.empresa;
+
+                var vendedores = db.SP_Detalle_Vendedor(codigo_consolidado).ToList();
+               
+                using (MemoryStream myMemoryStream = new MemoryStream())
+                {
+                    Reporte R = new Reporte();
+                    R.MemoryStream = myMemoryStream;
+                    R.Empresa = empresa;
+                    R.tipo_reporte = Reporte.TipoReporte.Reporte;
+                    float[] margenes = new float[] { 0f, 0f, 20f, 10f };
+                    //var doc = R.CrearDocA4(margenes);
+                    var doc = R.CrearDoc(true);
+                    //var doc = R.CrearDocA4(margenes);
+                    var pdf = R.CrearPDF();
+                    var hoy = DateTime.Now;
+
+                    var total_efec = 0.00;
+                    var total_cheq = 0.00;
+                    var total_chep = 0.00;
+                    var total_trans = 0.00;
+                    var total_dep = 0.00;
+
+                    var total_ant = 0.00;
+                    var total_ret = 0.00;
+                    var total_cruce = 0.00;
+                    var total_otro = 0.00;
+
+                    var fuente_cabecera = R.CrearFuente("georgia", 10, 1, BaseColor.BLACK);
+                    var fuente_cabecera_regular = R.CrearFuente("georgia", 10, 0, BaseColor.BLACK);
+                    var fuente_tabla_detalle = R.CrearFuente("georgia", 8, 0, BaseColor.BLACK);
+                    var fuente_tabla_cabecera = R.CrearFuente("georgia", 8, 1, BaseColor.BLACK);
+
+                    var _standardFont = FontFactory.GetFont("SEGOE UI", 15, Font.BOLD, BaseColor.BLACK);
+                    var subtitulo = FontFactory.GetFont("SEGOE UI", 7, Font.BOLD, BaseColor.BLACK);
+                    var encabezado_tabla = FontFactory.GetFont("SEGOE UI", 8, Font.BOLD, BaseColor.BLACK);
+                    var detalle = FontFactory.GetFont("SEGOE UI", 7, Font.NORMAL, BaseColor.BLACK);
+
+                    doc.AddTitle($"Consolidado Cobros#{cabecera.numero_consolidado}");
+                    doc.Open();
+
+                    //doc.Add(R.ImagenFondo(empresa));
+                    //500 totw
+                    var encabezado = new PdfPTable(3)
+                    {
+                        LockedWidth = true,
+                        //TotalWidth = 500f,
+                        TotalWidth = 800f,
+                        SpacingBefore = 5f,
+                        //SpacingBefore = 3f,
+                        SpacingAfter = 20f
+                    };
+
+                    encabezado.SetWidths(new float[] { 66f, 100f, 66f});
+                    //encabezado.SetWidths(new float[] { 66f, 100f, 66f, 150f, 66f, 52f });
+                    //encabezado.SetWidths(new float[] { 66f, 70f, 66f, 100f, 66f, 52f, 66f, 50f });
+
+                    var table1 = new PdfPTable(3)
+                    {
+                        LockedWidth = true,
+                        //TotalWidth = 500f,
+                        TotalWidth = 800f,
+                        SpacingBefore = 5f,
+                        //SpacingAfter = 20f
+                    };
+
+                    var _Titulo = new Chunk($"ANALISIS DE COBRO NO. {cabecera.numero_consolidado} \n  Fecha: {cabecera.fecha} \n {cabecera.empresa} ",
+                        _standardFont);
+                    Paragraph __Titulo = new Paragraph(_Titulo);
+                    __Titulo.Alignment = Element.ALIGN_CENTER;
+
+                    //var _Empresa = new Chunk($"EMPRESA {cabecera.empresa} ",
+                    //    _standardFont);
+                    //Paragraph __Empresa = new Paragraph(_Empresa);
+                    //__Empresa.Alignment = Element.ALIGN_LEFT;
+
+                    //table1.SetWidths(new float[] { 100f, 200f, 100f});
+                    table1.SetWidths(new float[] { 100f, 200f, 100f});
+
+                    PdfPCell cell1 = new PdfPCell();
+                    cell1 = new PdfPCell();
+
+                    cell1.Padding = 0;
+                    cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    table1.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase(_Titulo));
+                    cell1.Padding = 0;
+                    cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    cell1.Border = PdfPCell.NO_BORDER;
+
+                    //PdfPCell cell2 = new PdfPCell();
+                    //cell2 = new PdfPCell();
+
+                    //cell2.Padding = 0;
+                    //cell2.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
+                    //cell2.Border = PdfPCell.NO_BORDER;
+                    //table1.AddCell(cell2);
+
+                    table1.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Usuario: " + User.Identity.GetUserName() + " \n " + "Fecha Impresion:" + hoy));
+                    cell1.Padding = 0;
+                    cell1.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+                    cell1.Border = PdfPCell.NO_BORDER;
+
+                    table1.AddCell(cell1);
+
+                    //cell1 = new PdfPCell(new Phrase(cabecera.empresa));
+                    //cell1.Padding = 0;
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+
+                    //table1.AddCell(cell1);
+
+                    doc.Add(table1);
+
+                    doc.Add(Chunk.NEWLINE);
+
+                    #region detalle
+                    table1.FlushContent();
+                    table1.SetWidths(new float[] { 150f, 150f, 100f});
+
+                    var detalle_cierres = new PdfPTable(13);
+                    detalle_cierres.LockedWidth = true;
+                    //detalle_cierres.TotalWidth = 500f;
+                    detalle_cierres.TotalWidth = 800f;
+                    detalle_cierres.SpacingBefore = 3f;
+                    //detalle_cierres.SetWidths(new float[] { 50f, 205f, 20f,45f,45f,45f,45f,45f});
+                    detalle_cierres.SetWidths(new float[] { 30f, 35f, 30f, 45f, 35f, 40f, 80f, 60f, 30f, 40f, 32f, 32f, 32f });
+
+                    PdfPCell cell_detalle = new PdfPCell();
+                    cell_detalle.Padding = 0;
+                    cell_detalle.Border = PdfPCell.NO_BORDER;
+
+                    //var vendedores = db.Detalle_Vendedores.Where(x => x.id_consolidado_cierre == cabecera.id_consolidado_cierre).ToList();
+
+                    foreach (var item in vendedores)
+                    {
+
+                        cell1 = new PdfPCell(new Phrase(item.cobrador));
+                        cell1.Padding = 0;
+                        cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                        cell1.PaddingBottom = 4f;
+                        cell1.CellEvent = new RoundedBorder();
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        //cell1.BackgroundColor = new BaseColor(53, 101, 255);
+
+                        table1.AddCell(cell1);
+
+                        cell1 = new PdfPCell(new Phrase(""));
+                        cell1.Padding = 0;
+                        cell1.Border = PdfPCell.NO_BORDER;
+
+                        table1.AddCell(cell1);
+
+                        cell1 = new PdfPCell(new Phrase(""));
+                        cell1.Padding = 0;
+                        cell1.Border = PdfPCell.NO_BORDER;
+
+                        table1.AddCell(cell1);
+
+                        //if(MP.Count()>0)
+                        if (item.total_cobro > 0)
+                            doc.Add(table1);
+
+                        detalle_cierres.AddCell(new Phrase("Fecha Cob.", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Cobro", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Fecha Fact.", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Factura", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Valor Fact.", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Ruc", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Cliente", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Forma Pago", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Fecha Doc.", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("# Documento", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Monto", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Valor Cob.", subtitulo));
+                        detalle_cierres.AddCell(new Phrase("Nota", subtitulo));
+
+                        //var detalle_cobro = db.Cobros_Vendedor.Where(x => x.id_consolidado_cierre == cabecera.id_consolidado_cierre &&
+                        //                                             x.cobrador == item.cobrador); 
+                        var detalle_cobro = db.SP_Cobros_Vendedor(cabecera.id_consolidado_cierre, item.cobrador);
+                        var suma_efec = 0.00;
+                        var suma_cheq = 0.00;
+                        var suma_chep = 0.00;
+                        var suma_trans = 0.00;
+                        var suma_dep = 0.00;
+                        var suma_ant = 0.00;
+                        var suma_ret = 0.00;
+                        var suma_cruce = 0.00;
+                        var suma_otro = 0.00;
+
+                        foreach (var cob in detalle_cobro)
+                        {
+                            detalle_cierres.AddCell(new Phrase(cob.fecha_cobro, detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.num_cobro, detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.fecha_factura, detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.factura, detalle));
+                            detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_factura), detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.identificacion, detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.cliente, detalle));                            
+                            detalle_cierres.AddCell(new Phrase(cob.forma_pago, detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.fecha_pago, detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.documento, detalle));
+                            detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_total), detalle));
+                            detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_cobro), detalle));
+                            detalle_cierres.AddCell(new Phrase(cob.nota, detalle));
+
+
+                            if (cob.cod_forma_pago == "EFEC")
+                            {
+                                suma_efec = suma_efec + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                            else if (cob.cod_forma_pago == "CHEQ")
+                            {
+                                suma_cheq = suma_cheq + Convert.ToDouble(cob.valor_cobro);
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                            else if (cob.cod_forma_pago == "CHEQP")
+                            {
+                                suma_chep = suma_chep + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                            else if (cob.cod_forma_pago == "DEPB" || cob.cod_forma_pago == "DEPBDA")
+                            {
+                                suma_dep = suma_dep + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                            else if (cob.cod_forma_pago == "CTA" || cob.cod_forma_pago == "CTADA")
+                            {
+                                suma_trans = suma_trans + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+
+                            else if (cob.cod_forma_pago == "RETFUENTE" || cob.cod_forma_pago == "RTFTE1.75%" || cob.cod_forma_pago == "RTFTE2%"
+                                || cob.cod_forma_pago == "RTFTE2.75%" || cob.cod_forma_pago == "RTFTE8%")
+                            {
+                                suma_ret = suma_ret + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                            else if (cob.cod_forma_pago == "CR")
+                            {
+                                suma_cruce = suma_cruce + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                            else
+                            {
+                                suma_otro = suma_otro + Convert.ToDouble(cob.valor_cobro);
+
+                                if (cob.cod_ant == "ANC")
+                                {
+                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                }
+
+                            }
+
+                        }
+
+                        total_efec = total_efec + suma_efec;
+                        total_cheq = total_cheq + suma_cheq;
+                        total_chep = total_chep + suma_chep;
+                        total_dep = total_dep + suma_dep;
+                        total_trans = total_trans + suma_trans;
+                        total_ant = total_ant + suma_ant;
+                        total_ret = total_ret + suma_ret;
+                        total_cruce = total_cruce + suma_cruce;
+                        total_otro = total_otro + suma_otro;
+
+                        //if (MP.Count() > 0)
+                        if (item.total_cobro > 0)
+                            doc.Add(detalle_cierres);
+                        detalle_cierres.FlushContent();
+                        table1.FlushContent();
+
+                        cell1 = new PdfPCell(new Phrase("Subtotal EFEC:", subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", suma_efec), detalle));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal CHEQ:", subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", suma_cheq), detalle));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal CHEQP:", subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", suma_chep), detalle));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal Dept.: "+ string.Format("{0:n2}", suma_dep), subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal Transferencia:", subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", suma_trans), detalle));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+
+                        cell1 = new PdfPCell(new Phrase("Subtotal Ant.: " + string.Format("{0:n2}", suma_ant), subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal REt.: " + string.Format("{0:n2}", suma_ret), subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal Cruce.: " + string.Format("{0:n2}", suma_cruce), subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+                        cell1 = new PdfPCell(new Phrase("Subtotal Otros.: " + string.Format("{0:n2}", suma_otro), subtitulo));
+                        cell1.Border = PdfPCell.NO_BORDER;
+                        detalle_cierres.AddCell(cell1);
+
+
+                        //if (MP.Count() > 0)
+                        if (item.total_cobro > 0)
+                            doc.Add(detalle_cierres);
+                        detalle_cierres.FlushContent();
+
+                    }
+
+                    #endregion
+
+                    #region Totales
+                    cell1 = new PdfPCell(new Phrase("Total EFEC:", subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_efec), detalle));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total CHEQ:", subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_cheq), detalle));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total CHEQP:", subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_chep), detalle));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total Dept.: "+ string.Format("{0:n2}", total_dep), subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total Transferencia:", subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_trans), detalle));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total Ant.: " + string.Format("{0:n2}", total_ant), subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total REt.: " + string.Format("{0:n2}", total_ret), subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total Cruce.: " + string.Format("{0:n2}", total_cruce), subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+                    cell1 = new PdfPCell(new Phrase("Total Otros: " + string.Format("{0:n2}", total_otro), subtitulo));
+                    cell1.Border = PdfPCell.NO_BORDER;
+                    detalle_cierres.AddCell(cell1);
+
+
+                    doc.Add(detalle_cierres);
+                    detalle_cierres.FlushContent();
+
+                    #endregion
+
+                    #region FIRMAS   
+
+                    //var tabla_firma = new PdfPTable(2);
+                    //tabla_firma.LockedWidth = true;
+                    //tabla_firma.TotalWidth = 600f;
+                    //tabla_firma.SpacingBefore = 25f;
+                    //tabla_firma.SetWidths(new float[] { 250f, 250f });
+
+                    //cell1 = new PdfPCell(new Phrase("________________"));
+                    //cell1.Padding = 0;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    //tabla_firma.AddCell(cell1);
+
+                    //cell1 = new PdfPCell(new Phrase("________________"));
+                    //cell1.Padding = 0;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    //tabla_firma.AddCell(cell1);
+
+                    //cell1 = new PdfPCell(new Phrase("REVISADO \n Departamento de Auditoría"));
+                    //cell1.Padding = 5f;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    //tabla_firma.AddCell(cell1);
+
+                    //cell1 = new PdfPCell(new Phrase("APROBADO"));
+                    //cell1.Padding = 5f;
+                    //cell1.Border = PdfPCell.NO_BORDER;
+                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    //tabla_firma.AddCell(cell1);
+
+                    //doc.Add(tabla_firma);
+                    #endregion
+                    doc.Close();
+
+                    var pdf_generado = R.GenerarPDF();
+
+                    byte[] file = pdf_generado;
+                    MemoryStream output = new MemoryStream();
+                    output.Write(file, 0, file.Length);
+                    output.Position = 0;
+
+                    return new FileStreamResult(output, "application/pdf");
+                
+                }
+            }
+
+        }
+
+        public ActionResult GuardarDevolucion(int codigo_consolidado)
+        {
+            try
+            {
+
+                AS2Context as2 = new AS2Context();
+
+                using (var db = new as2oasis())
+                {
+
+                    var cabecera = db.consolidado_cierre.Where(x => x.id_consolidado_cierre == codigo_consolidado).FirstOrDefault();
+                    var consolidado = db.detalle_consolidado_cierre.Where(x => x.id_consolidado_cierre == codigo_consolidado);
+
+                    var cuenta_reg = consolidado.Count();
+                    var suma_reg = consolidado.Sum(x => x.valor <= 0 ? 0 : x.valor);
+
+                    if (cabecera.estado == 6)
+                    {
+                        return new HttpStatusCodeResult(400);
+                    }
+
+                    if (suma_reg > 0)
+                    {
+                        devolucion_consolidado_cierre devolucion = new devolucion_consolidado_cierre();
+                        devolucion.id_organizacion = cabecera.id_organizacion;
+                        devolucion.id_sucursal = cabecera.id_sucursal;
+                        devolucion.id_consolidado_cierre = cabecera.id_consolidado_cierre;
+                        devolucion.numero_consolidado = cabecera.numero_consolidado;
+                        devolucion.valor = suma_reg;
+                        devolucion.cant_reg = cuenta_reg;
+                        devolucion.fecha_creacion = DateTime.Now;
+                        devolucion.usuario_creacion = User.Identity.GetUserName();
+                        devolucion.fecha_modificacion = DateTime.Now;
+                        devolucion.usuario_modificacion = User.Identity.GetUserName();
+
+                        db.devolucion_consolidado_cierre.Add(devolucion);
+                        db.SaveChanges();
+
+                        cabecera.estado = 6;
+                        cabecera.fecha_modificacion = DateTime.Now;
+                        cabecera.usuario_modificacion = User.Identity.GetUserName();
+                        db.SaveChanges();
+
+                        foreach (var item in consolidado)
+                        {
+                            var forma_cobro = as2.detalle_forma_cobro.Where(x => x.id_detalle_forma_cobro == item.id_detalle_forma_cobro).FirstOrDefault();
+
+                            if (forma_cobro != null)
+                            {
+                                forma_cobro.estado_consolidado = 0;
+                                forma_cobro.fecha_modificacion = DateTime.Now;
+                                forma_cobro.usuario_modificacion = User.Identity.GetUserName();
+                                as2.SaveChanges();
+                            }
+                            
+                            var act_cobro = as2.cobro.Where(x => x.id_cobro == item.id_cobro).FirstOrDefault();
+
+                            if (act_cobro != null)
+                            {
+                                act_cobro.estado_consolidado = 0;
+                                act_cobro.fecha_modificacion = DateTime.Now;
+                                act_cobro.usuario_modificacion = User.Identity.GetUserName();
+                                as2.SaveChanges();
+                            }
+
+                        }
+
+                    }
+
+                    return new HttpStatusCodeResult(200);
+
+                }
+
+            }
+            catch (Exception err)
+            {
+                err.InnerException.ToString();
+                return new HttpStatusCodeResult(400);
+            }
+
+        }
+
+        public void GuardarCobroTmp(string empresa, string sucursal, string fecha_desde, string fecha_hasta, string numero)
+        {
+            try
+            {
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+                int cod_cobro = Convert.ToInt32(numero);
+
+                using (var db = new as2oasis())
+                {
+
+                    var cobro = db.V_cobros_tmp.Where(x => x.id_cobro == cod_cobro && x.empresa == empresa).FirstOrDefault();
+                    if (cobro == null)
+                    {
+                        cobros_tmp cobro_tmp = new cobros_tmp();
+                        cobro_tmp.id_cobro = cod_cobro;
+                        cobro_tmp.empresa = empresa;
+                        cobro_tmp.sucursal = sucursal;
+                        cobro_tmp.fecha_inicio = _fecha_inicio;
+                        cobro_tmp.fecha_fin = _fecha_fin;
+                        cobro_tmp.estado = 1;
+                        cobro_tmp.fecha_creacion = DateTime.Now;
+                        cobro_tmp.usuario_creacion = User.Identity.GetUserName();
+
+                        db.cobros_tmp.Add(cobro_tmp);
+                        db.SaveChanges();
+                    }                    
+
+                 }
+
+            }
+            catch (Exception err)
+            {
+                err.InnerException.ToString();
+               
+            }
+
+        }
+
+        public void EliminarCobroTmp(string empresa, string numero)
+        {
+            try
+            {
+                int cod_cobro = Convert.ToInt32(numero);
+
+                using (var db = new as2oasis())
+                {
+
+                    var detalle = db.SP_Quita_cobros(cod_cobro);
+
+                }
+
+            }
+            catch (Exception err)
+            {
+                err.InnerException.ToString();
+
+            }
+
+        }
+
+        public JsonResult CargaCobroTmp(string empresa, string sucursal)
+        {
+            using (var db = new as2oasis())
+            {
+
+                //var data = db.V_cobros_tmp.Where(x => x.empresa == empresa && x.sucursal == sucursal);
+                //var data_json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                //var json_data = Json(data_json, JsonRequestBehavior.AllowGet);
+                //json_data.MaxJsonLength = 5000000;
+                //return json_data;
+
+                return Json(db.V_cobros_tmp.Where(x => x.empresa == empresa && x.sucursal == sucursal)
+               .Select(x => new
+               {
+                   x.id_cobro
+               }).ToList(), JsonRequestBehavior.AllowGet);
+
+            }
+        }
+    
     }
+
 }

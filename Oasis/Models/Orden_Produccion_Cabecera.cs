@@ -42,6 +42,10 @@ public partial class Orden_Produccion_Cabecera
 
     public string nombre_ruta { get; set; }
 
+    public string codigo_mba3 { get; set; }
+
+    public Nullable<decimal> presentacion_producto { get; set; }
+
 }
 
 }

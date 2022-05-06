@@ -205,11 +205,43 @@ public partial class as2oasis : DbContext
 
     public virtual DbSet<Ventas_Producto_Precio> Ventas_Producto_Precio { get; set; }
 
-    public virtual DbSet<Reporte_Cartera> Reporte_Cartera { get; set; }
-
     public virtual DbSet<Reporte_Analisis_Costos> Reporte_Analisis_Costos { get; set; }
 
     public virtual DbSet<Cierre_Caja_Cabecera> Cierre_Caja_Cabecera { get; set; }
+
+    public virtual DbSet<Estado_Cobros> Estado_Cobros { get; set; }
+
+    public virtual DbSet<consolidado_cierre> consolidado_cierre { get; set; }
+
+    public virtual DbSet<Reporte_Consolidado_Cierre> Reporte_Consolidado_Cierre { get; set; }
+
+    public virtual DbSet<devolucion_consolidado_cierre> devolucion_consolidado_cierre { get; set; }
+
+    public virtual DbSet<Detalle_Cobros> Detalle_Cobros { get; set; }
+
+    public virtual DbSet<Cobros_Vendedor> Cobros_Vendedor { get; set; }
+
+    public virtual DbSet<Detalle_Vendedores> Detalle_Vendedores { get; set; }
+
+    public virtual DbSet<Detalle_Vendedor> Detalle_Vendedor { get; set; }
+
+    public virtual DbSet<Reporte_Cartera_2> Reporte_Cartera_2 { get; set; }
+
+    public virtual DbSet<Productos_precio> Productos_precio { get; set; }
+
+    public virtual DbSet<Detalle_Cobros_Vendedor> Detalle_Cobros_Vendedor { get; set; }
+
+    public virtual DbSet<detalle_consolidado_cierre> detalle_consolidado_cierre { get; set; }
+
+    public virtual DbSet<V_cobros_tmp> V_cobros_tmp { get; set; }
+
+    public virtual DbSet<cobros_tmp> cobros_tmp { get; set; }
+
+    public virtual DbSet<Consulta_Consolidado_Cierres> Consulta_Consolidado_Cierres { get; set; }
+
+    public virtual DbSet<Detalle_Cheques> Detalle_Cheques { get; set; }
+
+    public virtual DbSet<Mano_Obra> Mano_Obra { get; set; }
 
 
     [DbFunction("as2oasis", "SplitString")]
@@ -742,6 +774,205 @@ public partial class as2oasis : DbContext
 
 
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Presupuesto_Consolidado_Result>("Presupuesto_Consolidado", empresaParameter, sucursalParameter, fecha_desdeParameter, fecha_hastaParameter, tipoClienteParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Cobros_Vendedor_Result> SP_Cobros_Vendedor(Nullable<int> idconsolidado, string idvendedor)
+    {
+
+        var idconsolidadoParameter = idconsolidado.HasValue ?
+            new ObjectParameter("idconsolidado", idconsolidado) :
+            new ObjectParameter("idconsolidado", typeof(int));
+
+
+        var idvendedorParameter = idvendedor != null ?
+            new ObjectParameter("idvendedor", idvendedor) :
+            new ObjectParameter("idvendedor", typeof(string));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Cobros_Vendedor_Result>("SP_Cobros_Vendedor", idconsolidadoParameter, idvendedorParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Detalle_Vendedor_Result> SP_Detalle_Vendedor(Nullable<int> idconsolidado)
+    {
+
+        var idconsolidadoParameter = idconsolidado.HasValue ?
+            new ObjectParameter("idconsolidado", idconsolidado) :
+            new ObjectParameter("idconsolidado", typeof(int));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Detalle_Vendedor_Result>("SP_Detalle_Vendedor", idconsolidadoParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Reporte_Cartera_Result> SP_Reporte_Cartera(string empresa, string sucursal, Nullable<System.DateTime> fecha_desde, Nullable<System.DateTime> fecha_hasta, string tipoCliente)
+    {
+
+        var empresaParameter = empresa != null ?
+            new ObjectParameter("empresa", empresa) :
+            new ObjectParameter("empresa", typeof(string));
+
+
+        var sucursalParameter = sucursal != null ?
+            new ObjectParameter("sucursal", sucursal) :
+            new ObjectParameter("sucursal", typeof(string));
+
+
+        var fecha_desdeParameter = fecha_desde.HasValue ?
+            new ObjectParameter("fecha_desde", fecha_desde) :
+            new ObjectParameter("fecha_desde", typeof(System.DateTime));
+
+
+        var fecha_hastaParameter = fecha_hasta.HasValue ?
+            new ObjectParameter("fecha_hasta", fecha_hasta) :
+            new ObjectParameter("fecha_hasta", typeof(System.DateTime));
+
+
+        var tipoClienteParameter = tipoCliente != null ?
+            new ObjectParameter("tipoCliente", tipoCliente) :
+            new ObjectParameter("tipoCliente", typeof(string));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Reporte_Cartera_Result>("SP_Reporte_Cartera", empresaParameter, sucursalParameter, fecha_desdeParameter, fecha_hastaParameter, tipoClienteParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Guarda_Cobros_Result> SP_Guarda_Cobros(Nullable<int> tipo_busqueda, string empresa, string sucursal, Nullable<System.DateTime> fecha_desde, Nullable<System.DateTime> fecha_hasta, Nullable<int> usuario, string estado, Nullable<int> cod_tabla, string numero_cobro)
+    {
+
+        var tipo_busquedaParameter = tipo_busqueda.HasValue ?
+            new ObjectParameter("tipo_busqueda", tipo_busqueda) :
+            new ObjectParameter("tipo_busqueda", typeof(int));
+
+
+        var empresaParameter = empresa != null ?
+            new ObjectParameter("empresa", empresa) :
+            new ObjectParameter("empresa", typeof(string));
+
+
+        var sucursalParameter = sucursal != null ?
+            new ObjectParameter("sucursal", sucursal) :
+            new ObjectParameter("sucursal", typeof(string));
+
+
+        var fecha_desdeParameter = fecha_desde.HasValue ?
+            new ObjectParameter("fecha_desde", fecha_desde) :
+            new ObjectParameter("fecha_desde", typeof(System.DateTime));
+
+
+        var fecha_hastaParameter = fecha_hasta.HasValue ?
+            new ObjectParameter("fecha_hasta", fecha_hasta) :
+            new ObjectParameter("fecha_hasta", typeof(System.DateTime));
+
+
+        var usuarioParameter = usuario.HasValue ?
+            new ObjectParameter("usuario", usuario) :
+            new ObjectParameter("usuario", typeof(int));
+
+
+        var estadoParameter = estado != null ?
+            new ObjectParameter("estado", estado) :
+            new ObjectParameter("estado", typeof(string));
+
+
+        var cod_tablaParameter = cod_tabla.HasValue ?
+            new ObjectParameter("cod_tabla", cod_tabla) :
+            new ObjectParameter("cod_tabla", typeof(int));
+
+
+        var numero_cobroParameter = numero_cobro != null ?
+            new ObjectParameter("numero_cobro", numero_cobro) :
+            new ObjectParameter("numero_cobro", typeof(string));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Guarda_Cobros_Result>("SP_Guarda_Cobros", tipo_busquedaParameter, empresaParameter, sucursalParameter, fecha_desdeParameter, fecha_hastaParameter, usuarioParameter, estadoParameter, cod_tablaParameter, numero_cobroParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Mano_Obra_Result> SP_Mano_Obra(string empresa, Nullable<System.DateTime> fecha_desde, Nullable<System.DateTime> fecha_hasta)
+    {
+
+        var empresaParameter = empresa != null ?
+            new ObjectParameter("empresa", empresa) :
+            new ObjectParameter("empresa", typeof(string));
+
+
+        var fecha_desdeParameter = fecha_desde.HasValue ?
+            new ObjectParameter("fecha_desde", fecha_desde) :
+            new ObjectParameter("fecha_desde", typeof(System.DateTime));
+
+
+        var fecha_hastaParameter = fecha_hasta.HasValue ?
+            new ObjectParameter("fecha_hasta", fecha_hasta) :
+            new ObjectParameter("fecha_hasta", typeof(System.DateTime));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Mano_Obra_Result>("SP_Mano_Obra", empresaParameter, fecha_desdeParameter, fecha_hastaParameter);
+    }
+
+
+    public virtual int SP_Quita_cobros(Nullable<int> idcobro)
+    {
+
+        var idcobroParameter = idcobro.HasValue ?
+            new ObjectParameter("idcobro", idcobro) :
+            new ObjectParameter("idcobro", typeof(int));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_Quita_cobros", idcobroParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Detalle_Cobros_Result> SP_Detalle_Cobros(Nullable<int> tipo_busqueda, string empresa, string sucursal, Nullable<System.DateTime> fecha_desde, Nullable<System.DateTime> fecha_hasta, Nullable<int> usuario, string estado, Nullable<int> cod_tabla, string numero_cobro)
+    {
+
+        var tipo_busquedaParameter = tipo_busqueda.HasValue ?
+            new ObjectParameter("tipo_busqueda", tipo_busqueda) :
+            new ObjectParameter("tipo_busqueda", typeof(int));
+
+
+        var empresaParameter = empresa != null ?
+            new ObjectParameter("empresa", empresa) :
+            new ObjectParameter("empresa", typeof(string));
+
+
+        var sucursalParameter = sucursal != null ?
+            new ObjectParameter("sucursal", sucursal) :
+            new ObjectParameter("sucursal", typeof(string));
+
+
+        var fecha_desdeParameter = fecha_desde.HasValue ?
+            new ObjectParameter("fecha_desde", fecha_desde) :
+            new ObjectParameter("fecha_desde", typeof(System.DateTime));
+
+
+        var fecha_hastaParameter = fecha_hasta.HasValue ?
+            new ObjectParameter("fecha_hasta", fecha_hasta) :
+            new ObjectParameter("fecha_hasta", typeof(System.DateTime));
+
+
+        var usuarioParameter = usuario.HasValue ?
+            new ObjectParameter("usuario", usuario) :
+            new ObjectParameter("usuario", typeof(int));
+
+
+        var estadoParameter = estado != null ?
+            new ObjectParameter("estado", estado) :
+            new ObjectParameter("estado", typeof(string));
+
+
+        var cod_tablaParameter = cod_tabla.HasValue ?
+            new ObjectParameter("cod_tabla", cod_tabla) :
+            new ObjectParameter("cod_tabla", typeof(int));
+
+
+        var numero_cobroParameter = numero_cobro != null ?
+            new ObjectParameter("numero_cobro", numero_cobro) :
+            new ObjectParameter("numero_cobro", typeof(string));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Detalle_Cobros_Result>("SP_Detalle_Cobros", tipo_busquedaParameter, empresaParameter, sucursalParameter, fecha_desdeParameter, fecha_hastaParameter, usuarioParameter, estadoParameter, cod_tablaParameter, numero_cobroParameter);
     }
 
 }

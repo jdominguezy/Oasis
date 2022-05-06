@@ -26,6 +26,10 @@ public partial class empresa
 
         this.direccion_empresa = new HashSet<direccion_empresa>();
 
+        this.producto = new HashSet<producto>();
+
+        this.cobro = new HashSet<cobro>();
+
     }
 
 
@@ -134,6 +138,14 @@ public partial class empresa
     public virtual ICollection<direccion_empresa> direccion_empresa { get; set; }
 
     public virtual categoria_empresa categoria_empresa { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<producto> producto { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<cobro> cobro { get; set; }
 
 }
 

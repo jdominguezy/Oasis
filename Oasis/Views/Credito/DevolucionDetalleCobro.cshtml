@@ -1,11 +1,11 @@
 ﻿
 @using Oasis.Models
 @using Oasis.Models.Login
-@{ ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-
-@{ var id_usuario = (User as CustomPrincipal).id_usuario;
+@{
+    ViewBag.Title = "Devolucion Consolidado Cierres";
+    var id_usuario = (User as CustomPrincipal).id_usuario;
+    var as2 = new AS2Context();
     var db = new as2oasis();
     var sucursales = db.detalle_usuario_empresa_sucursal
         .Where(x => x.id_usuario == id_usuario)
@@ -14,13 +14,19 @@
     var empresas = db.detalle_usuario_empresa_sucursal
         .Where(x => x.id_usuario == id_usuario)
         .GroupBy(x => x.empresaOasis.nombre)
-        .Select(x => x.Key); }
+        .Select(x => x.Key);
+    var cons_cierre = db.consolidado_cierre 
+        .GroupBy(x => x.numero_consolidado)
+        .Select(x => x.Key);
+
+}
+
 
 <div class="row">
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h2 class="card-title">Picking</h2>
+                <h2 class="card-title">Devolucion Consolidado Cierres</h2>
                 <div class="card-tools">
                     <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -33,138 +39,100 @@
             <!-- form start -->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Empresa</label>
-                            @*@Html.DropDownList("empresa_ind",
-                                new SelectList(ViewBag.Opciones, "Value", "Text"),
-                                htmlAttributes: new { @class = "form-control" })*@
-                            <select class="form-control" id="empresa_ind" name="empresa">
+                            <label for="empresa">Empresa</label>
+                            <select class="form-control" id="empresa" name="empresa">
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
                                 <option value="@emp">@emp</option>}
                             </select>
                         </div>
-                       
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label>Fecha Picking:</label>
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                    </div>
+                    @*<div class="col-md-6">
+                        <div class="col" style=" text-align: center; ">
+                            <label>Fecha de facturación</label>
+                            <div class="row" style="
+                                                text-align: center;
+                                                place-content: center;
+                                            ">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
                                         </div>
+                                        <input type="text" class="form-control float-right" id="fecha_corte">
                                     </div>
                                 </div>
-                                
-                                <div class="custom-control custom-checkbox" style="display: inline-block; align-self: inherit; ">
-                                    <input class="custom-control-input tipoCliente" name="Despacho" type="checkbox" id="chkFecha">
-                                    <label for="chkFecha" class="custom-control-label">Despacho</label>
-                                </div>
                             </div>
-                            
                         </div>
-                    </div>
+                    </div>*@
+
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Usuario</label>
-                            <select class="form-control js-data-usuarios-ajax" id="usuario">
-                            </select>
+                        <div class="col" style=" text-align: center; ">
+                            <label>Numero</label>
+                            <div class="row" style="
+                                                text-align: center;
+                                                place-content: center;
+                                            ">
+                                <select class="form-control" id="numero" name="numero">
+                                    <option value="0">Todos</option>
+                                    @foreach (var ca in cons_cierre)
+                                    {
+                                        <option value="@ca">@ca</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
-                        
                     </div>
+
                 </div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="button" id="GenerarReporte" class="btn btn-primary  float-right">Generar</button>
+                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
             </div>
         </div>
     </div>
 </div>
 
-<h2>Reporte</h2>
-
 
 @section Scripts {
     <script>
-        ActivarUsuarios();
 
-        function ActivarUsuarios() {
-            $('.js-data-usuarios-ajax').select2({
-                //selectOnClose: true,
-                minimumInputLength: 2,
-                language: {
-                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
-                },
-                tags: [],
-                ajax: {
-                    url: '/Usuario/ObtenerUsuariosAS2',
-                    processResults: function (data) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.nombre,
-                                    id: item.id_usuario
-                                }
-                            })
-                        };
-                    },
-                    dataType: 'json',
-                    data: function (params) {
-                        var query = {
-                            textoBusqueda: params.term
-                        }
-                        return query;
-                    }
-                }
-            }).on('change', function (e) {
-                limpiarRolesSelect();
-            });
+        function VerImpresion(codigo_consolidado) {
+            console.log("entra fn")
+            console.log("consolidado", codigo_consolidado)
+            window.open("ImprimirConsolidado?codigo_consolidado=" + codigo_consolidado, '_blank');
         }
 
-        $("#GenerarReporte").click(function () {
+        function CrearDevolucion(codigo_consolidado) {
+            console.log("entra fn")
+            console.log("consolidado", codigo_consolidado)
+            window.open("GuardarDevolucion?codigo_consolidado=" + codigo_consolidado, '_blank');
+        }
 
-            var empresa = $("#empresa_ind").val();
-            var usuario = $('#usuario').val();           
-            var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
-            var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
-            var fechaDespacho = 0;
+        $("#GenerarDatos").click(function () {
+            //var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
+            //var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
+            var empresa = $('#empresa').val();
+            var numero = $('#numero').val();
 
             iniciaLoading();
 
-            if ($('#chkFecha').is(":checked")) {
-                fechaDespacho = 1
-            } 
-
-            console.log("entra 1")
-            console.log(usuario)
-            console.log(fecha_desde)
-            console.log(fecha_hasta)
-            console.log(empresa)
-            console.log(fechaDespacho)
-
             $.ajax({
-                url: 'Picking/ReportePick',
+                url: 'ObtenerConsolidadoCierres',
                 type: 'POST',
                 data: JSON.stringify({
-                    fecha_desde: fecha_desde,
-                    fecha_hasta: fecha_hasta,
                     empresa: empresa,
-                    usuario: usuario,
-                    fechaDespacho: fechaDespacho
-
+                    numero: numero
                 }),
                 dataType: "JSON",
                 contentType: "application/JSON",
                 success: function (d) {
-
                     $('#contenedorTabla').remove();
                     var contenedorTabla = document.createElement("div");
                     contenedorTabla.className = "col-md-12";
@@ -173,17 +141,10 @@
                     row.className = "row";
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
-
-                    console.log(d)
-                    //if (empresa != '0' || sucursal !=  '0') {
-                    //    d = JSON.parse(d);
-                    //}
-
                     var col = [];
-                    var encabezado = ["Empresa", "Secuencial", "Inicio Picking",
-                        "Usuario IP", "Fin Picking", "Usuario FP",
-                        "Inicio Despacho", "Usuario ID", "Fin Despacho",
-                        "Usuario FD", "Generación Guía", "Diferencia Tiempo"];
+                    var encabezado = ["Empresa", "Sucursal", "Fecha",
+                        "Numero Consolidado", "Total", "Estado", "Codigo Consolidado", "", ""
+                        ];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -191,8 +152,6 @@
                             }
                         }
                     }
-
-                    console.log("entra 2")
 
                     // CREATE DYNAMIC TABLE.
                     var div = document.createElement("div");
@@ -208,8 +167,6 @@
                     table.id = "tableDetalle";
                     table.style = '';
 
-                    console.log("entra 3")
-
                     // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
                     var thead = document.createElement("thead");
                     table.appendChild(thead);
@@ -219,8 +176,6 @@
                         th.innerHTML = encabezado[i];
                         tr_head.appendChild(th);
                     }
-
-                    console.log("entra 4")
 
                     thead.appendChild(tr_head);
 
@@ -235,10 +190,18 @@
                             tabCell.innerHTML = d[i][col[j]];
                             tabCell.style = ' white-space: nowrap;';
                         }
-                        tbody.appendChild(tr_body);
-                    }
 
-                    console.log("entra 5")
+                        var tabCell = tr_body.insertCell(-1);
+                        var tabCell_c = tr_body.insertCell(-1);
+                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerImpresion(\'' + d[i][col[6]] + '\')" >Imprimir</button>';
+                        tabCell_c.innerHTML = '<button class="btn btn-info imprimir" onClick="CrearDevolucion(\'' + d[i][col[6]] + '\')" >Devolver</button>';
+                        tabCell.style = ' white-space: nowrap;';
+                        //tabCell_c.style = ' white-space: nowrap;';
+
+                        tbody.appendChild(tr_body);
+
+                        
+                    }
 
                     cardbody.appendChild(table);
                     card.appendChild(cardbody);
@@ -255,7 +218,6 @@
                         }
                     });
                     cierraLoading();
-
                 },
                 error: function (e) {
                     cierraLoading();
@@ -266,10 +228,7 @@
                 }
             })
         });
-      
-        $('.tipoCliente:checkbox:checked').each(function () {
-            tipoCliente.push($(this).attr('name'));
-        });
+
         $('#fecha_corte').daterangepicker({
             locale: {
                 format: 'DD/MM/YYYY',

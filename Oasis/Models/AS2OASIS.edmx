@@ -113,12 +113,41 @@ advertencia 6002: La tabla o vista 'oasis.dbo.clientes_actualizacion' no tiene d
           <Property Name="indicador_no_afecta_vendedor" Type="bit" />
           <Property Name="indicador_no_afecta_empresa" Type="bit" />
         </EntityType>
+        <EntityType Name="cobros_tmp">
+          <Key>
+            <PropertyRef Name="id_cobro" />
+          </Key>
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sucursal" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_inicio" Type="date" />
+          <Property Name="fecha_fin" Type="date" />
+          <Property Name="estado" Type="int" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="concentracion">
           <Key>
             <PropertyRef Name="id_concentracion" />
           </Key>
           <Property Name="id_concentracion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="consolidado_cierre">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="id_consolidado_cierre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="numero_consolidado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="estado" Type="int" />
+          <Property Name="valor_total" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="cotizacion_cabecera">
           <Key>
@@ -185,6 +214,31 @@ advertencia 6002: La tabla o vista 'oasis.dbo.despacho' no tiene definida ningun
           <Property Name="estado" Type="int" Nullable="false" />
           <Property Name="id_usuario" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="detalle_consolidado_cierre">
+          <Key>
+            <PropertyRef Name="id_detalle_conso_cierre" />
+          </Key>
+          <Property Name="id_detalle_conso_cierre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="id_detalle_forma_cobro" Type="int" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="int" Nullable="false" />
+          <Property Name="numero_consolidado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="numero_ant" Type="varchar" MaxLength="20" />
+          <Property Name="valor" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_total" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="id_forma_pago" Type="int" Nullable="false" />
+          <Property Name="fecha_pago" Type="date" />
+          <Property Name="documento" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="detalle_lista_precio">
           <Key>
             <PropertyRef Name="id_detalle_lista_precio" />
@@ -213,12 +267,39 @@ advertencia 6002: La tabla o vista 'oasis.dbo.despacho' no tiene definida ningun
           <Property Name="id_empresa" Type="int" Nullable="false" />
           <Property Name="id_sucursal" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="devolucion_consolidado_cierre">
+          <Key>
+            <PropertyRef Name="id_devolucion_cons_cierre" />
+          </Key>
+          <Property Name="id_devolucion_cons_cierre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="numero_consolidado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="valor" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="cant_reg" Type="int" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="empresaOasis">
           <Key>
             <PropertyRef Name="id_empresa" />
           </Key>
           <Property Name="id_empresa" Type="int" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estado_Cobros">
+          <Key>
+            <PropertyRef Name="id_estado" />
+          </Key>
+          <Property Name="id_estado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="fecha_modificacion" Type="datetime2" Precision="7" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+          <Property Name="usuario_modificacion" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="facturas_no_aplicable">
           <Key>
@@ -627,7 +708,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Cierre_Caja_Cabecera' no tiene def
             <PropertyRef Name="sucursal" />
             <PropertyRef Name="valor_usuario" />
             <PropertyRef Name="estado" />
-            <PropertyRef Name="caja" />
           </Key>
           <Property Name="id_organizacion" Type="int" Nullable="false" />
           <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
@@ -642,7 +722,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Cierre_Caja_Cabecera' no tiene def
           <Property Name="estado" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="codigo_movil" Type="varchar" MaxLength="200" />
           <Property Name="id_caja" Type="int" />
-          <Property Name="caja" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="caja" Type="varchar" MaxLength="50" />
           <Property Name="id_usuario" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
@@ -705,6 +785,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Clientes2' no tiene definida ningu
             <PropertyRef Name="categoria_empresa" />
             <PropertyRef Name="tipo_identificacion" />
             <PropertyRef Name="indicador_genera_autoconsumo" />
+            <PropertyRef Name="id_cliente" />
             <PropertyRef Name="nombre_comercial" />
             <PropertyRef Name="nombre_fiscal" />
           </Key>
@@ -737,6 +818,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Clientes2' no tiene definida ningu
           <Property Name="categoria_empresa" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="tipo_identificacion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="indicador_genera_autoconsumo" Type="bit" Nullable="false" />
+          <Property Name="id_cliente" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Cobros_Consolidado' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -836,6 +918,58 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Cobros_Diario' no tiene definida n
           <Property Name="documento_referencia" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Cobros_Vendedor' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Cobros_Vendedor">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+            <PropertyRef Name="num_cobro" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="cod_forma_pago" />
+            <PropertyRef Name="id_detalle_forma_cobro" />
+            <PropertyRef Name="id_detalle_cobro" />
+          </Key>
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="nom_cobrador" Type="varchar" MaxLength="101" />
+          <Property Name="fecha_cobro" Type="varchar" MaxLength="10" />
+          <Property Name="num_cobro" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha_factura" Type="varchar" MaxLength="10" />
+          <Property Name="factura" Type="varchar" MaxLength="20" />
+          <Property Name="valor_factura" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="valor_cobro" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" />
+          <Property Name="cliente" Type="varchar" MaxLength="300" />
+          <Property Name="cod_forma_pago" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="forma_pago" Type="varchar" MaxLength="50" />
+          <Property Name="fecha_pago" Type="varchar" MaxLength="10" />
+          <Property Name="id_detalle_forma_cobro" Type="int" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Consulta_Consolidado_Cierres' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Consulta_Consolidado_Cierres">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="numero_consolidado" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="nom_estado" />
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="sucursal" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="numero_consolidado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="valor_total" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="fecha" Type="varchar" MaxLength="10" />
+          <Property Name="estado" Type="int" />
+          <Property Name="nom_estado" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Costos_Indirectos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Costos_Indirectos">
           <Key>
@@ -893,6 +1027,181 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Costos_MP_ME' no tiene definida ni
           <Property Name="costo_unitario" Type="numeric" Precision="38" Scale="6" />
           <Property Name="cantidad" Type="float" />
           <Property Name="cantidad_a_producir" Type="numeric" Precision="16" Scale="4" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Detalle_Cheques' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Detalle_Cheques">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="fecha_cobro" />
+            <PropertyRef Name="cod_cliente" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="cod_forma_pago" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="estado_consolidado" />
+          </Key>
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="sucursal" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha_cobro" Type="date" Nullable="false" />
+          <Property Name="fecha_crea_co" Type="datetime2" Precision="7" />
+          <Property Name="cod_cliente" Type="int" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" />
+          <Property Name="cliente" Type="varchar" MaxLength="300" />
+          <Property Name="valor_total" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="cod_forma_pago" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="forma_pago" Type="varchar" MaxLength="50" />
+          <Property Name="id_banco" Type="int" />
+          <Property Name="nom_banco" Type="varchar" MaxLength="50" />
+          <Property Name="num_documento" Type="varchar" MaxLength="40" />
+          <Property Name="fecha_cheque" Type="date" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="nom_estado" Type="varchar" MaxLength="30" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="memo" Type="varchar" MaxLength="500" />
+          <Property Name="cta_bancaria" Type="varchar" MaxLength="20" />
+          <Property Name="num_cheque" Type="varchar" MaxLength="20" />
+          <Property Name="estado_consolidado" Type="int" Nullable="false" />
+          <Property Name="nom_estado_cons" Type="varchar" MaxLength="30" />
+          <Property Name="fecha_consolidado" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Detalle_Cobros' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Detalle_Cobros">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="id_detalle_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="cod_cliente" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_detalle_forma_cobro" />
+            <PropertyRef Name="estado_consolidado" />
+            <PropertyRef Name="cod_tabla" />
+            <PropertyRef Name="fecha_cobro" />
+            <PropertyRef Name="id_forma_pago" />
+            <PropertyRef Name="cod_forma_pago" />
+            <PropertyRef Name="nom_estado" />
+          </Key>
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="sucursal" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="int" Nullable="false" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha_cobro" Type="date" Nullable="false" />
+          <Property Name="fecha_crea_co" Type="varchar" MaxLength="10" />
+          <Property Name="cod_cliente" Type="int" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" />
+          <Property Name="cliente" Type="varchar" MaxLength="300" />
+          <Property Name="valor_total" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="id_recaudador" Type="int" />
+          <Property Name="nom_recaudador" Type="varchar" MaxLength="50" />
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="id_forma_pago" Type="int" Nullable="false" />
+          <Property Name="cod_forma_pago" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="forma_pago" Type="varchar" MaxLength="50" />
+          <Property Name="valor_cobro" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="id_banco" Type="int" />
+          <Property Name="nom_banco" Type="varchar" MaxLength="50" />
+          <Property Name="num_documento" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_pago" Type="varchar" MaxLength="10" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="nom_estado" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="num_cierre" Type="varchar" MaxLength="20" />
+          <Property Name="id_detalle_forma_cobro" Type="int" Nullable="false" />
+          <Property Name="factura" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_factura" Type="varchar" MaxLength="10" />
+          <Property Name="valor_factura" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="estado_consolidado" Type="int" Nullable="false" />
+          <Property Name="cod_tabla" Type="int" Nullable="false" />
+          <Property Name="num_ant" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Detalle_Cobros_Vendedor' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Detalle_Cobros_Vendedor">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="id_detalle_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="fecha_cobro" />
+            <PropertyRef Name="cod_cliente" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="nom_estado" />
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="id_organizacion" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="id_sucursal" Type="int" Nullable="false" />
+          <Property Name="sucursal" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="int" Nullable="false" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha_cobro" Type="date" Nullable="false" />
+          <Property Name="fecha_crea_co" Type="varchar" MaxLength="10" />
+          <Property Name="cod_cliente" Type="int" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" />
+          <Property Name="cliente" Type="varchar" MaxLength="300" />
+          <Property Name="valor_total" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="id_recaudador" Type="int" />
+          <Property Name="nom_recaudador" Type="varchar" MaxLength="50" />
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="valor_cobro" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="nom_estado" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="factura" Type="varchar" MaxLength="20" />
+          <Property Name="fecha_factura" Type="varchar" MaxLength="10" />
+          <Property Name="valor_factura" Type="numeric" Precision="14" Scale="2" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="nota" Type="varchar" MaxLength="22" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Detalle_Vendedor' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Detalle_Vendedor">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="nom_cobrador" Type="varchar" MaxLength="101" />
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
+          <Property Name="total_cobro" Type="numeric" Precision="38" Scale="2" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Detalle_Vendedores' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Detalle_Vendedores">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="cobrador" Type="varchar" MaxLength="50" />
+          <Property Name="nom_cobrador" Type="varchar" MaxLength="101" />
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
+          <Property Name="total_cobro" Type="numeric" Precision="38" Scale="2" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.DetalleOCEnlazada' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1032,6 +1341,44 @@ advertencia 6002: La tabla o vista 'oasis.dbo.KPI_Salida_Material' no tiene defi
           <Property Name="PEDIDO SALIDA" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Mano_Obra' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Mano_Obra">
+          <Key>
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="planta" />
+            <PropertyRef Name="orden_fa" />
+            <PropertyRef Name="fecha" />
+            <PropertyRef Name="codigo_pro" />
+            <PropertyRef Name="producto" />
+            <PropertyRef Name="lote" />
+            <PropertyRef Name="numero_maquinas" />
+            <PropertyRef Name="numero_persona" />
+            <PropertyRef Name="horas_hombre_es" />
+            <PropertyRef Name="horas_maquina" />
+            <PropertyRef Name="horas_hombre" />
+            <PropertyRef Name="cod_tarea" />
+            <PropertyRef Name="tarea" />
+            <PropertyRef Name="maquina" />
+          </Key>
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="planta" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="orden_fa" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="codigo_pro" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="producto" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="lote" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cantidad_fabricada" Type="numeric" Precision="16" Scale="4" />
+          <Property Name="cod_tarea" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tarea" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="maquina" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="numero_maquinas" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="numero_persona" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="horas_hombre_es" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="horas_maquina" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="horas_hombre" Type="numeric" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="responsable" Type="varchar" MaxLength="101" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.MateriaPrima_Lote' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="MateriaPrima_Lote">
           <Key>
@@ -1059,6 +1406,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.MateriaPrima_Lote' no tiene defini
           <Property Name="fecha_caducidad" Type="date" Nullable="false" />
           <Property Name="fecha_reanalisis" Type="date" />
           <Property Name="id_producto" Type="int" Nullable="false" />
+          <Property Name="saldo" Type="numeric" Precision="18" Scale="4" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.MP_ME_STOCK' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1232,6 +1580,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Orden_Produccion_Cabecera' no tien
           <Property Name="nombre" Type="varchar" MaxLength="300" Nullable="false" />
           <Property Name="planta" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="nombre_ruta" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="codigo_mba3" Type="varchar" MaxLength="50" />
+          <Property Name="presentacion_producto" Type="numeric" Precision="12" Scale="2" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.ordenes_compra' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1323,6 +1673,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.PickingGuias' no tiene definida ni
           <Property Name="secuencial" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="fecha_inicio_pick" Type="datetime" />
           <Property Name="usuario_inicio_pick" Type="varchar" MaxLength="101" />
+          <Property Name="id_usuario" Type="int" />
           <Property Name="fecha_fin_pick" Type="datetime" />
           <Property Name="usuario_fin_pick" Type="varchar" MaxLength="101" />
           <Property Name="fecha_inicio_desp" Type="datetime" />
@@ -1356,6 +1707,14 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Presupuesto_Vendedor_Detalle' no t
           <Property Name="valor_cobro" Type="float" />
           <Property Name="valor_venta" Type="float" />
           <Property Name="id_presupuesto_detalle" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Productos_precio' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Productos_precio">
+          <Key>
+            <PropertyRef Name="nombre" />
+          </Key>
+          <Property Name="nombre" Type="varchar" MaxLength="300" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.ProductosMP' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1447,10 +1806,9 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_Analisis_Costos' no tiene 
           <Property Name="rendimiento" Type="numeric" Precision="38" Scale="18" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_Cartera' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <EntityType Name="Reporte_Cartera">
+advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_Cartera_2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Reporte_Cartera_2">
           <Key>
-            <PropertyRef Name="empresa" />
             <PropertyRef Name="categoria" />
             <PropertyRef Name="secuencial_factura" />
             <PropertyRef Name="fecha_factura" />
@@ -1458,7 +1816,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_Cartera' no tiene definida
             <PropertyRef Name="direccion" />
             <PropertyRef Name="totalChequePost" />
           </Key>
-          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="200" />
           <Property Name="sucursal" Type="varchar" MaxLength="50" />
           <Property Name="identificacion" Type="varchar" MaxLength="100" />
           <Property Name="nombre_comercial" Type="varchar" MaxLength="300" />
@@ -1479,7 +1837,28 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_Cartera' no tiene definida
           <Property Name="saldo pendiente" Type="numeric" Precision="38" Scale="2" />
           <Property Name="dias_emitida" Type="int" />
           <Property Name="dias_diferencia" Type="int" />
+          <Property Name="contacto" Type="varchar" MaxLength="100" />
           <Property Name="descripcion" Type="varchar" MaxLength="8000" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_Consolidado_Cierre' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Reporte_Consolidado_Cierre">
+          <Key>
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="numero_consolidado" />
+            <PropertyRef Name="numero_cobro" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="numero_consolidado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="numero_cobro" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="recaudador" Type="varchar" MaxLength="50" />
+          <Property Name="valor_cobro" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="valor_total" Type="numeric" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="id_consolidado_cierre" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Reporte_GuiasRemision' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1610,6 +1989,23 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Transito_PT_Total' no tiene defini
           <Property Name="Cantidad transito total" Type="numeric" Precision="38" Scale="4" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.V_cobros_tmp' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="V_cobros_tmp">
+          <Key>
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="sucursal" />
+          </Key>
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sucursal" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_inicio" Type="date" />
+          <Property Name="fecha_fin" Type="date" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="estado" Type="int" />
+          <Property Name="usuario_creacion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.Vendedores' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Vendedores">
           <Key>
@@ -1639,28 +2035,29 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Vendedores_Distribuidores' no tien
 advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Consolidado' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Ventas_Consolidado">
           <Key>
-            <PropertyRef Name="identificacion" />
             <PropertyRef Name="id_organizacion" />
             <PropertyRef Name="secuencial_factura" />
             <PropertyRef Name="ciudad" />
             <PropertyRef Name="fecha_factura" />
             <PropertyRef Name="fecha_guia" />
-            <PropertyRef Name="nombre_comercial" />
+            
             <PropertyRef Name="categoria" />
             <PropertyRef Name="estado" />
+            <PropertyRef Name="identificacion" />
+            <PropertyRef Name="nombre_comercial" />
           </Key>
           <Property Name="empresa" Type="varchar" MaxLength="200" />
           <Property Name="sucursal" Type="varchar" MaxLength="50" />
-          <Property Name="identificacion" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="identificacion" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="id_organizacion" Type="int" Nullable="false" />
           <Property Name="secuencial_factura" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="ciudad" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="fecha_factura" Type="date" Nullable="false" />
           <Property Name="valor_factura" Type="numeric" Precision="15" Scale="2" />
           <Property Name="fecha_guia" Type="date" Nullable="false" />
-          <Property Name="descripcion" Type="varchar" MaxLength="2000" />
+          <Property Name="descripcion" Type="varchar" MaxLength="8000" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="500" />
-          <Property Name="nombre_comercial" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="nombre_comercial" Type="varchar" MaxLength="300" Nullable="false" />
           <Property Name="categoria" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="id_vendedor" Type="int" />
           <Property Name="vendedor" Type="varchar" MaxLength="50" />
@@ -1830,6 +2227,30 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
             </Principal>
             <Dependent Role="AspNetUserTokens">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cabconsolidado">
+          <End Role="consolidado_cierre" Type="Self.consolidado_cierre" Multiplicity="1" />
+          <End Role="detalle_consolidado_cierre" Type="Self.detalle_consolidado_cierre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Principal>
+            <Dependent Role="detalle_consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_consolidado">
+          <End Role="consolidado_cierre" Type="Self.consolidado_cierre" Multiplicity="1" />
+          <End Role="devolucion_consolidado_cierre" Type="Self.devolucion_consolidado_cierre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Principal>
+            <Dependent Role="devolucion_consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2137,15 +2558,44 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
+        <Function Name="SP_Cobros_Vendedor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idconsolidado" Type="int" Mode="In" />
+          <Parameter Name="idvendedor" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
+        <Function Name="SP_Detalle_Cobros" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tipo_busqueda" Type="int" Mode="In" />
+          <Parameter Name="empresa" Type="nvarchar" Mode="In" />
+          <Parameter Name="sucursal" Type="nvarchar" Mode="In" />
+          <Parameter Name="fecha_desde" Type="date" Mode="In" />
+          <Parameter Name="fecha_hasta" Type="date" Mode="In" />
+          <Parameter Name="usuario" Type="int" Mode="In" />
+          <Parameter Name="estado" Type="nvarchar" Mode="In" />
+          <Parameter Name="cod_tabla" Type="int" Mode="In" />
+          <Parameter Name="numero_cobro" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Detalle_Vendedor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idconsolidado" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Guarda_Cobros" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tipo_busqueda" Type="int" Mode="In" />
+          <Parameter Name="empresa" Type="nvarchar" Mode="In" />
+          <Parameter Name="sucursal" Type="nvarchar" Mode="In" />
+          <Parameter Name="fecha_desde" Type="date" Mode="In" />
+          <Parameter Name="fecha_hasta" Type="date" Mode="In" />
+          <Parameter Name="usuario" Type="int" Mode="In" />
+          <Parameter Name="estado" Type="nvarchar" Mode="In" />
+          <Parameter Name="cod_tabla" Type="int" Mode="In" />
+          <Parameter Name="numero_cobro" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -2155,14 +2605,29 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_Mano_Obra" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="empresa" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_desde" Type="date" Mode="In" />
+          <Parameter Name="fecha_hasta" Type="date" Mode="In" />
+        </Function>
         <Function Name="SP_oasis_crea_presentaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="P_Ln_Organizacion" Type="numeric" Mode="In" />
           <Parameter Name="P_Ln_Maximo_Presentacion_Producto" Type="numeric" Mode="In" />
+        </Function>
+        <Function Name="SP_Quita_cobros" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idcobro" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Reporte_Cartera" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="empresa" Type="varchar" Mode="In" />
+          <Parameter Name="sucursal" Type="nvarchar" Mode="In" />
+          <Parameter Name="fecha_desde" Type="date" Mode="In" />
+          <Parameter Name="fecha_hasta" Type="date" Mode="In" />
+          <Parameter Name="tipoCliente" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SplitString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -2203,15 +2668,20 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserTokens" EntityType="Self.AspNetUserTokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cobros_no_aplicable" EntityType="Self.cobros_no_aplicable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cobros_tmp" EntityType="Self.cobros_tmp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="concentracion" EntityType="Self.concentracion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="consolidado_cierre" EntityType="Self.consolidado_cierre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cotizacion_cabecera" EntityType="Self.cotizacion_cabecera" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cotizacion_detalle" EntityType="Self.cotizacion_detalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cpc" EntityType="Self.cpc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="departamentos" EntityType="Self.departamentos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detalle_consolidado_cierre" EntityType="Self.detalle_consolidado_cierre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="detalle_lista_precio" EntityType="Self.detalle_lista_precio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="detalle_roles_usuario" EntityType="Self.detalle_roles_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="detalle_usuario_empresa_sucursal" EntityType="Self.detalle_usuario_empresa_sucursal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="devolucion_consolidado_cierre" EntityType="Self.devolucion_consolidado_cierre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="empresaOasis" EntityType="Self.empresaOasis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estado_Cobros" EntityType="Self.Estado_Cobros" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="facturas_no_aplicable" EntityType="Self.facturas_no_aplicable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="forma_farmaceutica" EntityType="Self.forma_farmaceutica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="geoubicacion" EntityType="Self.geoubicacion" Schema="dbo" store:Type="Tables" />
@@ -2462,7 +2932,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Clientes2].[canal] AS [canal], 
     [Clientes2].[categoria_empresa] AS [categoria_empresa], 
     [Clientes2].[tipo_identificacion] AS [tipo_identificacion], 
-    [Clientes2].[indicador_genera_autoconsumo] AS [indicador_genera_autoconsumo]
+    [Clientes2].[indicador_genera_autoconsumo] AS [indicador_genera_autoconsumo], 
+    [Clientes2].[id_cliente] AS [id_cliente]
     FROM [dbo].[Clientes2] AS [Clientes2]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Cobros_Consolidado" EntityType="Self.Cobros_Consolidado" store:Type="Views" store:Schema="dbo">
@@ -2537,6 +3008,40 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Cobros_Diario].[documento_referencia] AS [documento_referencia]
     FROM [dbo].[Cobros_Diario] AS [Cobros_Diario]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="Cobros_Vendedor" EntityType="Self.Cobros_Vendedor" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Cobros_Vendedor].[id_consolidado_cierre] AS [id_consolidado_cierre], 
+    [Cobros_Vendedor].[cobrador] AS [cobrador], 
+    [Cobros_Vendedor].[nom_cobrador] AS [nom_cobrador], 
+    [Cobros_Vendedor].[fecha_cobro] AS [fecha_cobro], 
+    [Cobros_Vendedor].[num_cobro] AS [num_cobro], 
+    [Cobros_Vendedor].[fecha_factura] AS [fecha_factura], 
+    [Cobros_Vendedor].[factura] AS [factura], 
+    [Cobros_Vendedor].[valor_factura] AS [valor_factura], 
+    [Cobros_Vendedor].[valor_cobro] AS [valor_cobro], 
+    [Cobros_Vendedor].[identificacion] AS [identificacion], 
+    [Cobros_Vendedor].[cliente] AS [cliente], 
+    [Cobros_Vendedor].[cod_forma_pago] AS [cod_forma_pago], 
+    [Cobros_Vendedor].[forma_pago] AS [forma_pago], 
+    [Cobros_Vendedor].[fecha_pago] AS [fecha_pago], 
+    [Cobros_Vendedor].[id_detalle_forma_cobro] AS [id_detalle_forma_cobro], 
+    [Cobros_Vendedor].[id_detalle_cobro] AS [id_detalle_cobro]
+    FROM [dbo].[Cobros_Vendedor] AS [Cobros_Vendedor]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Consulta_Consolidado_Cierres" EntityType="Self.Consulta_Consolidado_Cierres" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Consulta_Consolidado_Cierres].[id_organizacion] AS [id_organizacion], 
+    [Consulta_Consolidado_Cierres].[empresa] AS [empresa], 
+    [Consulta_Consolidado_Cierres].[id_sucursal] AS [id_sucursal], 
+    [Consulta_Consolidado_Cierres].[sucursal] AS [sucursal], 
+    [Consulta_Consolidado_Cierres].[numero_consolidado] AS [numero_consolidado], 
+    [Consulta_Consolidado_Cierres].[valor_total] AS [valor_total], 
+    [Consulta_Consolidado_Cierres].[fecha] AS [fecha], 
+    [Consulta_Consolidado_Cierres].[estado] AS [estado], 
+    [Consulta_Consolidado_Cierres].[nom_estado] AS [nom_estado], 
+    [Consulta_Consolidado_Cierres].[id_consolidado_cierre] AS [id_consolidado_cierre]
+    FROM [dbo].[Consulta_Consolidado_Cierres] AS [Consulta_Consolidado_Cierres]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Costos_Indirectos" EntityType="Self.Costos_Indirectos" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Costos_Indirectos].[id_orden_fabricacion] AS [id_orden_fabricacion], 
@@ -2575,6 +3080,122 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Costos_MP_ME].[cantidad] AS [cantidad], 
     [Costos_MP_ME].[cantidad_a_producir] AS [cantidad_a_producir]
     FROM [dbo].[Costos_MP_ME] AS [Costos_MP_ME]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Detalle_Cheques" EntityType="Self.Detalle_Cheques" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Detalle_Cheques].[id_organizacion] AS [id_organizacion], 
+    [Detalle_Cheques].[empresa] AS [empresa], 
+    [Detalle_Cheques].[id_sucursal] AS [id_sucursal], 
+    [Detalle_Cheques].[sucursal] AS [sucursal], 
+    [Detalle_Cheques].[id_cobro] AS [id_cobro], 
+    [Detalle_Cheques].[numero] AS [numero], 
+    [Detalle_Cheques].[fecha_cobro] AS [fecha_cobro], 
+    [Detalle_Cheques].[fecha_crea_co] AS [fecha_crea_co], 
+    [Detalle_Cheques].[cod_cliente] AS [cod_cliente], 
+    [Detalle_Cheques].[identificacion] AS [identificacion], 
+    [Detalle_Cheques].[cliente] AS [cliente], 
+    [Detalle_Cheques].[valor_total] AS [valor_total], 
+    [Detalle_Cheques].[cobrador] AS [cobrador], 
+    [Detalle_Cheques].[cod_forma_pago] AS [cod_forma_pago], 
+    [Detalle_Cheques].[forma_pago] AS [forma_pago], 
+    [Detalle_Cheques].[id_banco] AS [id_banco], 
+    [Detalle_Cheques].[nom_banco] AS [nom_banco], 
+    [Detalle_Cheques].[num_documento] AS [num_documento], 
+    [Detalle_Cheques].[fecha_cheque] AS [fecha_cheque], 
+    [Detalle_Cheques].[estado] AS [estado], 
+    [Detalle_Cheques].[nom_estado] AS [nom_estado], 
+    [Detalle_Cheques].[id_usuario] AS [id_usuario], 
+    [Detalle_Cheques].[memo] AS [memo], 
+    [Detalle_Cheques].[cta_bancaria] AS [cta_bancaria], 
+    [Detalle_Cheques].[num_cheque] AS [num_cheque], 
+    [Detalle_Cheques].[estado_consolidado] AS [estado_consolidado], 
+    [Detalle_Cheques].[nom_estado_cons] AS [nom_estado_cons], 
+    [Detalle_Cheques].[fecha_consolidado] AS [fecha_consolidado]
+    FROM [dbo].[Detalle_Cheques] AS [Detalle_Cheques]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Detalle_Cobros" EntityType="Self.Detalle_Cobros" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Detalle_Cobros].[id_organizacion] AS [id_organizacion], 
+    [Detalle_Cobros].[empresa] AS [empresa], 
+    [Detalle_Cobros].[id_sucursal] AS [id_sucursal], 
+    [Detalle_Cobros].[sucursal] AS [sucursal], 
+    [Detalle_Cobros].[id_cobro] AS [id_cobro], 
+    [Detalle_Cobros].[id_detalle_cobro] AS [id_detalle_cobro], 
+    [Detalle_Cobros].[numero] AS [numero], 
+    [Detalle_Cobros].[fecha_cobro] AS [fecha_cobro], 
+    [Detalle_Cobros].[fecha_crea_co] AS [fecha_crea_co], 
+    [Detalle_Cobros].[cod_cliente] AS [cod_cliente], 
+    [Detalle_Cobros].[identificacion] AS [identificacion], 
+    [Detalle_Cobros].[cliente] AS [cliente], 
+    [Detalle_Cobros].[valor_total] AS [valor_total], 
+    [Detalle_Cobros].[id_recaudador] AS [id_recaudador], 
+    [Detalle_Cobros].[nom_recaudador] AS [nom_recaudador], 
+    [Detalle_Cobros].[cobrador] AS [cobrador], 
+    [Detalle_Cobros].[id_forma_pago] AS [id_forma_pago], 
+    [Detalle_Cobros].[cod_forma_pago] AS [cod_forma_pago], 
+    [Detalle_Cobros].[forma_pago] AS [forma_pago], 
+    [Detalle_Cobros].[valor_cobro] AS [valor_cobro], 
+    [Detalle_Cobros].[id_banco] AS [id_banco], 
+    [Detalle_Cobros].[nom_banco] AS [nom_banco], 
+    [Detalle_Cobros].[num_documento] AS [num_documento], 
+    [Detalle_Cobros].[fecha_pago] AS [fecha_pago], 
+    [Detalle_Cobros].[estado] AS [estado], 
+    [Detalle_Cobros].[nom_estado] AS [nom_estado], 
+    [Detalle_Cobros].[id_usuario] AS [id_usuario], 
+    [Detalle_Cobros].[num_cierre] AS [num_cierre], 
+    [Detalle_Cobros].[id_detalle_forma_cobro] AS [id_detalle_forma_cobro], 
+    [Detalle_Cobros].[factura] AS [factura], 
+    [Detalle_Cobros].[fecha_factura] AS [fecha_factura], 
+    [Detalle_Cobros].[valor_factura] AS [valor_factura], 
+    [Detalle_Cobros].[estado_consolidado] AS [estado_consolidado], 
+    [Detalle_Cobros].[cod_tabla] AS [cod_tabla], 
+    [Detalle_Cobros].[num_ant] AS [num_ant]
+    FROM [dbo].[Detalle_Cobros] AS [Detalle_Cobros]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Detalle_Cobros_Vendedor" EntityType="Self.Detalle_Cobros_Vendedor" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Detalle_Cobros_Vendedor].[id_organizacion] AS [id_organizacion], 
+    [Detalle_Cobros_Vendedor].[empresa] AS [empresa], 
+    [Detalle_Cobros_Vendedor].[id_sucursal] AS [id_sucursal], 
+    [Detalle_Cobros_Vendedor].[sucursal] AS [sucursal], 
+    [Detalle_Cobros_Vendedor].[id_cobro] AS [id_cobro], 
+    [Detalle_Cobros_Vendedor].[id_detalle_cobro] AS [id_detalle_cobro], 
+    [Detalle_Cobros_Vendedor].[numero] AS [numero], 
+    [Detalle_Cobros_Vendedor].[fecha_cobro] AS [fecha_cobro], 
+    [Detalle_Cobros_Vendedor].[fecha_crea_co] AS [fecha_crea_co], 
+    [Detalle_Cobros_Vendedor].[cod_cliente] AS [cod_cliente], 
+    [Detalle_Cobros_Vendedor].[identificacion] AS [identificacion], 
+    [Detalle_Cobros_Vendedor].[cliente] AS [cliente], 
+    [Detalle_Cobros_Vendedor].[valor_total] AS [valor_total], 
+    [Detalle_Cobros_Vendedor].[id_recaudador] AS [id_recaudador], 
+    [Detalle_Cobros_Vendedor].[nom_recaudador] AS [nom_recaudador], 
+    [Detalle_Cobros_Vendedor].[cobrador] AS [cobrador], 
+    [Detalle_Cobros_Vendedor].[valor_cobro] AS [valor_cobro], 
+    [Detalle_Cobros_Vendedor].[estado] AS [estado], 
+    [Detalle_Cobros_Vendedor].[nom_estado] AS [nom_estado], 
+    [Detalle_Cobros_Vendedor].[id_usuario] AS [id_usuario], 
+    [Detalle_Cobros_Vendedor].[factura] AS [factura], 
+    [Detalle_Cobros_Vendedor].[fecha_factura] AS [fecha_factura], 
+    [Detalle_Cobros_Vendedor].[valor_factura] AS [valor_factura], 
+    [Detalle_Cobros_Vendedor].[id_empresa] AS [id_empresa], 
+    [Detalle_Cobros_Vendedor].[nota] AS [nota]
+    FROM [dbo].[Detalle_Cobros_Vendedor] AS [Detalle_Cobros_Vendedor]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Detalle_Vendedor" EntityType="Self.Detalle_Vendedor" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Detalle_Vendedor].[cobrador] AS [cobrador], 
+    [Detalle_Vendedor].[nom_cobrador] AS [nom_cobrador], 
+    [Detalle_Vendedor].[id_consolidado_cierre] AS [id_consolidado_cierre], 
+    [Detalle_Vendedor].[total_cobro] AS [total_cobro]
+    FROM [dbo].[Detalle_Vendedor] AS [Detalle_Vendedor]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Detalle_Vendedores" EntityType="Self.Detalle_Vendedores" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Detalle_Vendedores].[cobrador] AS [cobrador], 
+    [Detalle_Vendedores].[nom_cobrador] AS [nom_cobrador], 
+    [Detalle_Vendedores].[id_consolidado_cierre] AS [id_consolidado_cierre], 
+    [Detalle_Vendedores].[total_cobro] AS [total_cobro]
+    FROM [dbo].[Detalle_Vendedores] AS [Detalle_Vendedores]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="DetalleOCEnlazada" EntityType="Self.DetalleOCEnlazada" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2669,6 +3290,27 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [KPI_Salida_Material].[PEDIDO SALIDA] AS [PEDIDO SALIDA]
     FROM [dbo].[KPI_Salida_Material] AS [KPI_Salida_Material]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="Mano_Obra" EntityType="Self.Mano_Obra" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Mano_Obra].[empresa] AS [empresa], 
+    [Mano_Obra].[planta] AS [planta], 
+    [Mano_Obra].[orden_fa] AS [orden_fa], 
+    [Mano_Obra].[fecha] AS [fecha], 
+    [Mano_Obra].[codigo_pro] AS [codigo_pro], 
+    [Mano_Obra].[producto] AS [producto], 
+    [Mano_Obra].[lote] AS [lote], 
+    [Mano_Obra].[cantidad_fabricada] AS [cantidad_fabricada], 
+    [Mano_Obra].[cod_tarea] AS [cod_tarea], 
+    [Mano_Obra].[tarea] AS [tarea], 
+    [Mano_Obra].[maquina] AS [maquina], 
+    [Mano_Obra].[numero_maquinas] AS [numero_maquinas], 
+    [Mano_Obra].[numero_persona] AS [numero_persona], 
+    [Mano_Obra].[horas_hombre_es] AS [horas_hombre_es], 
+    [Mano_Obra].[horas_maquina] AS [horas_maquina], 
+    [Mano_Obra].[horas_hombre] AS [horas_hombre], 
+    [Mano_Obra].[responsable] AS [responsable]
+    FROM [dbo].[Mano_Obra] AS [Mano_Obra]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="MateriaPrima_Lote" EntityType="Self.MateriaPrima_Lote" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [MateriaPrima_Lote].[codigo] AS [codigo], 
@@ -2684,7 +3326,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [MateriaPrima_Lote].[fecha_fabricacion] AS [fecha_fabricacion], 
     [MateriaPrima_Lote].[fecha_caducidad] AS [fecha_caducidad], 
     [MateriaPrima_Lote].[fecha_reanalisis] AS [fecha_reanalisis], 
-    [MateriaPrima_Lote].[id_producto] AS [id_producto]
+    [MateriaPrima_Lote].[id_producto] AS [id_producto], 
+    [MateriaPrima_Lote].[saldo] AS [saldo]
     FROM [dbo].[MateriaPrima_Lote] AS [MateriaPrima_Lote]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="MP_ME_STOCK" EntityType="Self.MP_ME_STOCK" store:Type="Views" store:Schema="dbo">
@@ -2811,7 +3454,9 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Orden_Produccion_Cabecera].[rendimiento] AS [rendimiento], 
     [Orden_Produccion_Cabecera].[nombre] AS [nombre], 
     [Orden_Produccion_Cabecera].[planta] AS [planta], 
-    [Orden_Produccion_Cabecera].[nombre_ruta] AS [nombre_ruta]
+    [Orden_Produccion_Cabecera].[nombre_ruta] AS [nombre_ruta], 
+    [Orden_Produccion_Cabecera].[codigo_mba3] AS [codigo_mba3], 
+    [Orden_Produccion_Cabecera].[presentacion_producto] AS [presentacion_producto]
     FROM [dbo].[Orden_Produccion_Cabecera] AS [Orden_Produccion_Cabecera]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ordenes_compra" EntityType="Self.ordenes_compra" store:Type="Views" store:Schema="dbo">
@@ -2873,6 +3518,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [PickingGuias].[secuencial] AS [secuencial], 
     [PickingGuias].[fecha_inicio_pick] AS [fecha_inicio_pick], 
     [PickingGuias].[usuario_inicio_pick] AS [usuario_inicio_pick], 
+    [PickingGuias].[id_usuario] AS [id_usuario], 
     [PickingGuias].[fecha_fin_pick] AS [fecha_fin_pick], 
     [PickingGuias].[usuario_fin_pick] AS [usuario_fin_pick], 
     [PickingGuias].[fecha_inicio_desp] AS [fecha_inicio_desp], 
@@ -2897,6 +3543,11 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Presupuesto_Vendedor_Detalle].[valor_venta] AS [valor_venta], 
     [Presupuesto_Vendedor_Detalle].[id_presupuesto_detalle] AS [id_presupuesto_detalle]
     FROM [dbo].[Presupuesto_Vendedor_Detalle] AS [Presupuesto_Vendedor_Detalle]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Productos_precio" EntityType="Self.Productos_precio" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Productos_precio].[nombre] AS [nombre]
+    FROM [dbo].[Productos_precio] AS [Productos_precio]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ProductosMP" EntityType="Self.ProductosMP" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2958,31 +3609,44 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Reporte_Analisis_Costos].[rendimiento] AS [rendimiento]
     FROM [dbo].[Reporte_Analisis_Costos] AS [Reporte_Analisis_Costos]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="Reporte_Cartera" EntityType="Self.Reporte_Cartera" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="Reporte_Cartera_2" EntityType="Self.Reporte_Cartera_2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [Reporte_Cartera].[empresa] AS [empresa], 
-    [Reporte_Cartera].[sucursal] AS [sucursal], 
-    [Reporte_Cartera].[identificacion] AS [identificacion], 
-    [Reporte_Cartera].[nombre_comercial] AS [nombre_comercial], 
-    [Reporte_Cartera].[categoria] AS [categoria], 
-    [Reporte_Cartera].[id_vendedor_cliente] AS [id_vendedor_cliente], 
-    [Reporte_Cartera].[vendedor cliente] AS [vendedor cliente], 
-    [Reporte_Cartera].[id_vendedor_factura] AS [id_vendedor_factura], 
-    [Reporte_Cartera].[vendedor factura] AS [vendedor factura], 
-    [Reporte_Cartera].[secuencial_factura] AS [secuencial_factura], 
-    [Reporte_Cartera].[fecha_factura] AS [fecha_factura], 
-    [Reporte_Cartera].[fecha vencimiento] AS [fecha vencimiento], 
-    [Reporte_Cartera].[provincia] AS [provincia], 
-    [Reporte_Cartera].[ciudad] AS [ciudad], 
-    [Reporte_Cartera].[parroquia] AS [parroquia], 
-    [Reporte_Cartera].[direccion] AS [direccion], 
-    [Reporte_Cartera].[valor_factura] AS [valor_factura], 
-    [Reporte_Cartera].[totalChequePost] AS [totalChequePost], 
-    [Reporte_Cartera].[saldo pendiente] AS [saldo pendiente], 
-    [Reporte_Cartera].[dias_emitida] AS [dias_emitida], 
-    [Reporte_Cartera].[dias_diferencia] AS [dias_diferencia], 
-    [Reporte_Cartera].[descripcion] AS [descripcion]
-    FROM [dbo].[Reporte_Cartera] AS [Reporte_Cartera]</DefiningQuery>
+    [Reporte_Cartera_2].[empresa] AS [empresa], 
+    [Reporte_Cartera_2].[sucursal] AS [sucursal], 
+    [Reporte_Cartera_2].[identificacion] AS [identificacion], 
+    [Reporte_Cartera_2].[nombre_comercial] AS [nombre_comercial], 
+    [Reporte_Cartera_2].[categoria] AS [categoria], 
+    [Reporte_Cartera_2].[id_vendedor_cliente] AS [id_vendedor_cliente], 
+    [Reporte_Cartera_2].[vendedor cliente] AS [vendedor cliente], 
+    [Reporte_Cartera_2].[id_vendedor_factura] AS [id_vendedor_factura], 
+    [Reporte_Cartera_2].[vendedor factura] AS [vendedor factura], 
+    [Reporte_Cartera_2].[secuencial_factura] AS [secuencial_factura], 
+    [Reporte_Cartera_2].[fecha_factura] AS [fecha_factura], 
+    [Reporte_Cartera_2].[fecha vencimiento] AS [fecha vencimiento], 
+    [Reporte_Cartera_2].[provincia] AS [provincia], 
+    [Reporte_Cartera_2].[ciudad] AS [ciudad], 
+    [Reporte_Cartera_2].[parroquia] AS [parroquia], 
+    [Reporte_Cartera_2].[direccion] AS [direccion], 
+    [Reporte_Cartera_2].[valor_factura] AS [valor_factura], 
+    [Reporte_Cartera_2].[totalChequePost] AS [totalChequePost], 
+    [Reporte_Cartera_2].[saldo pendiente] AS [saldo pendiente], 
+    [Reporte_Cartera_2].[dias_emitida] AS [dias_emitida], 
+    [Reporte_Cartera_2].[dias_diferencia] AS [dias_diferencia], 
+    [Reporte_Cartera_2].[contacto] AS [contacto], 
+    [Reporte_Cartera_2].[descripcion] AS [descripcion]
+    FROM [dbo].[Reporte_Cartera_2] AS [Reporte_Cartera_2]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Reporte_Consolidado_Cierre" EntityType="Self.Reporte_Consolidado_Cierre" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Reporte_Consolidado_Cierre].[empresa] AS [empresa], 
+    [Reporte_Consolidado_Cierre].[fecha_creacion] AS [fecha_creacion], 
+    [Reporte_Consolidado_Cierre].[numero_consolidado] AS [numero_consolidado], 
+    [Reporte_Consolidado_Cierre].[numero_cobro] AS [numero_cobro], 
+    [Reporte_Consolidado_Cierre].[recaudador] AS [recaudador], 
+    [Reporte_Consolidado_Cierre].[valor_cobro] AS [valor_cobro], 
+    [Reporte_Consolidado_Cierre].[valor_total] AS [valor_total], 
+    [Reporte_Consolidado_Cierre].[id_consolidado_cierre] AS [id_consolidado_cierre]
+    FROM [dbo].[Reporte_Consolidado_Cierre] AS [Reporte_Consolidado_Cierre]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Reporte_GuiasRemision" EntityType="Self.Reporte_GuiasRemision" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3066,6 +3730,18 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Transito_PT_Total].[Existencia] AS [Existencia], 
     [Transito_PT_Total].[Cantidad transito total] AS [Cantidad transito total]
     FROM [dbo].[Transito_PT_Total] AS [Transito_PT_Total]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_cobros_tmp" EntityType="Self.V_cobros_tmp" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_cobros_tmp].[id_cobro] AS [id_cobro], 
+    [V_cobros_tmp].[empresa] AS [empresa], 
+    [V_cobros_tmp].[sucursal] AS [sucursal], 
+    [V_cobros_tmp].[fecha_inicio] AS [fecha_inicio], 
+    [V_cobros_tmp].[fecha_fin] AS [fecha_fin], 
+    [V_cobros_tmp].[fecha_creacion] AS [fecha_creacion], 
+    [V_cobros_tmp].[estado] AS [estado], 
+    [V_cobros_tmp].[usuario_creacion] AS [usuario_creacion]
+    FROM [dbo].[V_cobros_tmp] AS [V_cobros_tmp]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Vendedores" EntityType="Self.Vendedores" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3183,6 +3859,14 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <AssociationSet Name="FK_AspNetUserTokens_AspNetUsers_UserId" Association="Self.FK_AspNetUserTokens_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserTokens" EntitySet="AspNetUserTokens" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cabconsolidado" Association="Self.FK_cabconsolidado">
+            <End Role="consolidado_cierre" EntitySet="consolidado_cierre" />
+            <End Role="detalle_consolidado_cierre" EntitySet="detalle_consolidado_cierre" />
+          </AssociationSet>
+          <AssociationSet Name="FK_consolidado" Association="Self.FK_consolidado">
+            <End Role="consolidado_cierre" EntitySet="consolidado_cierre" />
+            <End Role="devolucion_consolidado_cierre" EntitySet="devolucion_consolidado_cierre" />
           </AssociationSet>
           <AssociationSet Name="FK_cotizacion_cabecera_cotizacion_cabecera" Association="Self.FK_cotizacion_cabecera_cotizacion_cabecera">
             <End Role="cotizacion_cabecera" EntitySet="cotizacion_cabecera" />
@@ -3857,6 +4541,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
             <PropertyRef Name="categoria_empresa" />
             <PropertyRef Name="tipo_identificacion" />
             <PropertyRef Name="indicador_genera_autoconsumo" />
+            <PropertyRef Name="id_cliente" />
           </Key>
           <Property Name="id_organizacion" Type="Int32" Nullable="false" />
           <Property Name="empresa" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
@@ -3887,6 +4572,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="categoria_empresa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="tipo_identificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="indicador_genera_autoconsumo" Type="Boolean" Nullable="false" />
+          <Property Name="id_cliente" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Cobros_Consolidado">
           <Key>
@@ -4109,6 +4795,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="planta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="id_orden_fabricacion" Type="Int32" Nullable="false" />
           <Property Name="nombre_ruta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_mba3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="presentacion_producto" Type="Decimal" Precision="12" Scale="2" />
         </EntityType>
         <EntityType Name="ordenes_compra">
           <Key>
@@ -4200,6 +4888,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="usuario_fin_desp" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
           <Property Name="fecha_guia_troquelada" Type="DateTime" Precision="3" />
           <Property Name="diferencia" Type="Int32" />
+          <Property Name="id_usuario" Type="Int32" />
         </EntityType>
         <EntityType Name="Presupuesto_Vendedor_Detalle">
           <Key>
@@ -4399,16 +5088,16 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           </Key>
           <Property Name="empresa" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="sucursal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="identificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="id_organizacion" Type="Int32" Nullable="false" />
           <Property Name="secuencial_factura" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="fecha_factura" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="valor_factura" Type="Decimal" Precision="15" Scale="2" />
           <Property Name="fecha_guia" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="descripcion" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="nombre_comercial" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre_comercial" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="categoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="id_vendedor" Type="Int32" />
           <Property Name="vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -4959,9 +5648,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
             <Parameter Name="idvendedor" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="Ventas_Producto_Precio" EntityType="oasisModel1.Ventas_Producto_Precio" />
-          <EntitySet Name="Reporte_Cartera" EntityType="oasisModel1.Reporte_Cartera" />
           <EntitySet Name="Reporte_Analisis_Costos" EntityType="oasisModel1.Reporte_Analisis_Costos" />
-          <EntitySet Name="Cierre_Caja_Cabecera" EntityType="oasisModel1.Cierre_Caja_Cabecera" />
           <FunctionImport Name="Presupuesto_Consolidado" ReturnType="Collection(oasisModel1.Presupuesto_Consolidado_Result)">
             <Parameter Name="empresa" Mode="In" Type="String" />
             <Parameter Name="sucursal" Mode="In" Type="String" />
@@ -4969,6 +5656,76 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
             <Parameter Name="fecha_hasta" Mode="In" Type="DateTime" />
             <Parameter Name="tipoCliente" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="Cierre_Caja_Cabecera" EntityType="oasisModel1.Cierre_Caja_Cabecera" />
+          <EntitySet Name="Estado_Cobros" EntityType="oasisModel1.Estado_Cobros" />
+          <EntitySet Name="consolidado_cierre" EntityType="oasisModel1.consolidado_cierre" />
+          <EntitySet Name="Reporte_Consolidado_Cierre" EntityType="oasisModel1.Reporte_Consolidado_Cierre" />
+          <EntitySet Name="devolucion_consolidado_cierre" EntityType="oasisModel1.devolucion_consolidado_cierre" />
+          <AssociationSet Name="FK_consolidado" Association="oasisModel1.FK_consolidado">
+            <End Role="consolidado_cierre" EntitySet="consolidado_cierre" />
+            <End Role="devolucion_consolidado_cierre" EntitySet="devolucion_consolidado_cierre" />
+          </AssociationSet>
+          <EntitySet Name="Detalle_Cobros" EntityType="oasisModel1.Detalle_Cobros" />
+          <EntitySet Name="Cobros_Vendedor" EntityType="oasisModel1.Cobros_Vendedor" />
+          <EntitySet Name="Detalle_Vendedores" EntityType="oasisModel1.Detalle_Vendedores" />
+          <EntitySet Name="Detalle_Vendedor" EntityType="oasisModel1.Detalle_Vendedor" />
+          <FunctionImport Name="SP_Cobros_Vendedor" ReturnType="Collection(oasisModel1.SP_Cobros_Vendedor_Result)">
+            <Parameter Name="idconsolidado" Mode="In" Type="Int32" />
+            <Parameter Name="idvendedor" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Reporte_Cartera_2" EntityType="oasisModel1.Reporte_Cartera_2" />
+          <FunctionImport Name="SP_Detalle_Vendedor" ReturnType="Collection(oasisModel1.SP_Detalle_Vendedor_Result)">
+          <Parameter Name="idconsolidado" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Reporte_Cartera" ReturnType="Collection(oasisModel1.SP_Reporte_Cartera_Result)">
+            <Parameter Name="empresa" Mode="In" Type="String" />
+            <Parameter Name="sucursal" Mode="In" Type="String" />
+            <Parameter Name="fecha_desde" Mode="In" Type="DateTime" />
+            <Parameter Name="fecha_hasta" Mode="In" Type="DateTime" />
+            <Parameter Name="tipoCliente" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Productos_precio" EntityType="oasisModel1.Productos_precio" />
+          <FunctionImport Name="SP_Guarda_Cobros" ReturnType="Collection(oasisModel1.SP_Guarda_Cobros_Result)">
+            <Parameter Name="tipo_busqueda" Mode="In" Type="Int32" />
+            <Parameter Name="empresa" Mode="In" Type="String" />
+            <Parameter Name="sucursal" Mode="In" Type="String" />
+            <Parameter Name="fecha_desde" Mode="In" Type="DateTime" />
+            <Parameter Name="fecha_hasta" Mode="In" Type="DateTime" />
+            <Parameter Name="usuario" Mode="In" Type="Int32" />
+            <Parameter Name="estado" Mode="In" Type="String" />
+            <Parameter Name="cod_tabla" Mode="In" Type="Int32" />
+            <Parameter Name="numero_cobro" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Detalle_Cobros_Vendedor" EntityType="oasisModel1.Detalle_Cobros_Vendedor" />
+          <EntitySet Name="detalle_consolidado_cierre" EntityType="oasisModel1.detalle_consolidado_cierre" />
+          <AssociationSet Name="FK_cabconsolidado" Association="oasisModel1.FK_cabconsolidado">
+            <End Role="consolidado_cierre" EntitySet="consolidado_cierre" />
+            <End Role="detalle_consolidado_cierre" EntitySet="detalle_consolidado_cierre" />
+          </AssociationSet>
+          <FunctionImport Name="SP_Mano_Obra" ReturnType="Collection(oasisModel1.SP_Mano_Obra_Result)">
+            <Parameter Name="empresa" Mode="In" Type="String" />
+            <Parameter Name="fecha_desde" Mode="In" Type="DateTime" />
+            <Parameter Name="fecha_hasta" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="V_cobros_tmp" EntityType="oasisModel1.V_cobros_tmp" />
+          <EntitySet Name="cobros_tmp" EntityType="oasisModel1.cobros_tmp" />
+          <FunctionImport Name="SP_Quita_cobros">
+          <Parameter Name="idcobro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Detalle_Cobros" ReturnType="Collection(oasisModel1.SP_Detalle_Cobros_Result)">
+            <Parameter Name="tipo_busqueda" Mode="In" Type="Int32" />
+            <Parameter Name="empresa" Mode="In" Type="String" />
+            <Parameter Name="sucursal" Mode="In" Type="String" />
+            <Parameter Name="fecha_desde" Mode="In" Type="DateTime" />
+            <Parameter Name="fecha_hasta" Mode="In" Type="DateTime" />
+            <Parameter Name="usuario" Mode="In" Type="Int32" />
+            <Parameter Name="estado" Mode="In" Type="String" />
+            <Parameter Name="cod_tabla" Mode="In" Type="Int32" />
+            <Parameter Name="numero_cobro" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Consulta_Consolidado_Cierres" EntityType="oasisModel1.Consulta_Consolidado_Cierres" />
+          <EntitySet Name="Detalle_Cheques" EntityType="oasisModel1.Detalle_Cheques" />
+          <EntitySet Name="Mano_Obra" EntityType="oasisModel1.Mano_Obra" />
           </EntityContainer>
         <ComplexType Name="CobrosPorVendedor_Result">
           <Property Type="String" Name="codigo" Nullable="false" MaxLength="20" />
@@ -4996,7 +5753,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Type="String" Name="vendedor" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="Presupuesto_Result">
-          <Property Type="Int64" Name="id_vendedor" Nullable="false" />
+          <Property Type="Int32" Name="id_vendedor" Nullable="false" />
           <Property Type="String" Name="nombre_vendedor" Nullable="true" MaxLength="50" />
           <Property Type="Double" Name="valor_venta" Nullable="true" />
           <Property Type="Decimal" Name="ventas_brutas" Nullable="true" Precision="38" Scale="2" />
@@ -5496,6 +6253,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="fecha_caducidad" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="fecha_reanalisis" Type="DateTime" Precision="0" />
           <Property Name="id_producto" Type="Int32" Nullable="false" />
+          <Property Name="saldo" Type="Decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="ProductosMP">
           <Key>
@@ -5595,39 +6353,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="fecha_factura" Type="DateTime" Precision="0" />
           <Property Name="tipo_documento" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Reporte_Cartera">
-          <Key>
-            <PropertyRef Name="empresa" />
-            <PropertyRef Name="categoria" />
-            <PropertyRef Name="secuencial_factura" />
-            <PropertyRef Name="fecha_factura" />
-            <PropertyRef Name="ciudad" />
-            <PropertyRef Name="direccion" />
-            <PropertyRef Name="totalChequePost" />
-          </Key>
-          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="sucursal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="nombre_comercial" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="categoria" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="id_vendedor_cliente" Type="Int32" />
-          <Property Name="vendedor_cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="id_vendedor_factura" Type="Int32" />
-          <Property Name="vendedor_factura" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="secuencial_factura" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="fecha_factura" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="fecha_vencimiento" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
-          <Property Name="provincia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ciudad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="parroquia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="direccion" Type="String" Nullable="false" MaxLength="1204" FixedLength="false" Unicode="false" />
-          <Property Name="valor_factura" Type="Decimal" Precision="15" Scale="2" />
-          <Property Name="totalChequePost" Type="Decimal" Nullable="false" Precision="38" Scale="2" />
-          <Property Name="saldo_pendiente" Type="Decimal" Precision="38" Scale="2" />
-          <Property Name="dias_emitida" Type="Int32" />
-          <Property Name="dias_diferencia" Type="Int32" />
-          <Property Name="descripcion" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Reporte_Analisis_Costos">
           <Key>
             <PropertyRef Name="empresa" />
@@ -5664,35 +6389,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="fecha_cierre" Type="DateTime" Precision="7" />
           <Property Name="codigo_pro" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Cierre_Caja_Cabecera">
-          <Key>
-            <PropertyRef Name="id_cierre_caja" />
-            <PropertyRef Name="numero" />
-            <PropertyRef Name="fecha_hasta" />
-            <PropertyRef Name="id_sucursal" />
-            <PropertyRef Name="sucursal" />
-            <PropertyRef Name="valor_usuario" />
-            <PropertyRef Name="estado" />
-            <PropertyRef Name="caja" />
-            <PropertyRef Name="id_organizacion" />
-            <PropertyRef Name="empresa" />
-          </Key>
-          <Property Name="id_cierre_caja" Type="Int32" Nullable="false" />
-          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
-          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="fecha_hasta" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
-          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="valor_usuario" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-          <Property Name="estado" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="codigo_movil" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="id_caja" Type="Int32" />
-          <Property Name="caja" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
-          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="id_usuario" Type="Int32" />
-        </EntityType>
         <ComplexType Name="Presupuesto_Consolidado_Result" >
           <Property Type="Double" Name="alcance_cobro" Nullable="true" />
           <Property Type="Double" Name="alcance_venta" Nullable="true" />
@@ -5705,6 +6401,587 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Type="String" Name="empresa" Nullable="false" />
           <Property Type="String" Name="sucursal" Nullable="false" />
         </ComplexType>
+        <EntityType Name="Cierre_Caja_Cabecera">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_cierre_caja" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="fecha_hasta" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="valor_usuario" />
+            <PropertyRef Name="estado" />
+          </Key>
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_cierre_caja" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_hasta" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valor_usuario" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="estado" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_movil" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_caja" Type="Int32" />
+          <Property Name="caja" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_usuario" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Estado_Cobros">
+          <Key>
+            <PropertyRef Name="id_estado" />
+          </Key>
+          <Property Name="id_estado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="consolidado_cierre">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="numero_consolidado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="devolucion_consolidado_cierre" Relationship="oasisModel1.FK_consolidado" FromRole="consolidado_cierre" ToRole="devolucion_consolidado_cierre" />
+          <NavigationProperty Name="detalle_consolidado_cierre" Relationship="oasisModel1.FK_cabconsolidado" FromRole="consolidado_cierre" ToRole="detalle_consolidado_cierre" />
+        </EntityType>
+        <EntityType Name="Reporte_Consolidado_Cierre">
+          <Key>
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="numero_consolidado" />
+            <PropertyRef Name="numero_cobro" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="numero_consolidado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="numero_cobro" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="recaudador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valor_cobro" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="devolucion_consolidado_cierre">
+          <Key>
+            <PropertyRef Name="id_devolucion_cons_cierre" />
+          </Key>
+          <Property Name="id_devolucion_cons_cierre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="numero_consolidado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="valor" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="cant_reg" Type="Int32" Nullable="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="consolidado_cierre" Relationship="oasisModel1.FK_consolidado" FromRole="devolucion_consolidado_cierre" ToRole="consolidado_cierre" />
+        </EntityType>
+        <Association Name="FK_consolidado">
+          <End Type="oasisModel1.consolidado_cierre" Role="consolidado_cierre" Multiplicity="1" />
+          <End Type="oasisModel1.devolucion_consolidado_cierre" Role="devolucion_consolidado_cierre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Principal>
+            <Dependent Role="devolucion_consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Detalle_Cobros">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="id_detalle_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="fecha_cobro" />
+            <PropertyRef Name="cod_cliente" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="id_forma_pago" />
+            <PropertyRef Name="cod_forma_pago" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="nom_estado" />
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_detalle_forma_cobro" />
+            <PropertyRef Name="estado_consolidado" />
+            <PropertyRef Name="cod_tabla" />
+          </Key>
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="Int32" Nullable="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cobro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_crea_co" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cod_cliente" Type="Int32" Nullable="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="cliente" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="id_recaudador" Type="Int32" />
+          <Property Name="nom_recaudador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_forma_pago" Type="Int32" Nullable="false" />
+          <Property Name="cod_forma_pago" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="forma_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valor_cobro" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="id_banco" Type="Int32" />
+          <Property Name="nom_banco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="num_documento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_pago" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="nom_estado" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="num_cierre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="id_detalle_forma_cobro" Type="Int32" Nullable="false" />
+          <Property Name="factura" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="fecha_factura" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="valor_factura" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="estado_consolidado" Type="Int32" Nullable="false" />
+          <Property Name="cod_tabla" Type="Int32" Nullable="false" />
+          <Property Name="num_ant" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Cobros_Vendedor">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+            <PropertyRef Name="num_cobro" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="cod_forma_pago" />
+            <PropertyRef Name="id_detalle_forma_cobro" />
+            <PropertyRef Name="id_detalle_cobro" />
+          </Key>
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nom_cobrador" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cobro" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="num_cobro" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_factura" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="factura" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="valor_factura" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="valor_cobro" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="cliente" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="cod_forma_pago" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="forma_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_pago" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="id_detalle_forma_cobro" Type="Int32" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Detalle_Vendedores">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nom_cobrador" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+          <Property Name="total_cobro" Type="Decimal" Precision="38" Scale="2" />
+        </EntityType>
+        <EntityType Name="Detalle_Vendedor">
+          <Key>
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nom_cobrador" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+          <Property Name="total_cobro" Type="Decimal" Precision="38" Scale="2" />
+        </EntityType>
+        <ComplexType Name="SP_Cobros_Vendedor_Result">
+          <Property Type="Int32" Name="id_consolidado_cierre" Nullable="false" />
+          <Property Type="String" Name="cobrador" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="nom_cobrador" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="fecha_cobro" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="num_cobro" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="fecha_factura" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="factura" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="valor_factura" Nullable="true" Precision="14" Scale="2" />
+          <Property Type="Decimal" Name="valor_cobro" Nullable="false" Precision="14" Scale="2" />
+          <Property Type="String" Name="identificacion" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="cliente" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="cod_forma_pago" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="forma_pago" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="fecha_pago" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="id_detalle_forma_cobro" Nullable="false" />
+          <Property Type="Int32" Name="id_detalle_cobro" Nullable="false" />
+          <Property Type="String" Name="documento" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="valor_total" Nullable="false" Precision="14" Scale="2" />
+          <Property Type="String" Name="cod_ant" Nullable="false" MaxLength="3" />
+          <Property Type="String" Name="nota" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <EntityType Name="Reporte_Cartera_2">
+          <Key>
+            <PropertyRef Name="categoria" />
+            <PropertyRef Name="secuencial_factura" />
+            <PropertyRef Name="fecha_factura" />
+            <PropertyRef Name="ciudad" />
+            <PropertyRef Name="direccion" />
+            <PropertyRef Name="totalChequePost" />
+          </Key>
+          <Property Name="empresa" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="sucursal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="nombre_comercial" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="categoria" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_vendedor_cliente" Type="Int32" />
+          <Property Name="vendedor_cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_vendedor_factura" Type="Int32" />
+          <Property Name="vendedor_factura" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="secuencial_factura" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_factura" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_vencimiento" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="provincia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ciudad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="parroquia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" Nullable="false" MaxLength="1204" FixedLength="false" Unicode="false" />
+          <Property Name="valor_factura" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="totalChequePost" Type="Decimal" Nullable="false" Precision="38" Scale="2" />
+          <Property Name="saldo_pendiente" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="dias_emitida" Type="Int32" />
+          <Property Name="dias_diferencia" Type="Int32" />
+          <Property Name="contacto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="SP_Detalle_Vendedor_Result">
+          <Property Type="String" Name="cobrador" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="nom_cobrador" Nullable="true" MaxLength="101" />
+          <Property Type="Int32" Name="id_consolidado_cierre" Nullable="false" />
+          <Property Type="Decimal" Name="total_cobro" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="SP_Reporte_Cartera_Result">
+          <Property Type="String" Name="empresa" Nullable="false" />
+          <Property Type="String" Name="sucursal" Nullable="false" />
+          <Property Type="String" Name="identificacion" Nullable="false" />
+          <Property Type="String" Name="nombre_comercial" Nullable="false" />
+          <Property Type="String" Name="categoria" Nullable="false" />
+          <Property Type="String" Name="vendedor_cliente" Nullable="false" />
+          <Property Type="String" Name="vendedor_factura" Nullable="false" />
+          <Property Type="String" Name="secuencial_factura" Nullable="false" />
+          <Property Type="String" Name="fecha_factura" Nullable="false" />
+          <Property Type="String" Name="fecha_vencimiento" Nullable="false" />
+          <Property Type="String" Name="provincia" Nullable="false" />
+          <Property Type="String" Name="ciudad" Nullable="false" />
+          <Property Type="String" Name="parroquia" Nullable="false" />
+          <Property Type="String" Name="direccion" Nullable="false" />
+          <Property Type="Decimal" Name="valor_factura" Nullable="false" />
+          <Property Type="Decimal" Name="totalChequePost" Nullable="false" />
+          <Property Type="Decimal" Name="saldo_pendiente" Nullable="false" />
+          <Property Type="Int32" Name="dias_emitida" Nullable="false" />
+          <Property Type="Int32" Name="dias_diferencia" Nullable="false" />
+          <Property Type="String" Name="descripcion" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Productos_precio">
+          <Key>
+            <PropertyRef Name="nombre" />
+          </Key>
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="SP_Guarda_Cobros_Result" >
+          <Property Type="String" Name="cliente" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="cobrador" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="cod_tabla" Nullable="false" />
+          <Property Type="String" Name="empresa" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="fecha_cobro" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="fecha_pago" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="id_cobro" Nullable="false" />
+          <Property Type="Int32" Name="id_detalle_cobro" Nullable="false" />
+          <Property Type="Int32" Name="id_organizacion" Nullable="false" />
+          <Property Type="Int32" Name="id_sucursal" Nullable="false" />
+          <Property Type="String" Name="nom_banco" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="nom_estado" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="num_ant" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="num_cierre" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="num_documento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="numero" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="sucursal" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="valor_cobro" Nullable="false" Precision="14" Scale="2" />
+          <Property Type="Decimal" Name="valor_total" Nullable="false" Precision="12" Scale="2" />
+          <Property Type="Int32" Name="id_forma_pago" Nullable="false" />
+          <Property Type="Int32" Name="id_detalle_forma_cobro" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Detalle_Cobros_Vendedor">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="id_detalle_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="fecha_cobro" />
+            <PropertyRef Name="cod_cliente" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="valor_cobro" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="nom_estado" />
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="Int32" Nullable="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cobro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_crea_co" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cod_cliente" Type="Int32" Nullable="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="cliente" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="id_recaudador" Type="Int32" />
+          <Property Name="nom_recaudador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valor_cobro" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="nom_estado" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="factura" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_factura" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="valor_factura" Type="Decimal" Precision="14" Scale="2" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="nota" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="detalle_consolidado_cierre">
+          <Key>
+            <PropertyRef Name="id_detalle_conso_cierre" />
+          </Key>
+          <Property Name="id_detalle_conso_cierre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="id_detalle_forma_cobro" Type="Int32" Nullable="false" />
+          <Property Name="id_detalle_cobro" Type="Int32" Nullable="false" />
+          <Property Name="numero_consolidado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="numero_ant" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="valor" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_forma_pago" Type="Int32" Nullable="false" />
+          <Property Name="fecha_pago" Type="DateTime" Precision="0" />
+          <Property Name="documento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="fecha_modificacion" Type="DateTime" Precision="7" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usuario_modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="consolidado_cierre" Relationship="oasisModel1.FK_cabconsolidado" FromRole="detalle_consolidado_cierre" ToRole="consolidado_cierre" />
+        </EntityType>
+        <Association Name="FK_cabconsolidado">
+          <End Type="oasisModel1.consolidado_cierre" Role="consolidado_cierre" Multiplicity="1" />
+          <End Type="oasisModel1.detalle_consolidado_cierre" Role="detalle_consolidado_cierre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Principal>
+            <Dependent Role="detalle_consolidado_cierre">
+              <PropertyRef Name="id_consolidado_cierre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_Mano_Obra_Result">
+          <Property Type="String" Name="empresa" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="planta" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="orden_fa" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="codigo_pro" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="producto" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="lote" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="cantidad_fabricada" Nullable="true" Precision="16" Scale="4" />
+          <Property Type="String" Name="nom_maquina" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="nom_prodmaterial" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="cod_tarea" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="nom_tarea" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="cantidad_responsables" Nullable="false" />
+          <Property Type="Decimal" Name="horas_hombre" Nullable="false" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="horas_maquina" Nullable="false" Precision="12" Scale="2" />
+          <Property Type="String" Name="responsable" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="V_cobros_tmp">
+          <Key>
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="sucursal" />
+          </Key>
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="0" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="0" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="cobros_tmp">
+          <Key>
+            <PropertyRef Name="id_cobro" />
+          </Key>
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="0" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="usuario_creacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="Cobros_Result" >
+          <Property Type="String" Name="numero" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="fecha_cobro" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="cobrador" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="cliente" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="num_documento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="forma_pago" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="valor_cobro" Nullable="false" Precision="14" Scale="2" />
+          <Property Type="Decimal" Name="valor_total" Nullable="false" Precision="12" Scale="2" />
+          <Property Type="String" Name="nom_banco" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="fecha_pago" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="num_cierre" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="num_ant" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="nom_estado" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="id_cobro" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Consulta_Consolidado_Cierres">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="numero_consolidado" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="nom_estado" />
+            <PropertyRef Name="id_consolidado_cierre" />
+          </Key>
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="numero_consolidado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="fecha" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="nom_estado" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="id_consolidado_cierre" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Detalle_Cheques">
+          <Key>
+            <PropertyRef Name="id_organizacion" />
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_sucursal" />
+            <PropertyRef Name="sucursal" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="fecha_cobro" />
+            <PropertyRef Name="cod_cliente" />
+            <PropertyRef Name="valor_total" />
+            <PropertyRef Name="cod_forma_pago" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="id_usuario" />
+            <PropertyRef Name="estado_consolidado" />
+          </Key>
+          <Property Name="id_organizacion" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_sucursal" Type="Int32" Nullable="false" />
+          <Property Name="sucursal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cobro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_crea_co" Type="DateTime" Precision="7" />
+          <Property Name="cod_cliente" Type="Int32" Nullable="false" />
+          <Property Name="identificacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="cliente" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="valor_total" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="cobrador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cod_forma_pago" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="forma_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_banco" Type="Int32" />
+          <Property Name="nom_banco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="num_documento" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_cheque" Type="DateTime" Precision="0" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="nom_estado" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="memo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="cta_bancaria" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="num_cheque" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="estado_consolidado" Type="Int32" Nullable="false" />
+          <Property Name="nom_estado_cons" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_consolidado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="SP_Detalle_Cobros_Result" >
+          <Property Type="String" Name="numero" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="num_documento" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="fecha_pago" Nullable="true" MaxLength="10" />
+          <Property Type="Decimal" Name="valor_cobro" Nullable="false" Precision="14" Scale="2" />
+          <Property Type="Decimal" Name="valor_total" Nullable="false" Precision="12" Scale="2" />
+          <Property Type="String" Name="cliente" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="nom_estado" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="fecha_cobro" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="cobrador" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="forma_pago" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="nom_banco" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="num_cierre" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="num_ant" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="id_cobro" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Mano_Obra">
+          <Key>
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="planta" />
+            <PropertyRef Name="orden_fa" />
+            <PropertyRef Name="fecha" />
+            <PropertyRef Name="codigo_pro" />
+            <PropertyRef Name="producto" />
+            <PropertyRef Name="lote" />
+            <PropertyRef Name="cod_tarea" />
+            <PropertyRef Name="tarea" />
+            <PropertyRef Name="maquina" />
+            <PropertyRef Name="numero_maquinas" />
+            <PropertyRef Name="numero_persona" />
+            <PropertyRef Name="horas_hombre_es" />
+            <PropertyRef Name="horas_maquina" />
+            <PropertyRef Name="horas_hombre" />
+          </Key>
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="planta" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orden_fa" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="codigo_pro" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="producto" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="lote" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cantidad_fabricada" Type="Decimal" Precision="16" Scale="4" />
+          <Property Name="cod_tarea" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="tarea" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="maquina" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="numero_maquinas" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="numero_persona" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="horas_hombre_es" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="horas_maquina" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="horas_hombre" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="responsable" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6243,6 +7520,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySetMapping Name="Clientes2">
             <EntityTypeMapping TypeName="oasisModel1.Clientes2">
               <MappingFragment StoreEntitySet="Clientes2">
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
                 <ScalarProperty Name="indicador_genera_autoconsumo" ColumnName="indicador_genera_autoconsumo" />
                 <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
@@ -6439,6 +7717,8 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySetMapping Name="Orden_Produccion_Cabecera">
             <EntityTypeMapping TypeName="oasisModel1.Orden_Produccion_Cabecera">
               <MappingFragment StoreEntitySet="Orden_Produccion_Cabecera">
+                <ScalarProperty Name="presentacion_producto" ColumnName="presentacion_producto" />
+                <ScalarProperty Name="codigo_mba3" ColumnName="codigo_mba3" />
                 <ScalarProperty Name="nombre_ruta" ColumnName="nombre_ruta" />
                 <ScalarProperty Name="id_orden_fabricacion" ColumnName="id_orden_fabricacion" />
                 <ScalarProperty Name="OP" ColumnName="OP" />
@@ -6516,6 +7796,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySetMapping Name="PickingGuias">
             <EntityTypeMapping TypeName="oasisModel1.PickingGuias">
               <MappingFragment StoreEntitySet="PickingGuias">
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
                 <ScalarProperty Name="secuencial" ColumnName="secuencial" />
                 <ScalarProperty Name="fecha_inicio_pick" ColumnName="fecha_inicio_pick" />
@@ -7164,6 +8445,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySetMapping Name="MateriaPrima_Lote">
             <EntityTypeMapping TypeName="oasisModel1.MateriaPrima_Lote">
               <MappingFragment StoreEntitySet="MateriaPrima_Lote">
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
                 <ScalarProperty Name="id_producto" ColumnName="id_producto" />
                 <ScalarProperty Name="fecha_reanalisis" ColumnName="fecha_reanalisis" />
                 <ScalarProperty Name="fecha_caducidad" ColumnName="fecha_caducidad" />
@@ -7281,34 +8563,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Reporte_Cartera">
-            <EntityTypeMapping TypeName="oasisModel1.Reporte_Cartera">
-              <MappingFragment StoreEntitySet="Reporte_Cartera">
-                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-                <ScalarProperty Name="dias_diferencia" ColumnName="dias_diferencia" />
-                <ScalarProperty Name="dias_emitida" ColumnName="dias_emitida" />
-                <ScalarProperty Name="saldo_pendiente" ColumnName="saldo pendiente" />
-                <ScalarProperty Name="totalChequePost" ColumnName="totalChequePost" />
-                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
-                <ScalarProperty Name="direccion" ColumnName="direccion" />
-                <ScalarProperty Name="parroquia" ColumnName="parroquia" />
-                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
-                <ScalarProperty Name="provincia" ColumnName="provincia" />
-                <ScalarProperty Name="fecha_vencimiento" ColumnName="fecha vencimiento" />
-                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
-                <ScalarProperty Name="secuencial_factura" ColumnName="secuencial_factura" />
-                <ScalarProperty Name="vendedor_factura" ColumnName="vendedor factura" />
-                <ScalarProperty Name="id_vendedor_factura" ColumnName="id_vendedor_factura" />
-                <ScalarProperty Name="vendedor_cliente" ColumnName="vendedor cliente" />
-                <ScalarProperty Name="id_vendedor_cliente" ColumnName="id_vendedor_cliente" />
-                <ScalarProperty Name="categoria" ColumnName="categoria" />
-                <ScalarProperty Name="nombre_comercial" ColumnName="nombre_comercial" />
-                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
-                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
-                <ScalarProperty Name="empresa" ColumnName="empresa" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Reporte_Analisis_Costos">
             <EntityTypeMapping TypeName="oasisModel1.Reporte_Analisis_Costos">
               <MappingFragment StoreEntitySet="Reporte_Analisis_Costos">
@@ -7338,27 +8592,6 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Cierre_Caja_Cabecera">
-            <EntityTypeMapping TypeName="oasisModel1.Cierre_Caja_Cabecera">
-              <MappingFragment StoreEntitySet="Cierre_Caja_Cabecera">
-                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
-                <ScalarProperty Name="empresa" ColumnName="empresa" />
-                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
-                <ScalarProperty Name="caja" ColumnName="caja" />
-                <ScalarProperty Name="id_caja" ColumnName="id_caja" />
-                <ScalarProperty Name="codigo_movil" ColumnName="codigo_movil" />
-                <ScalarProperty Name="estado" ColumnName="estado" />
-                <ScalarProperty Name="valor_usuario" ColumnName="valor_usuario" />
-                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
-                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
-                <ScalarProperty Name="usuario" ColumnName="usuario" />
-                <ScalarProperty Name="fecha_hasta" ColumnName="fecha_hasta" />
-                <ScalarProperty Name="numero" ColumnName="numero" />
-                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
-                <ScalarProperty Name="id_cierre_caja" ColumnName="id_cierre_caja" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Presupuesto_Consolidado" FunctionName="oasisModel1.Store.Presupuesto_Consolidado" >
             <ResultMapping>
               <ComplexTypeMapping TypeName="oasisModel1.Presupuesto_Consolidado_Result">
@@ -7375,6 +8608,473 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Cierre_Caja_Cabecera">
+            <EntityTypeMapping TypeName="oasisModel1.Cierre_Caja_Cabecera">
+              <MappingFragment StoreEntitySet="Cierre_Caja_Cabecera">
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="caja" ColumnName="caja" />
+                <ScalarProperty Name="id_caja" ColumnName="id_caja" />
+                <ScalarProperty Name="codigo_movil" ColumnName="codigo_movil" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="valor_usuario" ColumnName="valor_usuario" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="fecha_hasta" ColumnName="fecha_hasta" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_cierre_caja" ColumnName="id_cierre_caja" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estado_Cobros">
+            <EntityTypeMapping TypeName="oasisModel1.Estado_Cobros">
+              <MappingFragment StoreEntitySet="Estado_Cobros">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_estado" ColumnName="id_estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="consolidado_cierre">
+            <EntityTypeMapping TypeName="oasisModel1.consolidado_cierre">
+              <MappingFragment StoreEntitySet="consolidado_cierre">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="numero_consolidado" ColumnName="numero_consolidado" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reporte_Consolidado_Cierre">
+            <EntityTypeMapping TypeName="oasisModel1.Reporte_Consolidado_Cierre">
+              <MappingFragment StoreEntitySet="Reporte_Consolidado_Cierre">
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="recaudador" ColumnName="recaudador" />
+                <ScalarProperty Name="numero_cobro" ColumnName="numero_cobro" />
+                <ScalarProperty Name="numero_consolidado" ColumnName="numero_consolidado" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="devolucion_consolidado_cierre">
+            <EntityTypeMapping TypeName="oasisModel1.devolucion_consolidado_cierre">
+              <MappingFragment StoreEntitySet="devolucion_consolidado_cierre">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="cant_reg" ColumnName="cant_reg" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="numero_consolidado" ColumnName="numero_consolidado" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="id_devolucion_cons_cierre" ColumnName="id_devolucion_cons_cierre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detalle_Cobros">
+            <EntityTypeMapping TypeName="oasisModel1.Detalle_Cobros">
+              <MappingFragment StoreEntitySet="Detalle_Cobros">
+                <ScalarProperty Name="num_ant" ColumnName="num_ant" />
+                <ScalarProperty Name="cod_tabla" ColumnName="cod_tabla" />
+                <ScalarProperty Name="estado_consolidado" ColumnName="estado_consolidado" />
+                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
+                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
+                <ScalarProperty Name="factura" ColumnName="factura" />
+                <ScalarProperty Name="id_detalle_forma_cobro" ColumnName="id_detalle_forma_cobro" />
+                <ScalarProperty Name="num_cierre" ColumnName="num_cierre" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="nom_estado" ColumnName="nom_estado" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha_pago" ColumnName="fecha_pago" />
+                <ScalarProperty Name="num_documento" ColumnName="num_documento" />
+                <ScalarProperty Name="nom_banco" ColumnName="nom_banco" />
+                <ScalarProperty Name="id_banco" ColumnName="id_banco" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
+                <ScalarProperty Name="cod_forma_pago" ColumnName="cod_forma_pago" />
+                <ScalarProperty Name="id_forma_pago" ColumnName="id_forma_pago" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="nom_recaudador" ColumnName="nom_recaudador" />
+                <ScalarProperty Name="id_recaudador" ColumnName="id_recaudador" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="cod_cliente" ColumnName="cod_cliente" />
+                <ScalarProperty Name="fecha_crea_co" ColumnName="fecha_crea_co" />
+                <ScalarProperty Name="fecha_cobro" ColumnName="fecha_cobro" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="id_detalle_cobro" ColumnName="id_detalle_cobro" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cobros_Vendedor">
+            <EntityTypeMapping TypeName="oasisModel1.Cobros_Vendedor">
+              <MappingFragment StoreEntitySet="Cobros_Vendedor">
+                <ScalarProperty Name="id_detalle_cobro" ColumnName="id_detalle_cobro" />
+                <ScalarProperty Name="id_detalle_forma_cobro" ColumnName="id_detalle_forma_cobro" />
+                <ScalarProperty Name="fecha_pago" ColumnName="fecha_pago" />
+                <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
+                <ScalarProperty Name="cod_forma_pago" ColumnName="cod_forma_pago" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
+                <ScalarProperty Name="factura" ColumnName="factura" />
+                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
+                <ScalarProperty Name="num_cobro" ColumnName="num_cobro" />
+                <ScalarProperty Name="fecha_cobro" ColumnName="fecha_cobro" />
+                <ScalarProperty Name="nom_cobrador" ColumnName="nom_cobrador" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detalle_Vendedores">
+            <EntityTypeMapping TypeName="oasisModel1.Detalle_Vendedores">
+              <MappingFragment StoreEntitySet="Detalle_Vendedores">
+                <ScalarProperty Name="total_cobro" ColumnName="total_cobro" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="nom_cobrador" ColumnName="nom_cobrador" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detalle_Vendedor">
+            <EntityTypeMapping TypeName="oasisModel1.Detalle_Vendedor">
+              <MappingFragment StoreEntitySet="Detalle_Vendedor">
+                <ScalarProperty Name="total_cobro" ColumnName="total_cobro" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="nom_cobrador" ColumnName="nom_cobrador" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Cobros_Vendedor" FunctionName="oasisModel1.Store.SP_Cobros_Vendedor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.SP_Cobros_Vendedor_Result">
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="nom_cobrador" ColumnName="nom_cobrador" />
+                <ScalarProperty Name="fecha_cobro" ColumnName="fecha_cobro" />
+                <ScalarProperty Name="num_cobro" ColumnName="num_cobro" />
+                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
+                <ScalarProperty Name="factura" ColumnName="factura" />
+                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="cod_forma_pago" ColumnName="cod_forma_pago" />
+                <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
+                <ScalarProperty Name="fecha_pago" ColumnName="fecha_pago" />
+                <ScalarProperty Name="id_detalle_forma_cobro" ColumnName="id_detalle_forma_cobro" />
+                <ScalarProperty Name="id_detalle_cobro" ColumnName="id_detalle_cobro" />
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="cod_ant" ColumnName="cod_ant" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Reporte_Cartera_2">
+            <EntityTypeMapping TypeName="oasisModel1.Reporte_Cartera_2">
+              <MappingFragment StoreEntitySet="Reporte_Cartera_2">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="contacto" ColumnName="contacto" />
+                <ScalarProperty Name="dias_diferencia" ColumnName="dias_diferencia" />
+                <ScalarProperty Name="dias_emitida" ColumnName="dias_emitida" />
+                <ScalarProperty Name="saldo_pendiente" ColumnName="saldo pendiente" />
+                <ScalarProperty Name="totalChequePost" ColumnName="totalChequePost" />
+                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="parroquia" ColumnName="parroquia" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="provincia" ColumnName="provincia" />
+                <ScalarProperty Name="fecha_vencimiento" ColumnName="fecha vencimiento" />
+                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
+                <ScalarProperty Name="secuencial_factura" ColumnName="secuencial_factura" />
+                <ScalarProperty Name="vendedor_factura" ColumnName="vendedor factura" />
+                <ScalarProperty Name="id_vendedor_factura" ColumnName="id_vendedor_factura" />
+                <ScalarProperty Name="vendedor_cliente" ColumnName="vendedor cliente" />
+                <ScalarProperty Name="id_vendedor_cliente" ColumnName="id_vendedor_cliente" />
+                <ScalarProperty Name="categoria" ColumnName="categoria" />
+                <ScalarProperty Name="nombre_comercial" ColumnName="nombre_comercial" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Detalle_Vendedor" FunctionName="oasisModel1.Store.SP_Detalle_Vendedor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.SP_Detalle_Vendedor_Result">
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="nom_cobrador" ColumnName="nom_cobrador" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="total_cobro" ColumnName="total_cobro" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_Reporte_Cartera" FunctionName="oasisModel1.Store.SP_Reporte_Cartera" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.SP_Reporte_Cartera_Result">
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="nombre_comercial" ColumnName="nombre_comercial" />
+                <ScalarProperty Name="categoria" ColumnName="categoria" />
+                <ScalarProperty Name="vendedor_cliente" ColumnName="vendedor_cliente" />
+                <ScalarProperty Name="vendedor_factura" ColumnName="vendedor_factura" />
+                <ScalarProperty Name="secuencial_factura" ColumnName="secuencial_factura" />
+                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
+                <ScalarProperty Name="fecha_vencimiento" ColumnName="fecha_vencimiento" />
+                <ScalarProperty Name="provincia" ColumnName="provincia" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="parroquia" ColumnName="parroquia" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
+                <ScalarProperty Name="totalChequePost" ColumnName="totalChequePost" />
+                <ScalarProperty Name="saldo_pendiente" ColumnName="saldo_pendiente" />
+                <ScalarProperty Name="dias_emitida" ColumnName="dias_emitida" />
+                <ScalarProperty Name="dias_diferencia" ColumnName="dias_diferencia" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Productos_precio">
+            <EntityTypeMapping TypeName="oasisModel1.Productos_precio">
+              <MappingFragment StoreEntitySet="Productos_precio">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Guarda_Cobros" FunctionName="oasisModel1.Store.SP_Guarda_Cobros" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.SP_Guarda_Cobros_Result" />
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Detalle_Cobros_Vendedor">
+            <EntityTypeMapping TypeName="oasisModel1.Detalle_Cobros_Vendedor">
+              <MappingFragment StoreEntitySet="Detalle_Cobros_Vendedor">
+                <ScalarProperty Name="nota" ColumnName="nota" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="valor_factura" ColumnName="valor_factura" />
+                <ScalarProperty Name="fecha_factura" ColumnName="fecha_factura" />
+                <ScalarProperty Name="factura" ColumnName="factura" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="nom_estado" ColumnName="nom_estado" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="nom_recaudador" ColumnName="nom_recaudador" />
+                <ScalarProperty Name="id_recaudador" ColumnName="id_recaudador" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="cod_cliente" ColumnName="cod_cliente" />
+                <ScalarProperty Name="fecha_crea_co" ColumnName="fecha_crea_co" />
+                <ScalarProperty Name="fecha_cobro" ColumnName="fecha_cobro" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="id_detalle_cobro" ColumnName="id_detalle_cobro" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalle_consolidado_cierre">
+            <EntityTypeMapping TypeName="oasisModel1.detalle_consolidado_cierre">
+              <MappingFragment StoreEntitySet="detalle_consolidado_cierre">
+                <ScalarProperty Name="usuario_modificacion" ColumnName="usuario_modificacion" />
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="fecha_modificacion" ColumnName="fecha_modificacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="fecha_pago" ColumnName="fecha_pago" />
+                <ScalarProperty Name="id_forma_pago" ColumnName="id_forma_pago" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="numero_ant" ColumnName="numero_ant" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="numero_consolidado" ColumnName="numero_consolidado" />
+                <ScalarProperty Name="id_detalle_cobro" ColumnName="id_detalle_cobro" />
+                <ScalarProperty Name="id_detalle_forma_cobro" ColumnName="id_detalle_forma_cobro" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="id_detalle_conso_cierre" ColumnName="id_detalle_conso_cierre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Mano_Obra" FunctionName="oasisModel1.Store.SP_Mano_Obra">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.SP_Mano_Obra_Result">
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="planta" ColumnName="planta" />
+                <ScalarProperty Name="orden_fa" ColumnName="orden_fa" />
+                <ScalarProperty Name="codigo_pro" ColumnName="codigo_pro" />
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="lote" ColumnName="lote" />
+                <ScalarProperty Name="cantidad_fabricada" ColumnName="cantidad_fabricada" />
+                <ScalarProperty Name="nom_maquina" ColumnName="nom_maquina" />
+                <ScalarProperty Name="nom_prodmaterial" ColumnName="nom_prodmaterial" />
+                <ScalarProperty Name="cod_tarea" ColumnName="cod_tarea" />
+                <ScalarProperty Name="nom_tarea" ColumnName="nom_tarea" />
+                <ScalarProperty Name="cantidad_responsables" ColumnName="cantidad_responsables" />
+                <ScalarProperty Name="horas_hombre" ColumnName="horas_hombre" />
+                <ScalarProperty Name="horas_maquina" ColumnName="horas_maquina" />
+                <ScalarProperty Name="responsable" ColumnName="responsable" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="V_cobros_tmp">
+            <EntityTypeMapping TypeName="oasisModel1.V_cobros_tmp">
+              <MappingFragment StoreEntitySet="V_cobros_tmp">
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cobros_tmp">
+            <EntityTypeMapping TypeName="oasisModel1.cobros_tmp">
+              <MappingFragment StoreEntitySet="cobros_tmp">
+                <ScalarProperty Name="usuario_creacion" ColumnName="usuario_creacion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Quita_cobros" FunctionName="oasisModel1.Store.SP_Quita_cobros" />
+          <FunctionImportMapping FunctionImportName="SP_Detalle_Cobros" FunctionName="oasisModel1.Store.SP_Detalle_Cobros" >
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="oasisModel1.SP_Detalle_Cobros_Result" >
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="num_documento" ColumnName="num_documento" />
+                <ScalarProperty Name="fecha_pago" ColumnName="fecha_pago" />
+                <ScalarProperty Name="valor_cobro" ColumnName="valor_cobro" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="nom_estado" ColumnName="nom_estado" />
+                <ScalarProperty Name="fecha_cobro" ColumnName="fecha_cobro" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
+                <ScalarProperty Name="nom_banco" ColumnName="nom_banco" />
+                <ScalarProperty Name="num_cierre" ColumnName="num_cierre" />
+                <ScalarProperty Name="num_ant" ColumnName="num_ant" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Consulta_Consolidado_Cierres">
+            <EntityTypeMapping TypeName="oasisModel1.Consulta_Consolidado_Cierres">
+              <MappingFragment StoreEntitySet="Consulta_Consolidado_Cierres">
+                <ScalarProperty Name="id_consolidado_cierre" ColumnName="id_consolidado_cierre" />
+                <ScalarProperty Name="nom_estado" ColumnName="nom_estado" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="numero_consolidado" ColumnName="numero_consolidado" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detalle_Cheques">
+            <EntityTypeMapping TypeName="oasisModel1.Detalle_Cheques">
+              <MappingFragment StoreEntitySet="Detalle_Cheques">
+                <ScalarProperty Name="fecha_consolidado" ColumnName="fecha_consolidado" />
+                <ScalarProperty Name="nom_estado_cons" ColumnName="nom_estado_cons" />
+                <ScalarProperty Name="estado_consolidado" ColumnName="estado_consolidado" />
+                <ScalarProperty Name="num_cheque" ColumnName="num_cheque" />
+                <ScalarProperty Name="cta_bancaria" ColumnName="cta_bancaria" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="nom_estado" ColumnName="nom_estado" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="fecha_cheque" ColumnName="fecha_cheque" />
+                <ScalarProperty Name="num_documento" ColumnName="num_documento" />
+                <ScalarProperty Name="nom_banco" ColumnName="nom_banco" />
+                <ScalarProperty Name="id_banco" ColumnName="id_banco" />
+                <ScalarProperty Name="forma_pago" ColumnName="forma_pago" />
+                <ScalarProperty Name="cod_forma_pago" ColumnName="cod_forma_pago" />
+                <ScalarProperty Name="cobrador" ColumnName="cobrador" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="cod_cliente" ColumnName="cod_cliente" />
+                <ScalarProperty Name="fecha_crea_co" ColumnName="fecha_crea_co" />
+                <ScalarProperty Name="fecha_cobro" ColumnName="fecha_cobro" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
+                <ScalarProperty Name="sucursal" ColumnName="sucursal" />
+                <ScalarProperty Name="id_sucursal" ColumnName="id_sucursal" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="id_organizacion" ColumnName="id_organizacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mano_Obra">
+            <EntityTypeMapping TypeName="oasisModel1.Mano_Obra">
+              <MappingFragment StoreEntitySet="Mano_Obra">
+                <ScalarProperty Name="responsable" ColumnName="responsable" />
+                <ScalarProperty Name="horas_hombre" ColumnName="horas_hombre" />
+                <ScalarProperty Name="horas_maquina" ColumnName="horas_maquina" />
+                <ScalarProperty Name="horas_hombre_es" ColumnName="horas_hombre_es" />
+                <ScalarProperty Name="numero_persona" ColumnName="numero_persona" />
+                <ScalarProperty Name="numero_maquinas" ColumnName="numero_maquinas" />
+                <ScalarProperty Name="maquina" ColumnName="maquina" />
+                <ScalarProperty Name="tarea" ColumnName="tarea" />
+                <ScalarProperty Name="cod_tarea" ColumnName="cod_tarea" />
+                <ScalarProperty Name="cantidad_fabricada" ColumnName="cantidad_fabricada" />
+                <ScalarProperty Name="lote" ColumnName="lote" />
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="codigo_pro" ColumnName="codigo_pro" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="orden_fa" ColumnName="orden_fa" />
+                <ScalarProperty Name="planta" ColumnName="planta" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

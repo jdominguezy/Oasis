@@ -46,6 +46,8 @@ public partial class MateriaPrima_Lote
 
     public int id_producto { get; set; }
 
+    public Nullable<decimal> saldo { get; set; }
+
 }
 
 }

@@ -56,6 +56,12 @@ public partial class AS2Context : DbContext
 
     public virtual DbSet<detalle_cierre_caja> detalle_cierre_caja { get; set; }
 
+    public virtual DbSet<secuencia> secuencia { get; set; }
+
+    public virtual DbSet<producto> producto { get; set; }
+
+    public virtual DbSet<cobro> cobro { get; set; }
+
 }
 
 }

@@ -114,9 +114,27 @@
         <EntityTypeShape EntityType="oasisModel1.Ventas_Consolidado_Di" Width="1.5" PointX="7.375" PointY="29.75" />
         <EntityTypeShape EntityType="oasisModel1.Cartera_Proveedor" Width="1.5" PointX="29.375" PointY="9.75" />
         <EntityTypeShape EntityType="oasisModel1.Ventas_Producto_Precio" Width="1.5" PointX="29.375" PointY="14.75" />
-        <EntityTypeShape EntityType="oasisModel1.Reporte_Cartera" Width="1.5" PointX="30.375" PointY="20.75" />
         <EntityTypeShape EntityType="oasisModel1.Reporte_Analisis_Costos" Width="1.5" PointX="30.375" PointY="26.75" />
         <EntityTypeShape EntityType="oasisModel1.Cierre_Caja_Cabecera" Width="1.5" PointX="31.375" PointY="0.75" />
+        <EntityTypeShape EntityType="oasisModel1.Estado_Cobros" Width="1.5" PointX="9.375" PointY="31.75" />
+        <EntityTypeShape EntityType="oasisModel1.consolidado_cierre" Width="1.5" PointX="32.125" PointY="9.875" />
+        <EntityTypeShape EntityType="oasisModel1.Reporte_Consolidado_Cierre" Width="1.5" PointX="31.375" PointY="15.75" />
+        <EntityTypeShape EntityType="oasisModel1.devolucion_consolidado_cierre" Width="1.5" PointX="34.625" PointY="10" />
+        <AssociationConnector Association="oasisModel1.FK_consolidado" />
+        <EntityTypeShape EntityType="oasisModel1.Detalle_Cobros" Width="1.5" PointX="25.75" PointY="32" />
+        <EntityTypeShape EntityType="oasisModel1.Cobros_Vendedor" Width="1.5" PointX="12.125" PointY="32.875" />
+        <EntityTypeShape EntityType="oasisModel1.Detalle_Vendedores" Width="1.5" PointX="32.375" PointY="27.75" />
+        <EntityTypeShape EntityType="oasisModel1.Detalle_Vendedor" Width="1.5" PointX="31.375" PointY="5.75" />
+        <EntityTypeShape EntityType="oasisModel1.Reporte_Cartera_2" Width="1.5" PointX="30" PointY="32.75" />
+        <EntityTypeShape EntityType="oasisModel1.Productos_precio" Width="1.5" PointX="32.375" PointY="30.75" />
+        <EntityTypeShape EntityType="oasisModel1.Detalle_Cobros_Vendedor" Width="1.5" PointX="32.375" PointY="32.75" />
+        <EntityTypeShape EntityType="oasisModel1.detalle_consolidado_cierre" Width="1.5" PointX="34.375" PointY="4.125" />
+        <AssociationConnector Association="oasisModel1.FK_cabconsolidado" />
+        <EntityTypeShape EntityType="oasisModel1.V_cobros_tmp" Width="1.5" PointX="33.375" PointY="0.75" />
+        <EntityTypeShape EntityType="oasisModel1.cobros_tmp" Width="1.5" PointX="14.375" PointY="33.75" />
+        <EntityTypeShape EntityType="oasisModel1.Consulta_Consolidado_Cierres" Width="1.5" PointX="22.125" PointY="33.5" />
+        <EntityTypeShape EntityType="oasisModel1.Detalle_Cheques" Width="1.5" PointX="9.375" PointY="34.75" />
+        <EntityTypeShape EntityType="oasisModel1.Mano_Obra" Width="1.5" PointX="30.375" PointY="20.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

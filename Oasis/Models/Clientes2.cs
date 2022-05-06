@@ -76,6 +76,8 @@ public partial class Clientes2
 
     public bool indicador_genera_autoconsumo { get; set; }
 
+    public int id_cliente { get; set; }
+
 }
 
 }

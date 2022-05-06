@@ -372,5 +372,22 @@ namespace Oasis.Controllers
                 return View();
             }
         }
+
+        //[CustomAuthorize(Roles = "Admin")]
+        public JsonResult ObtenerUsuariosAS2(string textoBusqueda)
+        {
+            using (var db = new as2oasis())
+            {
+
+                return Json(db.usuario.Where(x => x.nombre.Contains(textoBusqueda) || x.apellido.Contains(textoBusqueda)
+               || x.cedula.Contains(textoBusqueda)).Take(5).Select(x => new
+               {
+                   nombre = x.nombre + " " +x.apellido,
+                   x.id_usuario,
+                   
+               }).ToList(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

@@ -223,15 +223,19 @@
         $("#GenerarDatos").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
+
+            console.log("entra")
+            console.log("entra1", fecha_desde)
+            console.log("entra2", fecha_hasta)
             iniciaLoading();
 
             $.ajax({
                 url: 'ObtenerOP',
-                type: 'GET',
-                data: {
+                type: 'POST',
+                data: JSON.stringify({
                     fecha_desde: fecha_desde,
                     fecha_hasta: fecha_hasta
-                },
+                }),
                 dataType: "JSON",
                 contentType: "application/JSON",
                 success: function (d) {

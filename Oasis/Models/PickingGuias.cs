@@ -42,6 +42,8 @@ public partial class PickingGuias
 
     public Nullable<int> diferencia { get; set; }
 
+    public Nullable<int> id_usuario { get; set; }
+
 }
 
 }

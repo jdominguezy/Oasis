@@ -412,7 +412,7 @@ $("#GenerarCartera").click(function () {
         iniciaLoading();
         console.log("sale de la carga")
         $.ajax({
-            url: 'ObtenerCartera',
+            url: 'ObtenerCarteraProceso',
             type: 'GET',
             data: {
                 empresa: empresa,
@@ -435,20 +435,20 @@ $("#GenerarCartera").click(function () {
                 $('#contenedorPrimario').append(row);
 
                 console.log(d)
-                if (empresa != '0' && sucursal != '0') {
-                    d = JSON.parse(d);
-                    console.log("Imprime")
-                }
-                //d = JSON.parse(d);
+                //if (empresa != '0' && sucursal != '0') {
+                //    d = JSON.parse(d);
+                //    console.log("Imprime")
+                //}
+
+                d = JSON.parse(d);
                 var col = [];
                 var encabezado = ['EMPRESA', 'SUCURSAL',
                     'RUC', 'CLIENTE', 'CATEGORIA',
                     'VENDEDOR EN CLIENTE', 'VENDEDOR EN FACTURA',
-                    'SECUENCIAL', 'DESCRIPCION',
-                    'FECHA FACTURA', 'FECHA VENCIMIENTO',
+                    'SECUENCIAL', 'FECHA FACTURA', 'FECHA VENCIMIENTO',
                     'PROVINCIA', 'CIUDAD', 'PARROQUIA', 'DIRECCION',
                     'VALOR FACTURA', 'CHQ. POST.', 'SALDO PENDIENTE',
-                    'DIAS EMITIDAS', 'DIAS VENCIDA'];
+                    'DIAS EMITIDAS', 'DIAS VENCIDA', 'DESCRIPCION'];
 
                 //console.log(d)
                 console.log(encabezado)

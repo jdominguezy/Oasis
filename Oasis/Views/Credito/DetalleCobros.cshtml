@@ -3,7 +3,7 @@
 @using Oasis.Models.Login
 
 @{
-    ViewBag.Title = "Consolidado Cierre de Caja";
+    ViewBag.Title = "Detalle Cobros Cierre ";
     var id_usuario = (User as CustomPrincipal).id_usuario;
     var as2 = new AS2Context();
     var db = new as2oasis();
@@ -16,8 +16,12 @@
         .GroupBy(x => x.sucursalOasis.nombre)
         .OrderBy(x => x.Key)
         .Select(x => x.Key);
-    var caja = as2.caja
+    //var caja = as2.caja
+    //    .GroupBy(x => x.nombre)
+    //    .Select(x => x.Key);
+    var estado = db.Estado_Cobros
         .GroupBy(x => x.nombre)
+        .OrderBy(x => x.Key)
         .Select(x => x.Key);
     var vendedor = as2.usuario
         .Where(x => x.activo == true && x.indicador_agente_comercial == true)
@@ -33,7 +37,7 @@
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h2 class="card-title">Consolidado Cierre de Caja</h2>
+                <h2 class="card-title">Detalle Cobros Cierre </h2>
                 <div class="card-tools">
                     <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -60,7 +64,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="col" style=" text-align: center; ">
-                            <label>Fecha Cierres</label>
+                            <label>Fecha Cobro</label>
                             <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
@@ -82,7 +86,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Usuario</label>
+                            <label for="exampleInputEmail1">Vendedor</label>
                             <select class="form-control js-data-usuarios-ajax" id="vendedor">
                             </select>
                         </div>
@@ -95,64 +99,64 @@
                                                 place-content: center;
                                             ">
                                 <div class="col-md-10">
-                                    <select class="form-control" id="sucursal" name="sucursal">
-                                        <option value="0">Todas las regiones</option>
-                                        @foreach (var suc in sucursales)
-                                        {
-                                            <option value="@suc">@suc</option>
-                                        }
-                                    </select>
+                                    <div class="input-group">
+                                        <select class="form-control" id="sucursal" name="sucursal">
+                                            <option value="0">Todas las regiones</option>
+                                            @foreach (var suc in sucursales)
+                                            {
+                                                <option value="@suc">@suc</option>
+                                            }
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Cierre de Caja</label>
-                            <select class="form-control js-data-cierres-ajax" id="cierre">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="col" style=" text-align: center; ">
-                            <label>Caja</label>
-                            <div class="row" style="
-                                                text-align: center;
-                                                place-content: center;
-                                            ">
-                                <div class="col-md-10">
-                                    <select class="form-control" id="caja" name="caja">
-                                        <option value="0">Todas las cajas</option>
-                                        @foreach (var ca in caja)
-                                        {
-                                            <option value="@ca">@ca</option>
-                                        }
-                                    </select>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Estado</label>
+                                <select class="form-control" id="estado" name="caja">
+                                    <option value="10">Todos</option>
+                                    @foreach (var es in estado)
+                                    {
+                                        <option value="@es">@es</option>
+                                    }
+                                </select>
+                            </div>
+                           </div>
+              
+                        @*<div class="row">
+                        <div class="col-lg-6" style="padding-top: 40px;">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox" style="display: inline-block; align-self: center;">
+                                    <input class="custom-control-input" type="checkbox" id="chkTodos" onclick="all_Click()">
+                                    <label for="chkTodos" class="custom-control-label">Todos</label>
                                 </div>
                             </div>
                         </div>
+                        </div>*@
+                 </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="button" id="VerCheques" class="btn btn-primary  float-right">Ch/Gerencia</button>
+                        <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Buscar</button>
+                        <button type="button" id="ProcesarDatos" class="btn btn-primary  float-right">Procesar</button>
                     </div>
+
                 </div>
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Buscar</button>
-            </div>
-            <div class="col" style=" text-align: center; ">
-                <div class="card-footer">
-                    <button type="button" id="ImprimirDatos" class="btn btn-primary  float-right">Imprimir</button>
-                </div>
-            </div>
-        </div>
-</div>
 
 
 @section Scripts {
     <script>
         ActivarUsuarios();
-        ActivarCierres();
+
+        var dataTable_tablaDetalle;
+
+        function limpiarRolesSelect() {
+            $('.js-data-roles-ajax').val(null).trigger('change');
+        }
 
         function ActivarUsuarios() {
             $('.js-data-usuarios-ajax').select2({
@@ -163,14 +167,16 @@
                 },
                 tags: [],
                 ajax: {
-                    url: '/Usuario/ObtenerUsuarios',
+                    url: '/Presupuesto/ObtenerVendedores',
                     processResults: function (data) {
                         return {
                             results: $.map(data, function (item) {
                                 return {
                                     text: item.username,
-                                    id: item.id_usuario
+                                    id: item.id_vendedor
+                                    
                                 }
+                                console.log(text)
                             })
                         };
                     },
@@ -184,44 +190,6 @@
                 }
             }).on('change', function (e) {
                 limpiarRolesSelect();
-                ObtenerRolesPorUsuario();
-                ObtenerSucursalesPorUsuario();
-            });
-        }
-
-        function ActivarCierres() {
-            $('.js-data-cierres-ajax').select2({
-                //selectOnClose: true,
-                minimumInputLength: 2,
-                language: {
-                    inputTooShort: function () { return "Ingresar dos o más caracteres"; }
-                },
-                tags: [],
-                ajax: {
-                    url: 'ObtenerCierres',
-                    type: 'POST',
-                    processResults: function (data) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.username,
-                                    id: item.id_usuario
-                                }
-                            })
-                        };
-                    },
-                    dataType: 'json',
-                    data: function (params) {
-                        var query = {
-                            textoBusqueda: params.term
-                        }
-                        return query;
-                    }
-                }
-            }).on('change', function (e) {
-                limpiarRolesSelect();
-                ObtenerRolesPorUsuario();
-                ObtenerSucursalesPorUsuario();
             });
         }
 
@@ -229,9 +197,9 @@
             window.open("VerDepositoCaja?id_organizacion=" + id_organizacion, "VerDepositoCaja?numero=" +numero, '_blank');
         }
 
-        function Seleccionar(iid_organizacion, numero) {
-            window.open("VerCobros?id_organizacion=" + id_organizacion, "VerCobros?numero=" + numero, '_blank');
-        }
+        //function Seleccionar(id_organizacion, numero) {
+        //    window.open("VerCobros?id_organizacion=" + id_organizacion, "VerCobros?numero=" + numero, '_blank');
+        //}
 
         $("#GenerarDatos").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
@@ -239,20 +207,20 @@
             var empresa = $('#empresa').val();
             var sucursal = $('#sucursal').val();
             var usuario = $('#vendedor').val();
-            var caja = $('#caja').val();
+            var estado = $('#estado').val();
             var numero = $('#cierre').val();
 
             iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerCierreCaja',
+                url: 'ObtenerDetalleCobros',
                 type: 'POST',
                 data: JSON.stringify({
                     fecha_desde: fecha_desde,
                     fecha_hasta: fecha_hasta,
                     sucursal: sucursal,
                     usuario: usuario,
-                    caja: caja,
+                    estado: estado,
                     numero: numero,
                     empresa: empresa
 
@@ -268,10 +236,16 @@
                     row.className = "row";
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
+
+                    console.log(d)
+
+                    d = JSON.parse(d);
                     var col = [];
-                    var encabezado = ["Emresa", "Numero",
-                        "Usuario", "Sucursal", "Caja", "Fecha Hasta",
-                        "Valor Usuario", "Estado", "Codigo Movil", " ", " "];
+                    var encabezado = [" ", "Numero", "Documento", "Fecha Pago",
+                        "Valor Cobro", "Valor Total", "Cliente", "Estado",
+                        "Fecha Cobro", "Recaudador", 
+                        "Forma Pago",  "Banco",
+                         "Num Cierre","Num Anticipo", "Codigo Cobro"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -279,7 +253,6 @@
                             }
                         }
                     }
-
 
                     // CREATE DYNAMIC TABLE.
                     var div = document.createElement("div");
@@ -312,25 +285,22 @@
                     table.appendChild(tbody);
                     var tr_body = document.createElement("tr");
                     // ADD JSON DATA TO THE TABLE AS ROWS.
+
                     for (var i = 0; i < d.length; i++) {
                         tr_body = document.createElement("tr");
+
+                        var tabCell = tr_body.insertCell(-1);
+                        tabCell.innerHTML = '<input class="form-control chkcobro" type="checkbox" id="chkSeleccionar' + d[i][col[13]] + '" onclick="evaluar(); "' + '" onChange="inactivar();" >Seleccionar';
+                        tabCell.style = ' white-space: nowrap;';
+
                         for (var j = 0; j < col.length; j++) {
                             var tabCell = tr_body.insertCell(-1);
                             tabCell.innerHTML = d[i][col[j]];
                             tabCell.style = ' white-space: nowrap;';
                         }
-
-                        var tabCell = tr_body.insertCell(-1);
-                        var tabCell_c = tr_body.insertCell(-1);
-                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerDepositoCaja(\'' + d[i][col[10]] + '\')" >Ver Cobros</button>';
-                        tabCell_c.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[11]] + '\')" >Seleccionar';
-                        tabCell.style = ' white-space: nowrap;';
-                        tabCell_c.style = ' white-space: nowrap;';
-
-                        //var tabCell = tr_body.insertCell(-1);
-                        //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[9]] + '\')" >Seleccionar>';
-                        //tabCell.style = ' white-space: nowrap;';
+                                               
                         tbody.appendChild(tr_body);
+
                     }
 
                     cardbody.appendChild(table);
@@ -338,7 +308,7 @@
                     div.appendChild(card);
                     //CrearTablaDetalle(div.outerHTML, titulo);
                     $('#contenedorTabla').append(div);
-                    $('#tableDetalle').DataTable({
+                    dataTable_tablaDetalle = $('#tableDetalle').DataTable({
                         dom: 'Bfrtip',
                         buttons: [
                             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -347,6 +317,8 @@
                             url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
                         }
                     });
+
+                    //cargaCobros();
                     cierraLoading();
                 },
                 error: function (e) {
@@ -359,26 +331,81 @@
             })
         });
 
-        $("#ImprimirDatos").click(function () {
+        $("#ProcesarDatos").click(function () {
+
+            var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            var usuario = $('#vendedor').val();
+            var estado = $('#estado').val();
+            var cobros = [];
+            var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
+            var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
+
+            console.log("entra")
+
+            if (empresa == "0")
+            {
+                console.log("empresa: ", empresa)
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No puede generar consolidados para todas las empresas '
+                });
+            }
+
+            if (sucursal == "0") {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'No puede generar consolidados para todas las regiones '
+                });
+            }
+
+            $.ajax({
+                url: 'GuardarConsolidado',
+                type: 'POST',
+                data: {
+                    empresa: empresa,
+                    sucursal: sucursal,
+                    fecha_desde: fecha_desde,
+                    fecha_hasta: fecha_hasta
+                },
+                success: function (d) {
+                    Swal.fire(
+                        '¡Listo!',
+                        'Se ha ingresado el Consolidado.',
+                        'success'
+                    );
+                },
+                error: function (e) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Hubo un error al intentar guardar.'
+                    })
+                }
+            })
+            
+
+        });
+
+        $("#VerCheques").click(function () {
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             var empresa = $('#empresa').val();
             var sucursal = $('#sucursal').val();
-            var usuario = $('#vendedor').val();
-            var caja = $('#caja').val();
-            var numero = $('#cierre').val();
+            var estado = $('#estado').val();
+            var titulo = "Detalle Cheques";
+
+           
+            iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerCierreCaja',
+                url: 'ObtenerDetalleCheques',
                 type: 'POST',
                 data: JSON.stringify({
+                    empresa: empresa,
+                    sucursal: sucursal,
                     fecha_desde: fecha_desde,
                     fecha_hasta: fecha_hasta,
-                    sucursal: sucursal,
-                    usuario: usuario,
-                    caja: caja,
-                    numero: numero,
-                    empresa: empresa
+                    estado: estado
 
                 }),
                 dataType: "JSON",
@@ -393,9 +420,10 @@
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
                     var col = [];
-                    var encabezado = ["Emresa", "Numero",
-                        "Usuario", "Sucursal", "Caja", "Fecha Hasta",
-                        "Valor Usuario", "Estado", "Codigo Movil", " ", " "];
+                    var encabezado = ["Empresa", "Sucursal", "Numero", "Fecha Cobro",
+                        "Cobrador", "Identificacion",  "Cliente", "Documento",
+                        "Factura", "Banco", "Cta. Bancaria", "No. Cheque",
+                        "Fecha Pago", "Memo", "Valor Total", "Estado", "Fecha Validacion"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -404,29 +432,26 @@
                         }
                     }
 
-
                     // CREATE DYNAMIC TABLE.
                     var div = document.createElement("div");
+                    div.className = "col-md-12";
+
                     var row = document.createElement("div");
                     row.className = "row col-md-4";
                     var card = document.createElement("div");
                     card.className = "card";
                     card.style = "font-size: 15px;overflow-x: scroll;";
-                    var cardbody = document.createElement("div");
-                    cardbody.className = "card-body";
                     var table = document.createElement("table");
                     table.className = 'table table-hover tableDetalle';
                     table.id = "tableDetalle";
                     table.style = '';
 
-
-                    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
                     var thead = document.createElement("thead");
                     table.appendChild(thead);
                     var tr_head = document.createElement("tr");
-                    for (var i = 0; i < encabezado.length; i++) {
-                        var th = document.createElement("th");      // TABLE HEADER.
-                        th.innerHTML = encabezado[i];
+                    for (var i = 0; i < col.length; i++) {
+                        var th = document.createElement("th");
+                        th.innerHTML = (col[i].replace("_", " ")).toUpperCase();
                         tr_head.appendChild(th);
                     }
 
@@ -443,27 +468,24 @@
                             tabCell.innerHTML = d[i][col[j]];
                             tabCell.style = ' white-space: nowrap;';
                         }
-
-                        var tabCell = tr_body.insertCell(-1);
-                        var tabCell_c = tr_body.insertCell(-1);
-                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerCobros(\'' + d[i][col[10]] + '\')" >Ver Cobros</button>';
-                        tabCell_c.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[11]] + '\')" >Seleccionar';
-                        tabCell.style = ' white-space: nowrap;';
-                        tabCell_c.style = ' white-space: nowrap;';
-
-                        //var tabCell = tr_body.insertCell(-1);
-                        //tabCell.innerHTML = '<input class="form-control" type="checkbox" id="chkSeleccionar" onClick="Seleccionar(\'' + d[i][col[9]] + '\')" >Seleccionar>';
-                        //tabCell.style = ' white-space: nowrap;';
                         tbody.appendChild(tr_body);
                     }
 
-                    cardbody.appendChild(table);
-                    card.appendChild(cardbody);
+                    const cardBody = document.createElement("div");
+                    cardBody.className = "card-body";
+                    cardBody.appendChild(table);
+                    //row.appendChild(btnDescargar)
+                    card.appendChild(cardBody);
+                    //div.appendChild(row);
                     div.appendChild(card);
-                    //CrearTablaDetalle(div.outerHTML, titulo);
-                    $('#contenedorTabla').append(div);
+                    CrearTablaDetalle(div.outerHTML, titulo);
+                    //dataTable_tablaDetalle = $('#tableDetalle').DataTable({
                     $('#tableDetalle').DataTable({
+                        //"dom": '<"top"i>rt<"bottom"flp><"clear">',
                         dom: 'Bfrtip',
+                        //"paging": true,
+                        //"ordering": true,
+                        //"info": true,
                         buttons: [
                             'copy', 'csv', 'excel', 'pdf', 'print'
                         ],
@@ -471,7 +493,7 @@
                             url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
                         }
                     });
-                    cierraLoading();
+
                 },
                 error: function (e) {
                     cierraLoading();
@@ -482,6 +504,15 @@
                 }
             })
         });
+
+        function all_Click() {
+            //var resume_table = document.getElementById("tableDetalle");
+            var chk = document.getElementsByName("chkSeleccionar");
+            for (var i = 0; i < chk.length; i++) {
+                chk(i).checked = true;
+            }
+
+        }
 
 
         $('#fecha_corte').daterangepicker({
@@ -514,6 +545,152 @@
             startDate: firstDay,
             endDate: lastDay
         });
+
+
+        function evaluar() { 
+            var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
+            var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
+
+            console.log("checkbox activos");
+
+            $(".chkcobro").each(function () {
+                //Recorro todos los checkbox con la clase chkcobro                
+                var chk = $(this);
+                
+                if (chk.is(':checked')) {
+
+                    console.log("el combo activo es: " + chk[0].id);
+                    console.log("el codigo es: " + chk[0].id.substring(14));
+                    var numero_cobro = chk[0].id.substring(14);
+                    dataTable_tablaDetalle.$(this).remove();
+
+                    $.ajax({
+                        url: 'GuardarCobroTmp',
+                        type: 'POST',
+                        data: {
+                            empresa: empresa,
+                            sucursal: sucursal,
+                            fecha_desde: fecha_desde,
+                            fecha_hasta: fecha_hasta,
+                            numero: numero_cobro
+                        },
+                        success: function (d) {
+                            //Swal.fire(
+                            //    //'¡Listo!',
+                            //    //'Se ha ingresado el Cobro.',
+                            //    //'success'
+                            //);
+                           
+
+                        },
+                        error: function (e) {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Hubo un error al intentar guardar.'
+                            })
+                        }
+                    })
+
+                }
+
+            }); 
+        }
+
+        function inactivar() {
+            var empresa = $('#empresa').val();
+
+            console.log("checkbox inactivos");
+
+            $(".chkcobro").on('change', function () {
+                //Recorro todos los checkbox con la clase chkcobro                
+                var chk = $(this);
+
+                if (!chk.is(':checked')) {
+
+                    console.log("Esta deschequeado")
+                    var numero_cobro = chk[0].id.substring(14);
+
+                    $.ajax({
+                        url: 'EliminarCobroTmp',
+                        type: 'POST',
+                        data: {
+                            empresa: empresa,
+                            numero: numero_cobro
+                        },
+                        success: function (d) {
+
+                        },
+                        error: function (e) {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Hubo un error al intentar guardar.'
+                            })
+                        }
+                    })
+
+                    dataTable_tablaDetalle.$(this).remove();
+
+                }
+
+            });
+        }
+
+        function cargaCobros() {
+            var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            var datosTab = [];
+          
+            console.log("carga Cobros")
+
+            dataTable_tablaDetalle.$(".chkcobro").each(function () {
+            var id_chk_cobro = dataTable_tablaDetalle.$(this).attr("id");
+            var chk = $(this);
+
+            //var val_check = dataTable_tablaDetalle.$("#" + id_chk_cobro).is(":checked");
+
+            var id_cobro = id_chk_cobro.replace("chkSeleccionar", "");
+
+                $.ajax({
+                    url: 'CargaCobroTmp',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        empresa: empresa,
+                        sucursal: sucursal
+                 }),
+                dataType: "JSON",
+                contentType: "application/JSON",
+                success: function (resultado) {
+                    //console.log(resultado)
+
+                    for (var i = 0; i < resultado.length; i++)
+                    {
+                        //console.log(resultado[i])
+                        var dato = resultado[i].id_cobro;
+
+                        if (dato == id_cobro){
+
+                            console.log("entra a llenar")
+                            console.log(dato)
+                            console.log(id_cobro)
+                            //this.checked = true;
+                            //datosTab.push(dato);
+                            //id_chk_cobro.checked = true;
+                            //chk.checked = true;
+                            dataTable_tablaDetalle.$(this).remove();
+
+                        }
+                        
+                    }
+
+                },
+                }) 
+
+            });
+
+
+        }
 
     </script>
 }

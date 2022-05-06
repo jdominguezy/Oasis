@@ -17,7 +17,7 @@ using System;
 public partial class Presupuesto_Result
 {
 
-    public long id_vendedor { get; set; }
+    public int id_vendedor { get; set; }
 
     public string nombre_vendedor { get; set; }
 

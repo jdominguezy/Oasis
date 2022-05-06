@@ -82,54 +82,80 @@ namespace Oasis.Controllers.Bodega
         }
 
         [HttpPost]
-        public JsonResult ReportePick()
+        public JsonResult ReportePick(string fecha_desde, string fecha_hasta, string empresa, string usuario, string fechaDespacho)
         {
-            using (var context = new as2oasis())
+
+            try
             {
+              
+                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+                int cod_usuario = 0;
 
-                var mis_facturas =
-                    context.PickingGuias
-                    //.Where(x => x.estado != 0)
-                    .ToList()
-                    .Select(x=> new {
-                        x.empresa,
-                        x.secuencial ,
+                using (var context = new as2oasis())
+                {
+
+                    IQueryable<PickingGuias> data;
+
+                    if (fechaDespacho == "1")
+                    {
+                        data = context.PickingGuias.Where(
+                          x => x.fecha_inicio_desp >= _fecha_inicio &&
+                          x.fecha_inicio_desp <= _fecha_fin
+                          );
+                    }
+                    else
+                    {
+                        data = context.PickingGuias.Where(
+                         x => x.fecha_inicio_pick >= _fecha_inicio &&
+                         x.fecha_inicio_pick <= _fecha_fin
+                         );
+                    }
+                    
+                    if (empresa != "0")
+                    {
+                        data = data.Where(x => x.empresa == empresa);
+                    }
+
+                    if (usuario != "0" && usuario != null)
+                    {
+                        cod_usuario = Convert.ToInt32(usuario);
+                        data = data.Where(x => x.id_usuario == cod_usuario);
+                    }
+
+                    var mis_facturas = Json(
+                        data
+                        .ToList()
+                        .Select(x => new
+                        {
+                            x.empresa,
+                            x.secuencial,
                         //fecha_hora = x.fecha_hora.Value.ToString(),
-                        fecha_inicio_pick = x.fecha_inicio_pick?.ToString(),
-                        usuario_inicio_pick=x.usuario_inicio_pick?.ToString(),
-                        fecha_fin_pick = x.fecha_fin_pick?.ToString(),
-                        usuario_fin_pick = x.usuario_fin_pick?.ToString(),
-                        fecha_inicio_desp = x.fecha_inicio_desp?.ToString(),
-                        usuario_inicio_desp = x.usuario_inicio_desp?.ToString(),
-                        fecha_fin_desp = x.fecha_fin_desp?.ToString(),
-                        usuario_fin_desp = x.usuario_fin_desp?.ToString(), 
-                        fecha_guia_troquelada = x.fecha_guia_troquelada?.ToString(),
-                        diferencia = x.diferencia?.ToString(),
-                    });
+                        fecha_inicio_pick = x.fecha_inicio_pick?.ToString("yyyy-MM-dd HH:mm:ss"),
+                            usuario_inicio_pick = x.usuario_inicio_pick?.ToString(),
+                            fecha_fin_pick = x.fecha_fin_pick?.ToString("yyyy-MM-dd HH:mm:ss"),
+                            usuario_fin_pick = x.usuario_fin_pick?.ToString(),
+                            fecha_inicio_desp = x.fecha_inicio_desp?.ToString("yyyy-MM-dd HH:mm:ss"),
+                            usuario_inicio_desp = x.usuario_inicio_desp?.ToString(),
+                            fecha_fin_desp = x.fecha_fin_desp?.ToString("yyyy-MM-dd HH:mm:ss"),
+                            usuario_fin_desp = x.usuario_fin_desp?.ToString(),
+                            fecha_guia_troquelada = x.fecha_guia_troquelada?.ToString("yyyy-MM-dd HH:mm:ss"),
+                            diferencia = x.diferencia?.ToString()
+                        }), JsonRequestBehavior.AllowGet
+                        );
 
-                var resultado_json = new JsonResult { Data = mis_facturas };
-                resultado_json.MaxJsonLength = 50000000;
-                return resultado_json;
+                    mis_facturas.MaxJsonLength = 50000000;
+                    return mis_facturas;
+
+                }
             }
+            catch (Exception e)
+            {
+                var resultado = 0;
+                e.InnerException.ToString();
+                return Json(resultado, JsonRequestBehavior.AllowGet);
+            }                
 
-
-            //var oa = new as2oasis();
-            //var resultado = oa.PickingGuias
-                //.OrderByDescending(x => x.fecha_inicio_pick)
-                //.ToList()
-                //.Select(x => new
-                //{
-                //    x.empresa,
-                //    x.numero,
-                //    fecha_inicio_pick = x.fecha_inicio_pick.Value.ToString(),
-                //    fecha_inicio_desp = x.fecha_inicio_desp?.ToString(),
-                //    fecha_fin_pick = x.fecha_fin_pick?.ToString(),
-                //    fecha_fin_desp = x.fecha_fin_desp?.ToString(),
-                //    fecha_guia_troquelada = x.fecha_guia_troquelada?.ToString(),
-                //    x.Diferencia,
-                //})
-                //;
-            //return new JsonResult { Data = resultado };
         }
 
         [HttpPost]

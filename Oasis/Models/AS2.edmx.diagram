@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a9a2f6278e0744319c76c20821b26349" Name="Diagram1" ZoomLevel="25">
+      <Diagram DiagramId="a9a2f6278e0744319c76c20821b26349" Name="Diagram1" ZoomLevel="36">
         <EntityTypeShape EntityType="as2Model.factura_cliente" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="as2Model.FK_jushfig5ma5q7cel0ew17kmf8" ManuallyRouted="false" />
         <EntityTypeShape EntityType="as2Model.detalle_forma_cobro" Width="1.5" PointX="3.375" PointY="0.75" />
@@ -29,6 +29,14 @@
         <EntityTypeShape EntityType="as2Model.detalle_cierre_caja" Width="1.5" PointX="14.5" PointY="5.5" />
         <AssociationConnector Association="as2Model.FK_bi9vecexyqhls14gpoc417yql" />
         <AssociationConnector Association="as2Model.FK_t8ntccnk9jr9073gjp59f3l7e" />
+        <EntityTypeShape EntityType="as2Model.secuencia" Width="1.5" PointX="9.375" PointY="7" />
+        <EntityTypeShape EntityType="as2Model.producto" Width="1.5" PointX="7.25" PointY="32" />
+        <AssociationConnector Association="as2Model.FK_a7rwh9tyktju3pi3jd7l8gubw" />
+        <AssociationConnector Association="as2Model.FK_mnpkna43wuajyixsiobujrff7" />
+        <EntityTypeShape EntityType="as2Model.cobro" Width="1.5" PointX="7.25" PointY="64.75" />
+        <AssociationConnector Association="as2Model.FK_1iat94qmpn3xn71vw4hqv3rps" />
+        <AssociationConnector Association="as2Model.FK_4tm7ix35ro7rarlk3k9fh7fux" />
+        <AssociationConnector Association="as2Model.FK_fr4p3lhrhvvpbv85v144bdef8" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

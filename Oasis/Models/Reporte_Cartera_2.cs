@@ -15,7 +15,7 @@ namespace Oasis.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Reporte_Cartera
+public partial class Reporte_Cartera_2
 {
 
     public string empresa { get; set; }
@@ -59,6 +59,8 @@ public partial class Reporte_Cartera
     public Nullable<int> dias_emitida { get; set; }
 
     public Nullable<int> dias_diferencia { get; set; }
+
+    public string contacto { get; set; }
 
     public string descripcion { get; set; }
 

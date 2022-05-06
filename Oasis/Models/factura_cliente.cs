@@ -241,6 +241,8 @@ public partial class factura_cliente
 
     public decimal porcentaje_descuento_promocion { get; set; }
 
+    public bool indicador_generada_por_comision_boton_pago { get; set; }
+
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
