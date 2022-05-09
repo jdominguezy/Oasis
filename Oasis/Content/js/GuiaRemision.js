@@ -111,8 +111,8 @@ $("#GenerarReporteGuias").click(function () {
 
             if (empresa != '0') {
                 d = JSON.parse(d);
-            }
-            
+            }           
+
             var col = [];
             var encabezado = ['EMPRESA', 'CLIENTE',
                 'SECUENCIAL FACTURA', 'FECHA FACTURA', 'SECUENCIAL GUIA',
