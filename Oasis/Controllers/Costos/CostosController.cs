@@ -70,7 +70,7 @@ namespace Oasis.Controllers
                     var detalle = FontFactory.GetFont("SEGOE UI", 7, Font.NORMAL, BaseColor.BLACK);
 
                     var MP = costos_mp_me.Where(x => x.codigo_categoria_producto.Replace("","") == "GRP01" ||
-                            x.codigo_categoria_producto.Replace("", "") == "GRP05"
+                            x.codigo_categoria_producto.Replace("", "") == "GRP05" || x.codigo_categoria_producto.Replace("", "") == "GRP04"
                             || x.codigo_categoria_producto.Replace("", "") == "GRP07");
                     //var MP = costos_mp_me.Where(x => x.codigo_categoria_producto == "GRP01" || x.codigo_categoria_producto == "GRP05"
                     //|| x.codigo_categoria_producto == "GRP07");

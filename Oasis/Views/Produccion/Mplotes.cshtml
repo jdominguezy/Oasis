@@ -33,6 +33,10 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Producto</label>
                             <select class="form-control js-data-producto-ajax" id="producto" name="producto">
+                                <!-- /06-05-2022 I-->
+                                <!--<option value="0">Todos los productos</option>-->
+                                <!-- /06-05-2022 F-->
+
                                 @foreach (var produ in productos)
                                 {
                                     <option value="@produ.id_producto">@produ.codigo,@produ.nombre</option>
@@ -103,7 +107,17 @@
         //CONSULTA DE MP POR LOTES C# I el nombre viene el evento clik del boton variable id
         $("#GenerarConsultaMp").click(function () {
             //var id_producto = $("#producto").val();
+            //06-05-2022 I
+            var id_producto2;
+            //06-05-2022 F
 
+            //06-05-2022 I
+            //if ($("#producto").is(':disabled')) {
+            //     id_producto = "";
+            //} else {
+            //id_producto2 = $("#producto").val();
+            //}
+            //06-05-2022 F
 
                 iniciaLoading();
                 $.ajax({
@@ -112,7 +126,12 @@
                     
                     type: 'GET',
                     data: {
+
+                        //06-05-2022 I
                         id_producto: $("#producto").val()
+                        //id_producto: id_producto2
+                        //06-05-2022 F
+
                     },
                     dataType: "JSON",
                     contentType: "application/JSON",
@@ -125,6 +144,14 @@
                         row.className = "row";
                         row.appendChild(contenedorTabla);
                         $('#contenedorPrimario').append(row);
+
+                         //06-05-2022 I
+                        console.log(d)
+                        //if (id_producto != '0') {
+                         //   d = JSON.parse(d);
+                        //}
+                         //06-05-2022 F
+
                         //d = JSON.parse(d);
                         var col = [];
                         var encabezado = ['CODIGO', 'NOMBRE',
