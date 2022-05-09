@@ -57,6 +57,8 @@ public partial class SP_Cobros_Vendedor_Result
 
     public string nota { get; set; }
 
+    public int estado_co { get; set; }
+
 }
 
 }

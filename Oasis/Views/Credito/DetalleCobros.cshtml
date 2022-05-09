@@ -350,6 +350,7 @@
                     icon: 'error',
                     title: 'No puede generar consolidados para todas las empresas '
                 });
+                return;
             }
 
             if (sucursal == "0") {
@@ -357,6 +358,7 @@
                     icon: 'error',
                     title: 'No puede generar consolidados para todas las regiones '
                 });
+                return;
             }
 
             $.ajax({
@@ -376,13 +378,15 @@
                     );
                 },
                 error: function (e) {
+                    var error = e;
+                    console.log(error)
                     Toast.fire({
                         icon: 'error',
                         title: 'Hubo un error al intentar guardar.'
                     })
+                    return;
                 }
-            })
-            
+            })            
 
         });
 

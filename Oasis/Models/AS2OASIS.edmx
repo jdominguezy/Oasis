@@ -1351,14 +1351,14 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Mano_Obra' no tiene definida ningu
             <PropertyRef Name="codigo_pro" />
             <PropertyRef Name="producto" />
             <PropertyRef Name="lote" />
+            <PropertyRef Name="cod_tarea" />
+            <PropertyRef Name="tarea" />
+            <PropertyRef Name="maquina" />
             <PropertyRef Name="numero_maquinas" />
             <PropertyRef Name="numero_persona" />
             <PropertyRef Name="horas_hombre_es" />
             <PropertyRef Name="horas_maquina" />
             <PropertyRef Name="horas_hombre" />
-            <PropertyRef Name="cod_tarea" />
-            <PropertyRef Name="tarea" />
-            <PropertyRef Name="maquina" />
           </Key>
           <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="planta" Type="varchar" MaxLength="50" Nullable="false" />
@@ -1987,6 +1987,27 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Transito_PT_Total' no tiene defini
           <Property Name="UM" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Existencia" Type="numeric" Precision="38" Scale="6" />
           <Property Name="Cantidad transito total" Type="numeric" Precision="38" Scale="4" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'oasis.dbo.V_cobros_empresa' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="V_cobros_empresa">
+          <Key>
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="fecha" />
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="empresa" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="id_cobro" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="500" />
+          <Property Name="numero" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="descripcion2" Type="varchar" MaxLength="500" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="codigo_movil" Type="varchar" MaxLength="200" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'oasis.dbo.V_cobros_tmp' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -3730,6 +3751,19 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
     [Transito_PT_Total].[Existencia] AS [Existencia], 
     [Transito_PT_Total].[Cantidad transito total] AS [Cantidad transito total]
     FROM [dbo].[Transito_PT_Total] AS [Transito_PT_Total]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_cobros_empresa" EntityType="Self.V_cobros_empresa" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_cobros_empresa].[empresa] AS [empresa], 
+    [V_cobros_empresa].[id_cobro] AS [id_cobro], 
+    [V_cobros_empresa].[descripcion] AS [descripcion], 
+    [V_cobros_empresa].[numero] AS [numero], 
+    [V_cobros_empresa].[descripcion2] AS [descripcion2], 
+    [V_cobros_empresa].[estado] AS [estado], 
+    [V_cobros_empresa].[codigo_movil] AS [codigo_movil], 
+    [V_cobros_empresa].[fecha] AS [fecha], 
+    [V_cobros_empresa].[id_empresa] AS [id_empresa]
+    FROM [dbo].[V_cobros_empresa] AS [V_cobros_empresa]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_cobros_tmp" EntityType="Self.V_cobros_tmp" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -5726,6 +5760,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <EntitySet Name="Consulta_Consolidado_Cierres" EntityType="oasisModel1.Consulta_Consolidado_Cierres" />
           <EntitySet Name="Detalle_Cheques" EntityType="oasisModel1.Detalle_Cheques" />
           <EntitySet Name="Mano_Obra" EntityType="oasisModel1.Mano_Obra" />
+          <EntitySet Name="V_cobros_empresa" EntityType="oasisModel1.V_cobros_empresa" />
           </EntityContainer>
         <ComplexType Name="CobrosPorVendedor_Result">
           <Property Type="String" Name="codigo" Nullable="false" MaxLength="20" />
@@ -6628,6 +6663,7 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Type="Decimal" Name="valor_total" Nullable="false" Precision="14" Scale="2" />
           <Property Type="String" Name="cod_ant" Nullable="false" MaxLength="3" />
           <Property Type="String" Name="nota" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="estado_co" Nullable="false" />
         </ComplexType>
         <EntityType Name="Reporte_Cartera_2">
           <Key>
@@ -6981,6 +7017,25 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
           <Property Name="horas_maquina" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
           <Property Name="horas_hombre" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
           <Property Name="responsable" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_cobros_empresa">
+          <Key>
+            <PropertyRef Name="empresa" />
+            <PropertyRef Name="id_cobro" />
+            <PropertyRef Name="numero" />
+            <PropertyRef Name="estado" />
+            <PropertyRef Name="fecha" />
+            <PropertyRef Name="id_empresa" />
+          </Key>
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="id_cobro" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="numero" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="descripcion2" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="codigo_movil" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -9071,6 +9126,21 @@ advertencia 6002: La tabla o vista 'oasis.dbo.Ventas_Producto_Precio' no tiene d
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="orden_fa" ColumnName="orden_fa" />
                 <ScalarProperty Name="planta" ColumnName="planta" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_cobros_empresa">
+            <EntityTypeMapping TypeName="oasisModel1.V_cobros_empresa">
+              <MappingFragment StoreEntitySet="V_cobros_empresa">
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="codigo_movil" ColumnName="codigo_movil" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="descripcion2" ColumnName="descripcion2" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id_cobro" ColumnName="id_cobro" />
                 <ScalarProperty Name="empresa" ColumnName="empresa" />
               </MappingFragment>
             </EntityTypeMapping>

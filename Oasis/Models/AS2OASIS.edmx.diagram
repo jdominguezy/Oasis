@@ -135,6 +135,7 @@
         <EntityTypeShape EntityType="oasisModel1.Consulta_Consolidado_Cierres" Width="1.5" PointX="22.125" PointY="33.5" />
         <EntityTypeShape EntityType="oasisModel1.Detalle_Cheques" Width="1.5" PointX="9.375" PointY="34.75" />
         <EntityTypeShape EntityType="oasisModel1.Mano_Obra" Width="1.5" PointX="30.375" PointY="20.75" />
+        <EntityTypeShape EntityType="oasisModel1.V_cobros_empresa" Width="1.5" PointX="32.375" PointY="19.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

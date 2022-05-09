@@ -79,7 +79,7 @@ namespace Oasis.Controllers
                     var ME = costos_mp_me.Where(x => x.codigo_categoria_producto.Replace("", "") == "GRP02" ||
                             x.codigo_categoria_producto.Replace("", "") == "GRP03");
 
-                    var suma_mp = MP.Sum(x => x.costo_total==null?0: x.costo_total);
+                    var suma_mp = MP.Sum(x => x.costo_total==null?0: x.costo_total)??0;
                     //var suma_mp = MP.Sum(x => x.costo_total) ?? 0;
                     var suma_me = ME.Sum(x => x.costo_total==null?0: x.costo_total) ??0;
                     var suma_mod = costos_mod.Select(x=>x.costo_total).First()??0;

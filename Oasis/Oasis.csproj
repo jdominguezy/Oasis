@@ -386,6 +386,7 @@
     <Compile Include="Controllers\Instituciones\InventarioController.cs" />
     <Compile Include="Controllers\InventarioGastosController.cs" />
     <Compile Include="Controllers\InventarioItemController.cs" />
+    <Compile Include="Controllers\JsonHttpStatusResult .cs" />
     <Compile Include="Controllers\KPI\KPIController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\Produccion\ProduccionController.cs" />
@@ -427,6 +428,11 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AS2OASIS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AS2OASIS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AS2OASIS1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AS2OASIS.edmx</DependentUpon>
@@ -858,6 +864,9 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ventas_Producto_Precio.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\V_cobros_empresa.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_cobros_tmp.cs">
@@ -2934,7 +2943,7 @@
     <Content Include="Content\FrontEnd\dist\fonts\source-sans-pro\SourceSansPro-SemiBoldItalic.ttf" />
     <EntityDeploy Include="Models\AS2OASIS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AS2OASIS.Designer.cs</LastGenOutput>
+      <LastGenOutput>AS2OASIS1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="Models\AS2OASIS.edmx.diagram">
       <DependentUpon>AS2OASIS.edmx</DependentUpon>

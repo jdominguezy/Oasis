@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using iTextSharp.text;
@@ -1670,12 +1671,19 @@ namespace Oasis.Controllers.Credito
                     return new HttpStatusCodeResult(400);
                 }
 
-                var lista_numero = db.V_cobros_tmp.Where(x=> x.estado == 1 && x.usuario_creacion == _usuario).ToList();
+                var lista_numero = db.V_cobros_tmp.Where(x=> x.estado == 1 && x.usuario_creacion == _usuario 
+                                                        && x.empresa == empresa).ToList();
                 c_cobros = lista_numero.Count();
 
                 if (c_cobros <= 0)
                 {
-                    return new HttpStatusCodeResult(400);
+                    //return new HttpStatusCodeResult(400);
+                    var errorModel = new { error = "No hay datos para Procesar" };
+                    return new JsonHttpStatusResult(errorModel, HttpStatusCode.InternalServerError);
+
+                    //Response.StatusCode = Convert.ToInt32(System.Net.HttpStatusCode.InternalServerError);
+                    //return Json(new { Data = "There was an error" }, JsonRequestBehavior.AllowGet);
+
                 }
 
                 foreach (var lis in lista_numero)
@@ -2253,103 +2261,107 @@ namespace Oasis.Controllers.Credito
                             detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_cobro), detalle));
                             detalle_cierres.AddCell(new Phrase(cob.nota, detalle));
 
-
-                            if (cob.cod_forma_pago == "EFEC")
+                            if (cob.estado_co != 0)
                             {
-                                suma_efec = suma_efec + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
+                                if (cob.cod_forma_pago == "EFEC")
                                 {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+                                    suma_efec = suma_efec + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+                                else if (cob.cod_forma_pago == "CHEQ")
+                                {
+                                    suma_cheq = suma_cheq + Convert.ToDouble(cob.valor_cobro);
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+                                else if (cob.cod_forma_pago == "CHEQP")
+                                {
+                                    suma_chep = suma_chep + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+                                else if (cob.cod_forma_pago == "DEPB" || cob.cod_forma_pago == "DEPBDA")
+                                {
+                                    suma_dep = suma_dep + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+                                else if (cob.cod_forma_pago == "CTA" || cob.cod_forma_pago == "CTADA")
+                                {
+                                    suma_trans = suma_trans + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+
+                                else if (cob.cod_forma_pago == "RETFUENTE" || cob.cod_forma_pago == "RTFTE1.75%" || cob.cod_forma_pago == "RTFTE2%"
+                                    || cob.cod_forma_pago == "RTFTE2.75%" || cob.cod_forma_pago == "RTFTE8%")
+                                {
+                                    suma_ret = suma_ret + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+                                else if (cob.cod_forma_pago == "CR")
+                                {
+                                    suma_cruce = suma_cruce + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
+
+                                }
+
+                                else
+                                {
+                                    suma_otro = suma_otro + Convert.ToDouble(cob.valor_cobro);
+
+                                    if (cob.cod_ant == "ANC")
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
+
+                                    }
 
                                 }
 
                             }
-
-                            else if (cob.cod_forma_pago == "CHEQ")
-                            {
-                                suma_cheq = suma_cheq + Convert.ToDouble(cob.valor_cobro);
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
-
-                            else if (cob.cod_forma_pago == "CHEQP")
-                            {
-                                suma_chep = suma_chep + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
-
-                            else if (cob.cod_forma_pago == "DEPB" || cob.cod_forma_pago == "DEPBDA")
-                            {
-                                suma_dep = suma_dep + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
-
-                            else if (cob.cod_forma_pago == "CTA" || cob.cod_forma_pago == "CTADA")
-                            {
-                                suma_trans = suma_trans + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
-
-
-                            else if (cob.cod_forma_pago == "RETFUENTE" || cob.cod_forma_pago == "RTFTE1.75%" || cob.cod_forma_pago == "RTFTE2%"
-                                || cob.cod_forma_pago == "RTFTE2.75%" || cob.cod_forma_pago == "RTFTE8%")
-                            {
-                                suma_ret = suma_ret + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
-
-                            else if (cob.cod_forma_pago == "CR")
-                            {
-                                suma_cruce = suma_cruce + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
-
-                            else
-                            {
-                                suma_otro = suma_otro + Convert.ToDouble(cob.valor_cobro);
-
-                                if (cob.cod_ant == "ANC")
-                                {
-                                    suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
-
-                                }
-
-                            }
+                            
 
                         }
 
@@ -2610,12 +2622,14 @@ namespace Oasis.Controllers.Credito
                 using (var db = new as2oasis())
                 {
 
-                    var cobro = db.V_cobros_tmp.Where(x => x.id_cobro == cod_cobro && x.empresa == empresa).FirstOrDefault();
+                    var cobro = db.V_cobros_tmp.Where(x => x.id_cobro == cod_cobro).FirstOrDefault();
                     if (cobro == null)
                     {
+                        var empresaCobro = db.V_cobros_empresa.Where(x => x.id_cobro == cod_cobro).FirstOrDefault();
+
                         cobros_tmp cobro_tmp = new cobros_tmp();
                         cobro_tmp.id_cobro = cod_cobro;
-                        cobro_tmp.empresa = empresa;
+                        cobro_tmp.empresa = empresaCobro.empresa;
                         cobro_tmp.sucursal = sucursal;
                         cobro_tmp.fecha_inicio = _fecha_inicio;
                         cobro_tmp.fecha_fin = _fecha_fin;
@@ -2632,8 +2646,7 @@ namespace Oasis.Controllers.Credito
             }
             catch (Exception err)
             {
-                err.InnerException.ToString();
-               
+                err.InnerException.ToString();               
             }
 
         }
