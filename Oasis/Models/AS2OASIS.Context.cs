@@ -113,13 +113,9 @@ public partial class as2oasis : DbContext
 
     public virtual DbSet<CarteraBK> CarteraBK { get; set; }
 
-    public virtual DbSet<Cheques_Postfechados> Cheques_Postfechados { get; set; }
-
     public virtual DbSet<Clientes> Clientes { get; set; }
 
     public virtual DbSet<Clientes2> Clientes2 { get; set; }
-
-    public virtual DbSet<Cobros_Consolidado> Cobros_Consolidado { get; set; }
 
     public virtual DbSet<Cobros_Diario> Cobros_Diario { get; set; }
 
@@ -148,8 +144,6 @@ public partial class as2oasis : DbContext
     public virtual DbSet<Proveedores> Proveedores { get; set; }
 
     public virtual DbSet<Registros_Contabilidad> Registros_Contabilidad { get; set; }
-
-    public virtual DbSet<Reporte_GuiasRemision> Reporte_GuiasRemision { get; set; }
 
     public virtual DbSet<Stock> Stock { get; set; }
 
@@ -181,8 +175,6 @@ public partial class as2oasis : DbContext
 
     public virtual DbSet<Costos_Indirectos> Costos_Indirectos { get; set; }
 
-    public virtual DbSet<DVP> DVP { get; set; }
-
     public virtual DbSet<Orden_Produccion> Orden_Produccion { get; set; }
 
     public virtual DbSet<Costos_MP_ME> Costos_MP_ME { get; set; }
@@ -196,8 +188,6 @@ public partial class as2oasis : DbContext
     public virtual DbSet<Vendedores_Distribuidores> Vendedores_Distribuidores { get; set; }
 
     public virtual DbSet<Ventas_Consolidado_Di> Ventas_Consolidado_Di { get; set; }
-
-    public virtual DbSet<MateriaPrima_Lote> MateriaPrima_Lote { get; set; }
 
     public virtual DbSet<ProductosMP> ProductosMP { get; set; }
 
@@ -244,6 +234,18 @@ public partial class as2oasis : DbContext
     public virtual DbSet<Mano_Obra> Mano_Obra { get; set; }
 
     public virtual DbSet<V_cobros_empresa> V_cobros_empresa { get; set; }
+
+    public virtual DbSet<DVP> DVP { get; set; }
+
+    public virtual DbSet<DVP_Credito> DVP_Credito { get; set; }
+
+    public virtual DbSet<MateriaPrima_Lote> MateriaPrima_Lote { get; set; }
+
+    public virtual DbSet<Cheques_Postfechados> Cheques_Postfechados { get; set; }
+
+    public virtual DbSet<Cobros_Consolidado> Cobros_Consolidado { get; set; }
+
+    public virtual DbSet<Reporte_GuiasRemision> Reporte_GuiasRemision { get; set; }
 
 
     [DbFunction("as2oasis", "SplitString")]
@@ -975,6 +977,55 @@ public partial class as2oasis : DbContext
 
 
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Detalle_Cobros_Result>("SP_Detalle_Cobros", tipo_busquedaParameter, empresaParameter, sucursalParameter, fecha_desdeParameter, fecha_hastaParameter, usuarioParameter, estadoParameter, cod_tablaParameter, numero_cobroParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Cartera_Vencida_Result> SP_Cartera_Vencida(string empresa, string sucursal, Nullable<System.DateTime> fecha_desde, Nullable<System.DateTime> fecha_hasta)
+    {
+
+        var empresaParameter = empresa != null ?
+            new ObjectParameter("empresa", empresa) :
+            new ObjectParameter("empresa", typeof(string));
+
+
+        var sucursalParameter = sucursal != null ?
+            new ObjectParameter("sucursal", sucursal) :
+            new ObjectParameter("sucursal", typeof(string));
+
+
+        var fecha_desdeParameter = fecha_desde.HasValue ?
+            new ObjectParameter("fecha_desde", fecha_desde) :
+            new ObjectParameter("fecha_desde", typeof(System.DateTime));
+
+
+        var fecha_hastaParameter = fecha_hasta.HasValue ?
+            new ObjectParameter("fecha_hasta", fecha_hasta) :
+            new ObjectParameter("fecha_hasta", typeof(System.DateTime));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Cartera_Vencida_Result>("SP_Cartera_Vencida", empresaParameter, sucursalParameter, fecha_desdeParameter, fecha_hastaParameter);
+    }
+
+
+    public virtual ObjectResult<SP_Detalle_Vta_Result> SP_Detalle_Vta(string empresa, Nullable<System.DateTime> fecha_desde, Nullable<System.DateTime> fecha_hasta)
+    {
+
+        var empresaParameter = empresa != null ?
+            new ObjectParameter("empresa", empresa) :
+            new ObjectParameter("empresa", typeof(string));
+
+
+        var fecha_desdeParameter = fecha_desde.HasValue ?
+            new ObjectParameter("fecha_desde", fecha_desde) :
+            new ObjectParameter("fecha_desde", typeof(System.DateTime));
+
+
+        var fecha_hastaParameter = fecha_hasta.HasValue ?
+            new ObjectParameter("fecha_hasta", fecha_hasta) :
+            new ObjectParameter("fecha_hasta", typeof(System.DateTime));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_Detalle_Vta_Result>("SP_Detalle_Vta", empresaParameter, fecha_desdeParameter, fecha_hastaParameter);
     }
 
 }

@@ -1,32 +1,13 @@
 ﻿
-@using Oasis.Models
-@using Oasis.Models.Login
-
-@{
-    ViewBag.Title = "Devolucion Consolidado Cierres";
-    var id_usuario = (User as CustomPrincipal).id_usuario;
-    var as2 = new AS2Context();
-    var db = new as2oasis();
-    var sucursales = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.sucursalOasis.nombre)
-        .Select(x => x.Key);
-    var empresas = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.empresaOasis.nombre)
-        .Select(x => x.Key);
-    var cons_cierre = db.consolidado_cierre 
-        .GroupBy(x => x.numero_consolidado)
-        .Select(x => x.Key);
-
-}
+@{ ViewBag.Title = "OP";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 
 <div class="row">
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-                <h2 class="card-title">Devolucion Consolidado Cierres</h2>
+                <h2 class="card-title">Consolidado Producto</h2>
                 <div class="card-tools">
                     <button type="button" class="btn bg-primary btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -39,78 +20,37 @@
             <!-- form start -->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="empresa">Empresa</label>
-                            <select class="form-control" id="empresa" name="empresa">
-                                <option value="0">Todas las empresas</option>
-                                @foreach (var emp in empresas)
-                                {
-                                    <option value="@emp">@emp</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    @*<div class="col-md-6">
-                <div class="col" style=" text-align: center; ">
-                    <label>Fecha de facturación</label>
-                    <div class="row" style="
-                                        text-align: center;
-                                        place-content: center;
-                                    ">
-                        <div class="col-md-10">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                    </span>
-                                </div>
-                                <input type="text" class="form-control float-right" id="fecha_corte">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
-                    <div class="col-md-6">
-                        <div class="col" style=" text-align: center; ">
-                            <label>Numero</label>
-                            <div class="row" style="
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col" style=" text-align: center; ">
+                                <label>Fecha de cierre</label>
+                                <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                <select class="form-control" id="numero" name="numero">
-                                    <option value="0">Todos</option>
-                                    @foreach (var ca in cons_cierre)
-                                    {
-                                        <option value="@ca">@ca</option>
-                                    }
-                                </select>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                                        </div>
+                                    </div>
+                                </div>
+                               
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="sucursal">Sucursal</label>
-                            <select class="form-control" id="sucursal" name="sucursal">
-                                <option value="0">Todas las sucursales</option>
-                                @foreach (var suc in sucursales)
-                                {
-                                    <option value="@suc">@suc</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
-                </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
             </div>
+        </div>
     </div>
 </div>
 
@@ -118,35 +58,24 @@
 @section Scripts {
     <script>
 
-        function VerImpresion(codigo_consolidado) {
-            console.log("entra fn")
-            console.log("consolidado", codigo_consolidado)
-            window.open("ImprimirConsolidado?codigo_consolidado=" + codigo_consolidado, '_blank');
-        }
-
-        function CrearDevolucion(codigo_consolidado) {
-            console.log("entra fn")
-            console.log("consolidado", codigo_consolidado)
-            window.open("GuardarDevolucion?codigo_consolidado=" + codigo_consolidado, '_blank');
+        function imprimirConsolidado(id_orden_fabricacion) {
+            window.open("ImprimirConsolidado?id_orden_fabricacion=" + id_orden_fabricacion, '_blank');
         }
 
         $("#GenerarDatos").click(function () {
-            //var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
-            //var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
-            var empresa = $('#empresa').val();
-            var numero = $('#numero').val();
-            var sucursal = $('#sucursal').val();
-
+            console.log("Entra")
+            var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
+            var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             iniciaLoading();
+            console.log("21")
 
             $.ajax({
-                url: 'ObtenerConsolidadoCierres',
-                type: 'POST',
-                data: JSON.stringify({
-                    empresa: empresa,
-                    numero: numero,
-                    sucursal: sucursal
-                }),
+                url: 'ObtenerConsolidadoProducto',
+                type: 'GET',
+                data: {
+                    fecha_desde: fecha_desde,
+                    fecha_hasta: fecha_hasta
+                },
                 dataType: "JSON",
                 contentType: "application/JSON",
                 success: function (d) {
@@ -159,9 +88,8 @@
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
                     var col = [];
-                    var encabezado = ["Empresa", "Sucursal", "Fecha",
-                        "Numero Consolidado", "Total", "Estado", "Codigo Consolidado", "", ""
-                        ];
+                    var encabezado = ["OF", "LOTE", "FECHA", "COD. PRODUCTO", "DESCRIPCION PRODUCTO", "SUCURSAL", "CANTIDAD A ELABORAR",
+                        "CANTIDAD ELABORADA", "RENDIMIENTO", "ACCION"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -202,22 +130,16 @@
                     // ADD JSON DATA TO THE TABLE AS ROWS.
                     for (var i = 0; i < d.length; i++) {
                         tr_body = document.createElement("tr");
-                        for (var j = 0; j < col.length; j++) {
+                        for (var j = 0; j < col.length - 1; j++) {
                             var tabCell = tr_body.insertCell(-1);
                             tabCell.innerHTML = d[i][col[j]];
                             tabCell.style = ' white-space: nowrap;';
                         }
-
                         var tabCell = tr_body.insertCell(-1);
-                        var tabCell_c = tr_body.insertCell(-1);
-                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="VerImpresion(\'' + d[i][col[6]] + '\')" >Imprimir</button>';
-                        tabCell_c.innerHTML = '<button class="btn btn-info imprimir" onClick="CrearDevolucion(\'' + d[i][col[6]] + '\')" >Devolver</button>';
+                        tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="imprimirConsolidado(\'' + d[i][col[9]] + '\')" >Imprimir</button>';
                         tabCell.style = ' white-space: nowrap;';
-                        //tabCell_c.style = ' white-space: nowrap;';
-
                         tbody.appendChild(tr_body);
 
-                        
                     }
 
                     cardbody.appendChild(table);
@@ -276,6 +198,7 @@
             startDate: firstDay,
             endDate: lastDay
         });
+
 
     </script>
 }

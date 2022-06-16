@@ -58,6 +58,8 @@ public partial class detalle_consolidado_cierre
 
     public string usuario_modificacion { get; set; }
 
+    public Nullable<decimal> diferencia_cheque { get; set; }
+
 
 
     public virtual consolidado_cierre consolidado_cierre { get; set; }

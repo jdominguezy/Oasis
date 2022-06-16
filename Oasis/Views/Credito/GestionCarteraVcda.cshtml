@@ -45,39 +45,51 @@
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                                    <option value="@emp">@emp</option>
-                                }
+                    <option value="@emp">@emp</option>}
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                            <div class="col" style=" text-align: center; ">
-                                <label>Fecha de facturación</label>
-                                <div class="row" style="
+                        <div class="col" style=" text-align: center; ">
+                            <label>Fecha Corte</label>
+                            <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                    <div class="col-md-10">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
                                         </div>
+                                        <input type="text" class="form-control float-right" id="fecha_corte">
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
                 </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Region</label>
+                            <select class="form-control" id="sucursal" name="sucursal">
+                                <option value="0">Todas las regiones</option>
+                                @foreach (var suc in sucursales)
+                                {
+                                    <option value="@suc">@suc</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
+                </div>
             </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-                <button type="button" id="GenerarDatos" class="btn btn-primary  float-right">Generar</button>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -89,19 +101,25 @@
             var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
             var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
             var empresa = $('#empresa').val();
+            var sucursal = $('#sucursal').val();
+            console.log("entra")
             iniciaLoading();
 
             $.ajax({
-                url: 'ObtenerDVP',
+                url: 'ObtenerCarteraVcda',
                 type: 'POST',
                 data: JSON.stringify({
+                    empresa: empresa,
+                    sucursal: sucursal,
                     fecha_desde: fecha_desde,
-                    fecha_hasta: fecha_hasta,
-                    empresa: empresa
+                    fecha_hasta: fecha_hasta
+                    
                 }),
                 dataType: "JSON",
                 contentType: "application/JSON",
                 success: function (d) {
+
+                    console.log(d)
                     $('#contenedorTabla').remove();
                     var contenedorTabla = document.createElement("div");
                     contenedorTabla.className = "col-md-12";
@@ -110,18 +128,13 @@
                     row.className = "row";
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
+
+                    d = JSON.parse(d);
                     var col = [];
                     var encabezado = ["Empresa",
-                        "Tipo documento", "Fecha factura", "Ciudad", "Provincia",
-                        "Parroquia", "Tipo cliente", "Canal", "RUC",
-                        "Cliente", "id_motivo_nota_credito_cliente",
-                        "Secuencial documento", "inidicador_afecta_devolucion",
-                        "Codigo producto", "Codigo MBA",
-                        "Producto", "Categoria", "Subcategoria",
-                        "UM", "Cantidad", "Valor total", "Tipo venta",
-                        "codigo", "Cod. Vendedor", "Vendedor", "NC",
-                        "Descripcion NC", "Fecha NC", "clave_acceso",
-                        "id_factura_cliente", "memo"];
+                        "Sucursal", "Valor Factura", "Total Chq.", "Total Cartera",
+                        "Vcdo. 30 Dias", "Vcdo. 60 Dias", "Vcdo. 90 Dias", "Vcdo. Mayor 90 Dias"
+                        ];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {
@@ -187,6 +200,13 @@
                             url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
                         }
                     });
+
+                    var presupuesto = d;
+                    var vendedores = presupuesto.map(presupuesto => presupuesto.sucursal);
+                    var ventas = presupuesto.map(presupuesto => presupuesto.cartera_total);
+                    var cobros = presupuesto.map(presupuesto => presupuesto.menor_30);
+                    GeneraGraficos(presupuesto);
+
                     cierraLoading();
                 },
                 error: function (e) {
@@ -198,6 +218,124 @@
                 }
             })
         });
+
+        function GeneraGraficos(presupuesto) {
+            $('#rowcontenedorGraficos').remove();
+            const elementos = $.parseHTML('<h3 class="card-title"><i class="fas fa-th mr-1"></i>  Totales                </h3>        <div class="card-tools">            <button type="button" class="btn bg-defaultbtn-sm" data-card-widget="collapse">                <i class="fas fa-minus"></i>            </button>            <button type="button" class="btn bg-defaultbtn-sm" data-card-widget="remove">                <i class="fas fa-times"></i>            </button>');
+
+            var canva = document.createElement("canvas");
+            canva.id = "contenedorBarra";
+            canva.width = 400;
+            canva.height = 200;
+
+            var canva2 = document.createElement("canvas");
+            canva2.id = "contenedorPastel";
+            canva2.width = 400;
+            canva2.height = 200;
+
+            var cardHeader = document.createElement("div");
+            cardHeader.className = "card-header border-0";
+            cardHeader.appendChild(elementos[0].cloneNode(true));
+            cardHeader.appendChild(elementos[1].cloneNode(true));
+            cardHeader.appendChild(elementos[2].cloneNode(true));
+
+            var cardHeader2 = document.createElement("div");
+            cardHeader2.className = "card-header border-0";
+            cardHeader2.appendChild(elementos[0].cloneNode(true));
+            cardHeader2.appendChild(elementos[1].cloneNode(true));
+            cardHeader2.appendChild(elementos[2].cloneNode(true));
+
+            var cardBody = document.createElement("div");
+            cardBody.className = "card-body";
+            cardBody.appendChild(canva);
+
+            var cardBody2 = document.createElement("div");
+            cardBody2.className = "card-body";
+            cardBody2.appendChild(canva2);
+
+            var cardBarra = document.createElement("div");
+            cardBarra.className = "card";
+            cardBarra.appendChild(cardHeader);
+            cardBarra.appendChild(cardBody);
+
+            var cardPastel = document.createElement("div");
+            cardPastel.className = "card";
+            cardPastel.appendChild(cardHeader2);
+            cardPastel.appendChild(cardBody2);
+
+            var contenedorGraficos2 = document.createElement("div");
+            contenedorGraficos2.className = "col-md-12";
+            contenedorGraficos2.appendChild(cardPastel);
+
+            var contenedorGraficos = document.createElement("div");
+            contenedorGraficos.className = "col-md-12";
+
+            contenedorGraficos.appendChild(cardBarra);
+            contenedorGraficos2.appendChild(cardPastel);
+
+            var row2 = document.createElement("div");
+            row2.className = "row";
+            row2.appendChild(contenedorGraficos);
+            row2.appendChild(contenedorGraficos2);
+            row2.id = "rowcontenedorGraficos";
+
+            $('#contenedorPrimario').append(row2);
+            GraficoBarras('contenedorBarra', 'bar', presupuesto);
+            GraficoBarras('contenedorPastel', 'pie', presupuesto);
+        }
+
+        function GraficoBarras(identificador, tipoGrafico, presupuesto) {
+            var ctx = document.getElementById(identificador).getContext('2d');
+
+            const dataLength = presupuesto.length;
+            /* Create color array */
+            const colorScale = d3.interpolateInferno;
+
+            const colorRangeInfo = {
+                colorStart: 0.1,
+                colorEnd: 1,
+                useEndAsStart: false,
+            };
+            var COLORS = interpolateColors(dataLength, colorScale, colorRangeInfo);
+            var myChart = new Chart(ctx, {
+                type: tipoGrafico,
+                data: {
+                    labels: presupuesto.map(presupuesto => presupuesto.sucursal),
+                    datasets: [{
+                        label: 'Cartera',
+                        data: presupuesto.map(presupuesto => presupuesto.cartera_total),
+                        backgroundColor: COLORS,
+                        hoverBackgroundColor: COLORS,
+                        parsing: {
+                            yAxisKey: 'cartera_total'
+                        },
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Vencimiento',
+                        data: presupuesto.map(presupuesto => presupuesto.menor_60),
+                        backgroundColor: COLORS,
+                        hoverBackgroundColor: COLORS,
+                        parsing: {
+                            yAxisKey: 'menor_60'
+                        },
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    //responsive: false,
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            beginAtZero: true,
+                            stacked: true
+                        }
+                    }
+                }
+            });
+        }
 
         $('#fecha_corte').daterangepicker({
             locale: {

@@ -15,16 +15,16 @@ namespace Oasis.Models
 using System;
     using System.Collections.Generic;
     
-public partial class DVP
+public partial class DVP_Credito
 {
 
     public int ID { get; set; }
 
     public string Empresa { get; set; }
 
-    public string Tipo_documento { get; set; }
+    public string TipoDocumento { get; set; }
 
-    public Nullable<System.DateTime> Fecha_factura { get; set; }
+    public Nullable<System.DateTime> FechaFactura { get; set; }
 
     public string Ciudad { get; set; }
 
@@ -32,7 +32,7 @@ public partial class DVP
 
     public string Parroquia { get; set; }
 
-    public string Tipo_cliente { get; set; }
+    public string TipoCliente { get; set; }
 
     public string Canal { get; set; }
 
@@ -40,15 +40,15 @@ public partial class DVP
 
     public string Cliente { get; set; }
 
-    public Nullable<int> id_motivo_nota_credito_cliente { get; set; }
+    public int id_motivo_nota_credito_cliente { get; set; }
 
-    public string Secuencial_documento { get; set; }
+    public string SecuencialDocumento { get; set; }
 
-    public Nullable<bool> indicador_afecta_devolucion { get; set; }
+    public bool indicador_afecta_devolucion { get; set; }
 
-    public string Código_producto { get; set; }
+    public string CodigoProducto { get; set; }
 
-    public string Código_MBA { get; set; }
+    public string CodigoMBA { get; set; }
 
     public string Producto { get; set; }
 
@@ -60,21 +60,21 @@ public partial class DVP
 
     public Nullable<decimal> Cantidad { get; set; }
 
-    public Nullable<decimal> Valor_total { get; set; }
+    public Nullable<decimal> Valortotal { get; set; }
 
-    public string Tipo_venta { get; set; }
+    public string TipoVenta { get; set; }
 
     public string codigo { get; set; }
 
-    public Nullable<int> Cod__Vendedor { get; set; }
+    public int CodVendedor { get; set; }
 
     public string Vendedor { get; set; }
 
     public string NC { get; set; }
 
-    public string Descripción_NC { get; set; }
+    public string DescripcionNC { get; set; }
 
-    public Nullable<System.DateTime> Fecha_NC { get; set; }
+    public Nullable<System.DateTime> FechaNC { get; set; }
 
     public string clave_acceso { get; set; }
 
@@ -82,11 +82,9 @@ public partial class DVP
 
     public string memo { get; set; }
 
+    public Nullable<int> id_sucursal { get; set; }
+
     public string zona { get; set; }
-
-    public Nullable<int> id_detalle_despacho_cliente { get; set; }
-
-    public int id_organizacion { get; set; }
 
 }
 

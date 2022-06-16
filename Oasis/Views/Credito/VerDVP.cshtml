@@ -2,24 +2,21 @@
 @using Oasis.Models
 @using Oasis.Models.Login
 
-@{
-    ViewBag.Title = "Detalle de venta por producto";
-    var id_usuario = (User as CustomPrincipal).id_usuario;
-    var as2 = new AS2Context();
-    var db = new as2oasis();
-    var sucursales = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.sucursalOasis.nombre)
-        .Select(x => x.Key);
-    var empresas = db.detalle_usuario_empresa_sucursal
-        .Where(x => x.id_usuario == id_usuario)
-        .GroupBy(x => x.empresaOasis.nombre)
-        .Select(x => x.Key);
-    var categoria_cliente = as2.categoria_empresa 
-        .GroupBy(x => x.nombre)
-        .Select(x => x.Key);
-
-}
+@{ ViewBag.Title = "Detalle de venta por producto";
+                var id_usuario = (User as CustomPrincipal).id_usuario;
+                var as2 = new AS2Context();
+                var db = new as2oasis();
+                var sucursales = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.sucursalOasis.nombre)
+                    .Select(x => x.Key);
+                var empresas = db.detalle_usuario_empresa_sucursal
+                    .Where(x => x.id_usuario == id_usuario)
+                    .GroupBy(x => x.empresaOasis.nombre)
+                    .Select(x => x.Key);
+                var categoria_cliente = as2.categoria_empresa
+                    .GroupBy(x => x.nombre)
+                    .Select(x => x.Key); }
 
 
 <div class="row">
@@ -46,30 +43,29 @@
                                 <option value="0">Todas las empresas</option>
                                 @foreach (var emp in empresas)
                                 {
-                                    <option value="@emp">@emp</option>
-                                }
+                    <option value="@emp">@emp</option>}
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                            <div class="col" style=" text-align: center; ">
-                                <label>Fecha de facturación</label>
-                                <div class="row" style="
+                        <div class="col" style=" text-align: center; ">
+                            <label>Fecha de facturación</label>
+                            <div class="row" style="
                                                 text-align: center;
                                                 place-content: center;
                                             ">
-                                    <div class="col-md-10">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="fecha_corte">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
                                         </div>
+                                        <input type="text" class="form-control float-right" id="fecha_corte">
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
                 </div>
@@ -84,151 +80,38 @@
 
 
 @section Scripts {
+    <script src="~/Content/js/Ventas.js"></script>
     <script>
-
-        $("#GenerarDatos").click(function () {
-            var fecha_desde = ConvertirFecha($('#fecha_corte').data('daterangepicker').startDate._d);
-            var fecha_hasta = ConvertirFecha($('#fecha_corte').data('daterangepicker').endDate._d);
-            var empresa = $('#empresa').val();
-            iniciaLoading();
-
-            $.ajax({
-                url: 'ObtenerDVP',
-                type: 'POST',
-                data: JSON.stringify({
-                    fecha_desde: fecha_desde,
-                    fecha_hasta: fecha_hasta,
-                    empresa: empresa
-                }),
-                dataType: "JSON",
-                contentType: "application/JSON",
-                success: function (d) {
-                    $('#contenedorTabla').remove();
-                    var contenedorTabla = document.createElement("div");
-                    contenedorTabla.className = "col-md-12";
-                    contenedorTabla.id = "contenedorTabla"
-                    var row = document.createElement("div");
-                    row.className = "row";
-                    row.appendChild(contenedorTabla);
-                    $('#contenedorPrimario').append(row);
-                    var col = [];
-                    var encabezado = ["Empresa",
-                        "Tipo documento", "Fecha factura", "Ciudad", "Provincia",
-                        "Parroquia", "Tipo cliente", "Canal", "RUC",
-                        "Cliente", "id_motivo_nota_credito_cliente",
-                        "Secuencial documento", "inidicador_afecta_devolucion",
-                        "Codigo producto", "Codigo MBA",
-                        "Producto", "Categoria", "Subcategoria",
-                        "UM", "Cantidad", "Valor total", "Tipo venta",
-                        "codigo", "Cod. Vendedor", "Vendedor", "NC",
-                        "Descripcion NC", "Fecha NC", "clave_acceso",
-                        "id_factura_cliente", "memo"];
-                    for (var i = 0; i < d.length; i++) {
-                        for (var key in d[i]) {
-                            if (col.indexOf(key) === -1) {
-                                col.push(key);
-                            }
-                        }
-                    }
-
-                    // CREATE DYNAMIC TABLE.
-                    var div = document.createElement("div");
-                    var row = document.createElement("div");
-                    row.className = "row col-md-4";
-                    var card = document.createElement("div");
-                    card.className = "card";
-                    card.style = "font-size: 15px;overflow-x: scroll;";
-                    var cardbody = document.createElement("div");
-                    cardbody.className = "card-body";
-                    var table = document.createElement("table");
-                    table.className = 'table table-hover tableDetalle';
-                    table.id = "tableDetalle";
-                    table.style = '';
-
-                    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE
-                    var thead = document.createElement("thead");
-                    table.appendChild(thead);
-                    var tr_head = document.createElement("tr");
-                    for (var i = 0; i < encabezado.length; i++) {
-                        var th = document.createElement("th");      // TABLE HEADER.
-                        th.innerHTML = encabezado[i];
-                        tr_head.appendChild(th);
-                    }
-
-                    thead.appendChild(tr_head);
-
-                    var tbody = document.createElement("tbody");
-                    table.appendChild(tbody);
-                    var tr_body = document.createElement("tr");
-                    // ADD JSON DATA TO THE TABLE AS ROWS.
-                    for (var i = 0; i < d.length; i++) {
-                        tr_body = document.createElement("tr");
-                        for (var j = 0; j < col.length; j++) {
-                            var tabCell = tr_body.insertCell(-1);
-                            tabCell.innerHTML = d[i][col[j]];
-                            tabCell.style = ' white-space: nowrap;';
-                        }
-                        //var tabCell = tr_body.insertCell(-1);
-                        //tabCell.innerHTML = '<button class="btn btn-info imprimir" onClick="imprimirOrden(\'' + d[i][col[0]] + '\')" >Imprimir</button>';
-                        //tabCell.style = ' white-space: nowrap;';
-                        tbody.appendChild(tr_body);
-                    }
-
-                    cardbody.appendChild(table);
-                    card.appendChild(cardbody);
-                    div.appendChild(card);
-                    //CrearTablaDetalle(div.outerHTML, titulo);
-                    $('#contenedorTabla').append(div);
-                    $('#tableDetalle').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'copy', 'csv', 'excel', 'pdf', 'print'
-                        ],
-                        language: {
-                            url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
-                        }
-                    });
-                    cierraLoading();
-                },
-                error: function (e) {
-                    cierraLoading();
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Hubo un error al intentar generar.'
-                    })
-                }
-            })
-        });
 
         $('#fecha_corte').daterangepicker({
             locale: {
-                format: 'DD/MM/YYYY',
-                "daysOfWeek": [
-                    "Do",
-                    "Lu",
-                    "Ma",
-                    "Mi",
-                    "Ju",
-                    "Vi",
-                    "Sa"
-                ],
-                "monthNames": [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ],
+            format: 'DD/MM/YYYY',
+        "daysOfWeek": [
+        "Do",
+        "Lu",
+        "Ma",
+        "Mi",
+        "Ju",
+        "Vi",
+        "Sa"
+        ],
+        "monthNames": [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+        ],
             },
-            startDate: firstDay,
-            endDate: lastDay
+        startDate: firstDay,
+        endDate: lastDay
         });
 
     </script>

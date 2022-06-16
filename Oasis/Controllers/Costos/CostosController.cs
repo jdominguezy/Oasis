@@ -58,6 +58,9 @@ namespace Oasis.Controllers
                     var doc = R.CrearDocA4(margenes);
                     var pdf = R.CrearPDF();
                     var hoy = DateTime.Now;
+                    var suma_mod = 0.0;
+                    var suma_horas_mod = 0.0;
+                    var _costos_mod = 0.0;
 
                     var fuente_cabecera = R.CrearFuente("georgia", 10, 1, BaseColor.BLACK);
                     var fuente_cabecera_regular = R.CrearFuente("georgia", 10, 0, BaseColor.BLACK);
@@ -82,16 +85,21 @@ namespace Oasis.Controllers
                     var suma_mp = MP.Sum(x => x.costo_total==null?0: x.costo_total)??0;
                     //var suma_mp = MP.Sum(x => x.costo_total) ?? 0;
                     var suma_me = ME.Sum(x => x.costo_total==null?0: x.costo_total) ??0;
-                    var suma_mod = costos_mod.Select(x=>x.costo_total).First()??0;
+
+                    if (costos_mod.Count() > 0)
+                    {
+                        _costos_mod = Convert.ToDouble(costos_mod.Select(x => x.costo_total).First() ?? 0);
+                    }
+
+                    suma_mod = _costos_mod;
                     //var suma_maq = costos_mod.Sum(x => x.costo_total)??0;
                     var suma_otros_costos = costos_indirectos.Sum(x => x.costo_total==null?0: x.costo_total) ??0;
-
-        
+                            
                     var suma_costos_total =  
-                        suma_mp + suma_me + suma_mod  + suma_otros_costos;
+                        suma_mp + suma_me + Convert.ToDecimal(suma_mod)  + suma_otros_costos;
                     var pnd_mp = string.Format("{0:0.00%}", ((suma_mp) / suma_costos_total));
                     var pnd_me = string.Format("{0:0.00%}", ((suma_me) / suma_costos_total));
-                    var pnd_mod = string.Format("{0:0.00%}", ((suma_mod) / suma_costos_total));
+                    var pnd_mod = string.Format("{0:0.00%}", ((Convert.ToDecimal(suma_mod)) / suma_costos_total));
                     //var pnd_maq = string.Format("{0:0.00%}", ((suma_maq) / suma_costos_total));
                     var pnd_otros_costos = string.Format("{0:0.00%}", ((suma_otros_costos) / suma_costos_total));
                     var costo_unitario = string.Format("{0:0.00000}",
@@ -101,9 +109,11 @@ namespace Oasis.Controllers
                         suma_costos_total / (cabecera.cantidad_fabricada * cabecera.presentacion_producto));
                     //25-02-2022 presentacion producto F JD
 
-                    var suma_horas_mod = costos_mod.Sum(x => x.horas_hombre);
-
-
+                    if (costos_mod.Count() > 0)
+                    {
+                        suma_horas_mod = Convert.ToDouble(costos_mod.Sum(x => x.horas_hombre));
+                    }                 
+                   
 
                     doc.AddTitle($"Hoja de costos #{cabecera.OP}");
                     doc.Open();
@@ -494,12 +504,12 @@ namespace Oasis.Controllers
                         doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
 
-                    var detalle_datos = new PdfPTable(6);
+                    var detalle_datos = new PdfPTable(7);
                     detalle_datos.LockedWidth = true;
                     detalle_datos.TotalWidth = 500f;
                     detalle_datos.SpacingBefore = 5f;
-                    detalle_datos.SetWidths(new float[] { 90f, 255f, 20f,
-                    45f,45f,45f});
+                    detalle_datos.SetWidths(new float[] { 90f, 210f, 20f,
+                    45f,45f,45f, 45f});
 
                     cell1 = new PdfPCell(new Phrase("MANO DE OBRA DIRECTA"));
                     cell1.Padding = 0;
@@ -528,17 +538,19 @@ namespace Oasis.Controllers
                     detalle_datos.AddCell(new Phrase("Cod. ", subtitulo));
                     detalle_datos.AddCell(new Phrase("Descripción", subtitulo));
                     detalle_datos.AddCell(new Phrase("UM", subtitulo));
+                    detalle_datos.AddCell(new Phrase("Tiempo Est.", subtitulo));
                     detalle_datos.AddCell(new Phrase("Consumo", subtitulo));
                     detalle_datos.AddCell(new Phrase("Costo unit.", subtitulo));
                     detalle_datos.AddCell(new Phrase("Costo total", subtitulo));
 
                     foreach (var item in costos_mod)
                     {
-                        var costo_total_mod = (item.costo_total / suma_horas_mod)* item.horas_hombre;
-                        var costo_unitario_mod = (item.costo_total / suma_horas_mod);
+                        var costo_total_mod = (item.costo_total / Convert.ToDecimal(suma_horas_mod))* item.horas_hombre;
+                        var costo_unitario_mod = (item.costo_total / Convert.ToDecimal(suma_horas_mod));
                         detalle_datos.AddCell(new Phrase(item.operacion, detalle));
                         detalle_datos.AddCell(new Phrase(item.nombre_maquina, detalle));
                         detalle_datos.AddCell(new Phrase("HH", detalle));
+                        detalle_datos.AddCell(new Phrase(string.Format("{0:n4}", item.horas_standard), detalle));
                         detalle_datos.AddCell(new Phrase(string.Format("{0:n4}", item.horas_hombre), detalle));
                         detalle_datos.AddCell(new Phrase(string.Format("{0:n6}", costo_unitario_mod), detalle));
                         detalle_datos.AddCell(new Phrase(string.Format("{0:n4}", costo_total_mod), detalle));
@@ -571,7 +583,7 @@ namespace Oasis.Controllers
                     cell1 = new PdfPCell(new Phrase("Total MOD:", subtitulo));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_mp.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n4}", costos_mod.Select(x=>x.costo_total).First()), detalle));
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n4}", _costos_mod), detalle));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_mp.AddCell(cell1);
 
@@ -580,6 +592,12 @@ namespace Oasis.Controllers
                         doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
 
+                    var detalle_otros = new PdfPTable(6);
+                    detalle_otros.LockedWidth = true;
+                    detalle_otros.TotalWidth = 500f;
+                    detalle_otros.SpacingBefore = 5f;
+                    detalle_otros.SetWidths(new float[] { 90f, 210f, 20f,
+                    45f,45f,45f});
 
                     cell1 = new PdfPCell(new Phrase("OTROS COSTOS"));
                     cell1.Padding = 0;
@@ -604,25 +622,25 @@ namespace Oasis.Controllers
 
                     doc.Add(table1);
 
-                    detalle_datos.AddCell(new Phrase("Cod. ", subtitulo));
-                    detalle_datos.AddCell(new Phrase("Descripción", subtitulo));
-                    detalle_datos.AddCell(new Phrase("UM", subtitulo));
-                    detalle_datos.AddCell(new Phrase("Consumo", subtitulo));
-                    detalle_datos.AddCell(new Phrase("Costo unit.", subtitulo));
-                    detalle_datos.AddCell(new Phrase("Costo total", subtitulo));
+                    detalle_otros.AddCell(new Phrase("Cod. ", subtitulo));
+                    detalle_otros.AddCell(new Phrase("Descripción", subtitulo));
+                    detalle_otros.AddCell(new Phrase("UM", subtitulo));
+                    detalle_otros.AddCell(new Phrase("Consumo", subtitulo));
+                    detalle_otros.AddCell(new Phrase("Costo unit.", subtitulo));
+                    detalle_otros.AddCell(new Phrase("Costo total", subtitulo));
 
                     foreach (var item in costos_indirectos)
                     {
-                        detalle_datos.AddCell(new Phrase("CIF", detalle));
-                        detalle_datos.AddCell(new Phrase("COSTOS INDIRECTOS", detalle));
-                        detalle_datos.AddCell(new Phrase("UP", detalle));
-                        detalle_datos.AddCell(new Phrase(string.Format("{0:n2}", item.cantidad), detalle));
-                        detalle_datos.AddCell(new Phrase(string.Format("{0:n6}", item.costo_unitario), detalle));
-                        detalle_datos.AddCell(new Phrase(string.Format("{0:n4}", item.costo_total), detalle));
+                        detalle_otros.AddCell(new Phrase("CIF", detalle));
+                        detalle_otros.AddCell(new Phrase("COSTOS INDIRECTOS", detalle));
+                        detalle_otros.AddCell(new Phrase("UP", detalle));
+                        detalle_otros.AddCell(new Phrase(string.Format("{0:n2}", item.cantidad), detalle));
+                        detalle_otros.AddCell(new Phrase(string.Format("{0:n6}", item.costo_unitario), detalle));
+                        detalle_otros.AddCell(new Phrase(string.Format("{0:n4}", item.costo_total), detalle));
                     }
 
-                    doc.Add(detalle_datos);
-                    detalle_datos.FlushContent();
+                    doc.Add(detalle_otros);
+                    detalle_otros.FlushContent();
                     table1.FlushContent();
 
                     cell1 = new PdfPCell(new Phrase(""));
@@ -653,6 +671,7 @@ namespace Oasis.Controllers
                     doc.Add(detalle_mp);
                     detalle_mp.FlushContent();
 
+                    #region Comentario
                     //cell1 = new PdfPCell(new Phrase("PROCESOS Y MAQUINARIAS"));
                     //cell1.Padding = 0;
                     //cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
@@ -697,9 +716,41 @@ namespace Oasis.Controllers
                     //doc.Add(detalle_datos);
                     //detalle_datos.FlushContent();
                     #endregion
+                    #endregion
 
-                    #region FIRMAS     
+                    #region NOTA     
 
+                    var tabla_nota = new PdfPTable(1);
+                    tabla_nota.LockedWidth = true;
+                    tabla_nota.TotalWidth = 500f;
+                    tabla_nota.SpacingBefore = 25f;
+                    tabla_nota.SetWidths(new float[] { 250f});
+
+                    cell1 = new PdfPCell(new Phrase("NOTA:"));
+                    cell1.Padding = 0;
+                    cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    cell1.PaddingBottom = 4f;
+                    cell1.CellEvent = new RoundedBorder();
+                    cell1.Border = PdfPCell.NO_BORDER;
+
+                    table1.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase(""));
+                    cell1.Padding = 0;
+                    cell1.Border = PdfPCell.NO_BORDER;
+
+                    table1.AddCell(cell1);
+
+                    doc.Add(table1);
+
+                    tabla_nota.AddCell(new Phrase("Nota ", subtitulo));
+                    tabla_nota.AddCell(new Phrase(cabecera.descripcion_op, detalle));
+                    doc.Add(tabla_nota);
+                    tabla_nota.FlushContent();
+                    table1.FlushContent();
+                    #endregion
+
+                    #region FIRMAS 
                     var tabla_firma = new PdfPTable(2);
                     tabla_firma.LockedWidth = true;
                     tabla_firma.TotalWidth = 500f;
@@ -751,13 +802,15 @@ namespace Oasis.Controllers
         {
             var _fecha_inicio = Convert.ToDateTime(fecha_inicio);
             var _fecha_fin = Convert.ToDateTime(fecha_fin);
-            using (var db = new as2oasis()){
+            using (var db = new as2oasis())
+            {
 
                 return Json(db.Orden_Produccion
                     .Where(x => x.fecha_cierre >= _fecha_inicio &&
-                    x.fecha_cierre <= _fecha_fin &&   
-                    x.fecha_cierre != null )
-                    .GroupBy(x=> new { 
+                    x.fecha_cierre <= _fecha_fin &&
+                    x.fecha_cierre != null)
+                    .GroupBy(x => new
+                    {
                         x.lote,
                         x.fecha_cierre,
                         x.codigo_producto,
@@ -769,7 +822,8 @@ namespace Oasis.Controllers
                         x.OP
                     })
                     .ToList()
-                    .Select(x=> new { 
+                    .Select(x => new
+                    {
                         x.Key.OP,
                         x.Key.lote,
                         fecha = x.Key.fecha_cierre.Value.ToShortDateString(),
@@ -778,10 +832,39 @@ namespace Oasis.Controllers
                         sucursal = x.Key.planta,
                         x.Key.cantidad,
                         x.Key.cantidad_fabricada,
-                        rendimiento=(x.Key.cantidad_fabricada/x.Key.cantidad)*100 ,
-                        x.Key.id_orden_fabricacion})
-                    .OrderBy(x=>x.fecha), 
+                        rendimiento = (x.Key.cantidad_fabricada / x.Key.cantidad) * 100,
+                        x.Key.id_orden_fabricacion
+                    })
+                    .OrderBy(x => x.fecha),
                     JsonRequestBehavior.AllowGet);
+
+                //IQueryable<Orden_Produccion> data = db.Orden_Produccion.Where(
+                //   x => x.fecha_cierre >= _fecha_inicio &&
+                //   x.fecha_cierre <= _fecha_fin
+                //   );
+
+                //var data_json = Json(
+                //   data
+                //   .ToList()
+                //   .Select(x => new
+                //   {
+                //       x.OP,
+                //       x.lote,
+                //       fecha = x.fecha_cierre.Value.ToShortDateString(),
+                //       codigo = x.codigo_producto,
+                //       nombre = x.descripcion_producto,
+                //       sucursal = x.planta,
+                //       x.cantidad,
+                //       x.cantidad_fabricada,
+                //       rendimiento = (x.cantidad_fabricada / x.cantidad) * 100,
+                //       x.id_orden_fabricacion
+
+                //   }), JsonRequestBehavior.AllowGet
+                //   );
+
+                //data_json.MaxJsonLength = 500000000;
+
+                //return data_json;
 
             }
         }

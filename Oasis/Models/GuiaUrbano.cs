@@ -60,6 +60,12 @@ public partial class GuiaUrbano
 
     public string nombre { get; set; }
 
+    public int estado { get; set; }
+
+    public string descripcion2 { get; set; }
+
+    public string descripcion_anulacion { get; set; }
+
 }
 
 }

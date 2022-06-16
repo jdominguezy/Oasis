@@ -59,6 +59,8 @@ public partial class SP_Guarda_Cobros_Result
 
     public int id_detalle_forma_cobro { get; set; }
 
+    public string cod_forma_pago { get; set; }
+
 }
 
 }

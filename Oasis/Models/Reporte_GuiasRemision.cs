@@ -40,6 +40,12 @@ public partial class Reporte_GuiasRemision
 
     public string nota_guia { get; set; }
 
+    public string estado { get; set; }
+
+    public string NotaFactura { get; set; }
+
+    public string fecha_fin_desp { get; set; }
+
 }
 
 }

@@ -59,6 +59,8 @@ public partial class SP_Cobros_Vendedor_Result
 
     public int estado_co { get; set; }
 
+    public decimal diferencia_cheq { get; set; }
+
 }
 
 }

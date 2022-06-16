@@ -257,10 +257,10 @@
                     // CREATE DYNAMIC TABLE.
                     var div = document.createElement("div");
                     var row = document.createElement("div");
-                    row.className = "row col-md-4";
+                    row.className = "row col-md-3";
                     var card = document.createElement("div");
                     card.className = "card";
-                    card.style = "font-size: 15px;overflow-x: scroll;";
+                    card.style = "font-size: 14px;overflow-x: scroll;";
                     var cardbody = document.createElement("div");
                     cardbody.className = "card-body";
                     var table = document.createElement("table");
@@ -291,12 +291,12 @@
 
                         var tabCell = tr_body.insertCell(-1);
                         tabCell.innerHTML = '<input class="form-control chkcobro" type="checkbox" id="chkSeleccionar' + d[i][col[13]] + '" onclick="evaluar(); "' + '" onChange="inactivar();" >Seleccionar';
-                        tabCell.style = ' white-space: nowrap;';
+                        tabCell.style = ' white-space: pre-line;';
 
                         for (var j = 0; j < col.length; j++) {
                             var tabCell = tr_body.insertCell(-1);
                             tabCell.innerHTML = d[i][col[j]];
-                            tabCell.style = ' white-space: nowrap;';
+                            tabCell.style = ' white-space: pre-line;';
                         }
                                                
                         tbody.appendChild(tr_body);
@@ -378,13 +378,43 @@
                     );
                 },
                 error: function (e) {
-                    var error = e;
-                    console.log(error)
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Hubo un error al intentar guardar.'
-                    })
-                    return;
+                    console.log(e)
+                    if (e.status === 400) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'No hay Datos para procesar.'
+                        })
+                        return;
+                    }
+                    else if (e.status === 404) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'No se encontro el Cobro.'
+                        })
+                        return;
+                    }
+                    else if (e.status === 501) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Error de Excepción revisar.'
+                        })
+                        return;
+                    }
+                    else if (e.status === 417) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'No se pudo Actualizar la secuencia.'
+                        })
+                        return;
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Hubo un error al intentar guardar.'
+                        })
+                        return;
+                    }
+                                        
                 }
             })            
 
@@ -424,10 +454,10 @@
                     row.appendChild(contenedorTabla);
                     $('#contenedorPrimario').append(row);
                     var col = [];
-                    var encabezado = ["Empresa", "Sucursal", "Numero", "Fecha Cobro",
-                        "Cobrador", "Identificacion",  "Cliente", "Documento",
+                    var encabezado = ["Empresa", "Sucursal", "Numero", "Fecha Cobro", 
+                        "Fecha Validacion", "Cobrador", "Identificacion",  "Cliente",
                         "Factura", "Banco", "Cta. Bancaria", "No. Cheque",
-                        "Fecha Pago", "Memo", "Valor Total", "Estado", "Fecha Validacion"];
+                        "Fecha Pago", "Memo", "Valor Total", "Estado"];
                     for (var i = 0; i < d.length; i++) {
                         for (var key in d[i]) {
                             if (col.indexOf(key) === -1) {

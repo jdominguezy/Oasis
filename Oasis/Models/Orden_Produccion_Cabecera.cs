@@ -46,6 +46,14 @@ public partial class Orden_Produccion_Cabecera
 
     public Nullable<decimal> presentacion_producto { get; set; }
 
+    public string unidad_medida_op { get; set; }
+
+    public string fecha_creacion_of { get; set; }
+
+    public string descripcion { get; set; }
+
+    public string tipo_pr_producto { get; set; }
+
 }
 
 }

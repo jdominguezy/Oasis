@@ -115,10 +115,10 @@ $("#GenerarReporteGuias").click(function () {
 
             var col = [];
             var encabezado = ['EMPRESA', 'CLIENTE',
-                'SECUENCIAL FACTURA', 'FECHA FACTURA', 'SECUENCIAL GUIA',
+                'SECUENCIAL FACTURA', 'FECHA FACTURA', 'FIN DESPACHO', 'SECUENCIAL GUIA',
                 'FECHA GUIA', 'CIUDAD',
                 'PESO','BULTOS',
-                'GUIA URBANO', 'NOTA GUIA'];
+                'GUIA URBANO', 'NOTA GUIA', 'ESTADO', 'NOTA FACTURA'];
 
             console.log(encabezado)
             for (var i = 0; i < d.length; i++) {

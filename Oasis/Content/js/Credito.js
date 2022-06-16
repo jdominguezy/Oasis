@@ -1043,6 +1043,7 @@ $("#GenerarPresupuestoConsolidado").click(function () {
     var empresa = $("#empresa").val();
     var sucursal = $("#sucursal").val();
     var localidad;
+
     if ($('#chkLocalidad').is(":checked")) {
         localidad = null
     } else {
@@ -1053,6 +1054,9 @@ $("#GenerarPresupuestoConsolidado").click(function () {
     });
     var fecha_desde = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').startDate._d);
     var fecha_hasta = ConvertirFecha($('#fecha_presupuesto').data('daterangepicker').endDate._d);
+    var titulo = "REPORTE CONSOLIDADO \n\t"+
+                "Empresa: " + empresa +"\t\n" +
+                "Periodo: " + fecha_desde + " Al  " + fecha_hasta + "\t\r";
     iniciaLoading();
     console.log("Ingresa al js")
 
@@ -1249,7 +1253,7 @@ $("#GenerarPresupuestoConsolidado").click(function () {
                 console.log("Pasa variables")
 
                 var sTxt = '<table class="table table-hover" id="tablePresupuesto">';
-                sTxt += '<thead><tr><th style="text-align:center">ID</th><th style="text-align:center">Empresa</th><th style="text-align:center">Sucursal</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
+                sTxt += '<thead><tr><th style="text-align:center">ID</th><th style="text-align:center">Sucursal</th><th  style="text-align:center">Vendedor</th><th style="text-align:center">Cuota ventas</th>';
                 sTxt += '<th style="text-align:center">Ventas</th><th style="text-align:center">%</th>';
                 sTxt += '<th style="text-align:center">Cuota cobros</th><th style="text-align:center">Cobros</th>';
                 sTxt += '<th style="text-align:center">%</th><th style="text-align:center"></th></tr></thead> ';
@@ -1267,7 +1271,7 @@ $("#GenerarPresupuestoConsolidado").click(function () {
                     //sTxt += '' + p.empresa + '</td>';
                     //sTxt += '' + p.sucursal + '</td>';
                     sTxt += '' + p.id_vendedor + '</td>';
-                    sTxt += '<td style="text-align:center">' + p.empresa + '</td>';
+                    //sTxt += '<td style="text-align:center">' + p.empresa + '</td>';
                     sTxt += '<td style="text-align:center">' + p.sucursal + '</td>';
                     sTxt += '<td style="text-align:center">' + p.nombre_vendedor + '</td>';
                     sTxt += '<td style="text-align:center">' + formatoValor(p.valor_venta) + '</td>';
@@ -1323,19 +1327,20 @@ $("#GenerarPresupuestoConsolidado").click(function () {
                     "buttons": [
                         {
                             "extend": 'copy', "text": 'Copiar', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,  9] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
                         },
                         {
                             "extend": 'pdf', "text": 'PDF', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
                         },
                         {
                             "extend": 'excel', "text": 'Excel', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
+                            , messageTop: titulo
                         },
                         {
                             "extend": 'print', "text": 'Imprimir', "className": 'btn btn-default btn-xs'
-                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
+                            , exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
                         },
                     ],
                     initComplete: function () {

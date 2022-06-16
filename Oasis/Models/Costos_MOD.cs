@@ -38,6 +38,8 @@ public partial class Costos_MOD
 
     public Nullable<decimal> costo_unitario { get; set; }
 
+    public decimal horas_standard { get; set; }
+
 }
 
 }

@@ -204,13 +204,16 @@ namespace Oasis.Controllers.Bodega
                             x.secuencial_factura,
                             //fecha_factura = x.fecha_factura.Value.ToString(),
                             fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.Value.ToString(),
+                            x.fecha_fin_desp,
                             x.secuencial_guia,
                             fecha_guia = x.fecha_guia == null ? "" : x.fecha_guia.Value.ToString(),
                             x.ciudad,
                             peso = x.peso == null ? 0 : x.peso,
                             bultos = x.bultos == null ? 0 : x.bultos,
                             serial_urbano = x.serial_urbano == null ? "" : x.serial_urbano,
-                            nota_guia = x.nota_guia == null ? "" : x.nota_guia
+                            nota_guia = x.nota_guia == null ? "" : x.nota_guia,
+                            x.estado,
+                            x.NotaFactura
                         });
 
 
@@ -229,13 +232,16 @@ namespace Oasis.Controllers.Bodega
                                x.nombre_comercial,
                                x.secuencial_factura,
                                fecha_factura = x.fecha_factura == null ? "" : x.fecha_factura.Value.ToString(),
+                               x.fecha_fin_desp,
                                x.secuencial_guia,
                                fecha_guia = x.fecha_guia == null ? "" : x.fecha_guia.Value.ToString(),
                                x.ciudad,
                                peso = x.peso == null ? 0 : x.peso,
                                bultos = x.bultos == null ? 0 : x.bultos,
                                serial_urbano = x.serial_urbano == null ? "" : x.serial_urbano,
-                               nota_guia = x.nota_guia == null ? "" : x.nota_guia
+                               nota_guia = x.nota_guia == null ? "" : x.nota_guia,
+                               x.estado,
+                               x.NotaFactura
                            }),
                            JsonRequestBehavior.AllowGet);
 

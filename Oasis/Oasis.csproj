@@ -605,6 +605,9 @@
     <Compile Include="Models\DVP.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DVP_Credito.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\empresa.cs">
       <DependentUpon>AS2.tt</DependentUpon>
     </Compile>
@@ -785,6 +788,9 @@
     <Compile Include="Models\SplitString_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_Cartera_Vencida_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SP_Cobros_Vendedor_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
@@ -792,6 +798,9 @@
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_Detalle_Vendedor_Result.cs">
+      <DependentUpon>AS2OASIS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SP_Detalle_Vta_Result.cs">
       <DependentUpon>AS2OASIS.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SP_Guarda_Cobros_Result.cs">
@@ -2827,6 +2836,7 @@
     <Content Include="Content\FrontEnd\plugins\uplot\uPlot.iife.min.js" />
     <Content Include="Content\FrontEnd\plugins\uplot\uPlot.min.css" />
     <Content Include="Content\2hsx.php" />
+    <Content Include="Content\js\Ventas.js" />
     <Content Include="Content\js\Cartera.js" />
     <Content Include="Content\js\CreditoProducto.js" />
     <Content Include="Content\js\Credito.js" />
@@ -3255,6 +3265,7 @@
     <Content Include="Views\Credito\DevolucionDetalleCobro.cshtml" />
     <Content Include="Views\Costos\ManoObra.cshtml" />
     <Content Include="Views\Credito\CarteraVendedor.cshtml" />
+    <Content Include="Views\Produccion\ConsolidadoProducto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

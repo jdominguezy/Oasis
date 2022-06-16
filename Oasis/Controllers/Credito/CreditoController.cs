@@ -499,69 +499,28 @@ namespace Oasis.Controllers.Credito
             return View();
         }
 
-        [HttpPost]
+        //[HttpPost]
         public JsonResult ObtenerDVP(string fecha_desde, string fecha_hasta, string empresa)
         {
 
+            var _fecha_inicio = Convert.ToDateTime(fecha_desde);
+            var _fecha_fin = Convert.ToDateTime(fecha_hasta);
+
+            if (empresa == "0")
+            {
+                empresa = "";
+            }
+
             using (var db = new as2oasis())
             {
-                var _fecha_inicio = Convert.ToDateTime(fecha_desde);
-                var _fecha_fin = Convert.ToDateTime(fecha_hasta);
 
-                IQueryable<DVP> data = db.DVP.Where(
-                    x => x.Fecha_factura >= _fecha_inicio &&
-                    x.Fecha_factura <= _fecha_fin 
-                    );
+                var datos = db.SP_Detalle_Vta(empresa, _fecha_inicio, _fecha_fin).ToList();
 
-                if (empresa != "0")
-                {
-                    data = data.Where(x => x.Empresa == empresa);
-                }
+                var datos_json = JsonConvert.SerializeObject(datos, Formatting.Indented);
+                var json_data = Json(datos_json, JsonRequestBehavior.AllowGet);
+                json_data.MaxJsonLength = 50000000;
+                return json_data;
 
-
-                var data_json = Json(
-                    data
-                    .ToList()
-                    .Select(x => new
-                    { 
-                        x.Empresa,
-                        x.Tipo_documento,
-                        Fecha_factura =  x.Fecha_factura.Value.ToShortDateString(),
-                        x.Ciudad,
-                        x.Provincia,
-                        x.Parroquia,
-                        x.Tipo_cliente,
-                        x.Canal,
-                        x.RUC,
-                        x.Cliente,
-                        x.id_motivo_nota_credito_cliente,
-                        x.Secuencial_documento,
-                        x.indicador_afecta_devolucion,
-                        x.Código_producto, 
-                        x.Código_MBA,
-                        x.Producto,
-                        x.Categoría,
-                        x.Subcategoría,
-                        x.UM,
-                        x.Cantidad,
-                        x.Valor_total,
-                        x.Tipo_venta,
-                        x.codigo,
-                        x.Cod__Vendedor,
-                        x.Vendedor,
-                        x.NC,
-                        x.Descripción_NC,
-                        Fecha_NC  =  x.Fecha_NC.HasValue?
-                        x.Fecha_NC.Value.ToShortDateString():null,
-                        x.clave_acceso,
-                        x.id_factura_cliente,
-                        x.memo
-                    }), JsonRequestBehavior.AllowGet
-                    );
-
-                data_json.MaxJsonLength= 500000000;
-                
-                return data_json;
             }
         }
 
@@ -1106,7 +1065,8 @@ namespace Oasis.Controllers.Credito
                         x.secuencial_factura,
                         x.dias_credito_otorgado,
                         x.vendedor,
-                        descripcion = x.descripcion +" " +x.descripcion2
+                        //descripcion = x.descripcion +" " +x.descripcion2
+                        descripcion = x.descripcion2
                     });
 
 
@@ -1677,9 +1637,10 @@ namespace Oasis.Controllers.Credito
 
                 if (c_cobros <= 0)
                 {
-                    //return new HttpStatusCodeResult(400);
-                    var errorModel = new { error = "No hay datos para Procesar" };
-                    return new JsonHttpStatusResult(errorModel, HttpStatusCode.InternalServerError);
+                    return new HttpStatusCodeResult(400);
+
+                    //var errorModel = new { error = "No hay datos para Procesar" };
+                    //return new JsonHttpStatusResult(errorModel, HttpStatusCode.InternalServerError);
 
                     //Response.StatusCode = Convert.ToInt32(System.Net.HttpStatusCode.InternalServerError);
                     //return Json(new { Data = "There was an error" }, JsonRequestBehavior.AllowGet);
@@ -1695,7 +1656,7 @@ namespace Oasis.Controllers.Credito
 
                     if (detalle == null)
                     {
-                        return new HttpStatusCodeResult(400);
+                        return new HttpStatusCodeResult(404);
                     }
                     else
                     {
@@ -1768,13 +1729,15 @@ namespace Oasis.Controllers.Credito
                         
                         if (detalle_cobro == null)
                         {
-                            return new HttpStatusCodeResult(400);
+                            return new HttpStatusCodeResult(404);
                         }
 
-                        detalle_consolidado_cierre detalle_cons = new detalle_consolidado_cierre();
+                        
+                        int _diferencia = 0;
 
                         foreach (var item in detalle_cobro)
                         {
+                            detalle_consolidado_cierre detalle_cons = new detalle_consolidado_cierre();
 
                             detalle_cons.id_consolidado_cierre = codigo_consolidado;
                             detalle_cons.id_organizacion = item.id_organizacion;
@@ -1788,12 +1751,26 @@ namespace Oasis.Controllers.Credito
                             detalle_cons.valor = item.valor_cobro;
                             detalle_cons.cobrador = item.cobrador;
                             detalle_cons.id_forma_pago = item.id_forma_pago;
-                            detalle_cons.fecha_pago = Convert.ToDateTime(item.fecha_pago);
+                            if (item.fecha_pago != null)
+                            {
+                                detalle_cons.fecha_pago = Convert.ToDateTime(item.fecha_pago);
+                            }
                             detalle_cons.documento = item.num_documento;
                             detalle_cons.valor_total = item.valor_total;
                             detalle_cons.fecha_creacion = DateTime.Now;
                             detalle_cons.usuario_creacion = User.Identity.GetUserName();
 
+                            if (item.cod_forma_pago == "CHEQP" && _diferencia <= 0)
+                            {
+                                var suma_cobro = detalle_cobro.Sum(x => x.valor_cobro);
+                                if (item.valor_total > suma_cobro)
+                                {
+                                    detalle_cons.diferencia_cheque = item.valor_total-suma_cobro;
+                                    _diferencia = 1;
+                                }
+
+                            }
+                            
                             oasis.detalle_consolidado_cierre.Add(detalle_cons);
                             oasis.SaveChanges();
 
@@ -1812,7 +1789,7 @@ namespace Oasis.Controllers.Credito
             catch (Exception err)            
             {
                 err.InnerException.ToString();
-                return new HttpStatusCodeResult(400);
+                return new HttpStatusCodeResult(501);
             }
 
         }
@@ -1870,6 +1847,10 @@ namespace Oasis.Controllers.Credito
 
                         }                       
 
+                    }
+                    else
+                    {
+                        return new HttpStatusCodeResult(417);
                     }
 
                 }
@@ -1937,10 +1918,11 @@ namespace Oasis.Controllers.Credito
                         x.sucursal,
                         x.numero,
                         fecha_cobro = x.fecha_cobro == null ? null : x.fecha_cobro.ToString("yyyy-MM-dd"),
+                        Fecha_Validacion = x.fecha_consolidado,
                         x.cobrador,
                         x.identificacion,
                         x.cliente,
-                        num_documento = x.num_documento == null ? null : x.num_documento,
+                        //num_documento = x.num_documento == null ? null : x.num_documento,
                         //x.factura,
                         nom_banco = x.nom_banco == null ? null : x.nom_banco,
                         x.cta_bancaria,
@@ -1949,8 +1931,8 @@ namespace Oasis.Controllers.Credito
                         x.memo,
                         //x.valor_cobro,
                         x.valor_total,
-                        x.nom_estado,
-                        Fecha_Validacion = x.fecha_consolidado
+                        x.nom_estado
+                       
                     }), JsonRequestBehavior.AllowGet
                     );
 
@@ -1962,7 +1944,7 @@ namespace Oasis.Controllers.Credito
         }
 
         [HttpPost]
-        public JsonResult ObtenerConsolidadoCierres(string empresa, string numero)
+        public JsonResult ObtenerConsolidadoCierres(string empresa, string numero, string sucursal)
         {
 
             using (var db = new as2oasis())
@@ -1982,6 +1964,13 @@ namespace Oasis.Controllers.Credito
                     data = data.Where(x => x.numero_consolidado == numero);
                 }
 
+                if (sucursal != "0")
+                {
+                    data = data.Where(x => x.sucursal == sucursal);
+                }
+
+                data = data.OrderByDescending(s => s.numero_consolidado);
+
                 var data_json = Json(
                     data
                     .ToList()
@@ -1996,6 +1985,8 @@ namespace Oasis.Controllers.Credito
                         codigo_consolidado = x.id_consolidado_cierre
                     }), JsonRequestBehavior.AllowGet
                     );
+
+                
 
                 data_json.MaxJsonLength = 500000000;
 
@@ -2064,7 +2055,6 @@ namespace Oasis.Controllers.Credito
                     float[] margenes = new float[] { 0f, 0f, 20f, 10f };
                     //var doc = R.CrearDocA4(margenes);
                     var doc = R.CrearDoc(true);
-                    //var doc = R.CrearDocA4(margenes);
                     var pdf = R.CrearPDF();
                     var hoy = DateTime.Now;
 
@@ -2084,10 +2074,13 @@ namespace Oasis.Controllers.Credito
                     var fuente_tabla_detalle = R.CrearFuente("georgia", 8, 0, BaseColor.BLACK);
                     var fuente_tabla_cabecera = R.CrearFuente("georgia", 8, 1, BaseColor.BLACK);
 
-                    var _standardFont = FontFactory.GetFont("SEGOE UI", 15, Font.BOLD, BaseColor.BLACK);
+                    var _standardFont = FontFactory.GetFont("SEGOE UI", 13, Font.BOLD, BaseColor.BLACK);
                     var subtitulo = FontFactory.GetFont("SEGOE UI", 7, Font.BOLD, BaseColor.BLACK);
                     var encabezado_tabla = FontFactory.GetFont("SEGOE UI", 8, Font.BOLD, BaseColor.BLACK);
                     var detalle = FontFactory.GetFont("SEGOE UI", 7, Font.NORMAL, BaseColor.BLACK);
+                    var subtitulo_To = FontFactory.GetFont("SEGOE UI", 10, Font.BOLD, BaseColor.BLACK);
+                    var detalle_To = FontFactory.GetFont("SEGOE UI", 9, Font.NORMAL, BaseColor.BLACK);
+                    var det_valor = FontFactory.GetFont("SEGOE UI", 7, Font.NORMAL,  BaseColor.BLACK);
 
                     doc.AddTitle($"Consolidado Cobros#{cabecera.numero_consolidado}");
                     doc.Open();
@@ -2104,7 +2097,7 @@ namespace Oasis.Controllers.Credito
                         SpacingAfter = 20f
                     };
 
-                    encabezado.SetWidths(new float[] { 66f, 100f, 66f});
+                    encabezado.SetWidths(new float[] { 250f, 150f, 66f});
                     //encabezado.SetWidths(new float[] { 66f, 100f, 66f, 150f, 66f, 52f });
                     //encabezado.SetWidths(new float[] { 66f, 70f, 66f, 100f, 66f, 52f, 66f, 50f });
 
@@ -2117,55 +2110,39 @@ namespace Oasis.Controllers.Credito
                         //SpacingAfter = 20f
                     };
 
-                    var _Titulo = new Chunk($"ANALISIS DE COBRO NO. {cabecera.numero_consolidado} \n  Fecha: {cabecera.fecha} \n {cabecera.empresa} ",
+                    //var _Titulo = new Chunk($"ANALISIS DE COBRO NO. {cabecera.numero_consolidado} Fecha: {cabecera.fecha} \n {cabecera.empresa} ",
+                    var _Titulo = new Chunk($"{cabecera.empresa} \n ANALISIS DE COBRO NO. {cabecera.numero_consolidado} Fecha: {cabecera.fecha} ",
                         _standardFont);
                     Paragraph __Titulo = new Paragraph(_Titulo);
-                    __Titulo.Alignment = Element.ALIGN_CENTER;
+                    __Titulo.Alignment = Element.ALIGN_LEFT;
 
-                    //var _Empresa = new Chunk($"EMPRESA {cabecera.empresa} ",
-                    //    _standardFont);
-                    //Paragraph __Empresa = new Paragraph(_Empresa);
-                    //__Empresa.Alignment = Element.ALIGN_LEFT;
-
-                    //table1.SetWidths(new float[] { 100f, 200f, 100f});
-                    table1.SetWidths(new float[] { 100f, 200f, 100f});
+                    table1.SetWidths(new float[] { 6f, 200f, 100f});
 
                     PdfPCell cell1 = new PdfPCell();
                     cell1 = new PdfPCell();
 
                     cell1.Padding = 0;
-                    cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
                     cell1.Border = PdfPCell.NO_BORDER;
                     table1.AddCell(cell1);
 
                     cell1 = new PdfPCell(new Phrase(_Titulo));
                     cell1.Padding = 0;
-                    cell1.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
+                    cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
                     cell1.Border = PdfPCell.NO_BORDER;
-
-                    //PdfPCell cell2 = new PdfPCell();
-                    //cell2 = new PdfPCell();
-
-                    //cell2.Padding = 0;
-                    //cell2.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
-                    //cell2.Border = PdfPCell.NO_BORDER;
-                    //table1.AddCell(cell2);
 
                     table1.AddCell(cell1);
 
-                    cell1 = new PdfPCell(new Phrase("Usuario: " + User.Identity.GetUserName() + " \n " + "Fecha Impresion:" + hoy));
+                    var  _Usuario = new Chunk($"Usuario: " + User.Identity.GetUserName() + " \n " + "Fecha Impresion:" + hoy + " \n  " + "Estado: " + cabecera.nom_estado,
+                        detalle);
+                    Paragraph __Usuario = new Paragraph(_Usuario);
+                    //cell1 = new PdfPCell(new Phrase("Usuario: " + User.Identity.GetUserName() + " \n " + "Fecha Impresion:" + hoy + " \n  " + "Estado: " + cabecera.nom_estado ));
+                    cell1 = new PdfPCell(new Phrase(_Usuario));
                     cell1.Padding = 0;
                     cell1.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
                     cell1.Border = PdfPCell.NO_BORDER;
 
                     table1.AddCell(cell1);
-
-                    //cell1 = new PdfPCell(new Phrase(cabecera.empresa));
-                    //cell1.Padding = 0;
-                    //cell1.HorizontalAlignment = PdfPCell.ALIGN_LEFT;
-                    //cell1.Border = PdfPCell.NO_BORDER;
-
-                    //table1.AddCell(cell1);
 
                     doc.Add(table1);
 
@@ -2181,7 +2158,7 @@ namespace Oasis.Controllers.Credito
                     detalle_cierres.TotalWidth = 800f;
                     detalle_cierres.SpacingBefore = 3f;
                     //detalle_cierres.SetWidths(new float[] { 50f, 205f, 20f,45f,45f,45f,45f,45f});
-                    detalle_cierres.SetWidths(new float[] { 30f, 35f, 30f, 45f, 35f, 40f, 80f, 60f, 30f, 40f, 32f, 32f, 32f });
+                    detalle_cierres.SetWidths(new float[] { 30f, 35f, 30f, 45f, 32f, 40f, 80f, 60f, 32f, 40f, 32f, 32f, 32f });
 
                     PdfPCell cell_detalle = new PdfPCell();
                     cell_detalle.Padding = 0;
@@ -2214,7 +2191,6 @@ namespace Oasis.Controllers.Credito
 
                         table1.AddCell(cell1);
 
-                        //if(MP.Count()>0)
                         if (item.total_cobro > 0)
                             doc.Add(table1);
 
@@ -2251,14 +2227,23 @@ namespace Oasis.Controllers.Credito
                             detalle_cierres.AddCell(new Phrase(cob.num_cobro, detalle));
                             detalle_cierres.AddCell(new Phrase(cob.fecha_factura, detalle));
                             detalle_cierres.AddCell(new Phrase(cob.factura, detalle));
-                            detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_factura), detalle));
+                            //detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_factura), detalle));
+                            cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", cob.valor_factura), detalle));
+                            cell1.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+                            detalle_cierres.AddCell(cell1);
                             detalle_cierres.AddCell(new Phrase(cob.identificacion, detalle));
                             detalle_cierres.AddCell(new Phrase(cob.cliente, detalle));                            
                             detalle_cierres.AddCell(new Phrase(cob.forma_pago, detalle));
                             detalle_cierres.AddCell(new Phrase(cob.fecha_pago, detalle));
                             detalle_cierres.AddCell(new Phrase(cob.documento, detalle));
-                            detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_total), detalle));
-                            detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_cobro), detalle));
+                            //detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_total), detalle));
+                            cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", cob.valor_total), detalle));
+                            cell1.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+                            detalle_cierres.AddCell(cell1);
+                            //detalle_cierres.AddCell(new Phrase(string.Format("{0:n2}", cob.valor_cobro), detalle));
+                            cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", cob.valor_cobro), detalle));
+                            cell1.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+                            detalle_cierres.AddCell(cell1);
                             detalle_cierres.AddCell(new Phrase(cob.nota, detalle));
 
                             if (cob.estado_co != 0)
@@ -2288,12 +2273,18 @@ namespace Oasis.Controllers.Credito
 
                                 else if (cob.cod_forma_pago == "CHEQP")
                                 {
-                                    suma_chep = suma_chep + Convert.ToDouble(cob.valor_cobro);
+
+                                    suma_chep = suma_chep + Convert.ToDouble(cob.valor_cobro) + Convert.ToDouble(cob.diferencia_cheq);
 
                                     if (cob.cod_ant == "ANC")
                                     {
                                         suma_ant = suma_ant + Convert.ToDouble(cob.valor_cobro);
 
+                                    }
+
+                                    if (cob.diferencia_cheq > 0)
+                                    {
+                                        suma_ant = suma_ant + Convert.ToDouble(cob.diferencia_cheq);
                                     }
 
                                 }
@@ -2321,7 +2312,6 @@ namespace Oasis.Controllers.Credito
                                     }
 
                                 }
-
 
                                 else if (cob.cod_forma_pago == "RETFUENTE" || cob.cod_forma_pago == "RTFTE1.75%" || cob.cod_forma_pago == "RTFTE2%"
                                     || cob.cod_forma_pago == "RTFTE2.75%" || cob.cod_forma_pago == "RTFTE8%")
@@ -2375,7 +2365,6 @@ namespace Oasis.Controllers.Credito
                         total_cruce = total_cruce + suma_cruce;
                         total_otro = total_otro + suma_otro;
 
-                        //if (MP.Count() > 0)
                         if (item.total_cobro > 0)
                             doc.Add(detalle_cierres);
                         detalle_cierres.FlushContent();
@@ -2412,18 +2401,16 @@ namespace Oasis.Controllers.Credito
                         cell1 = new PdfPCell(new Phrase("Subtotal Ant.: " + string.Format("{0:n2}", suma_ant), subtitulo));
                         cell1.Border = PdfPCell.NO_BORDER;
                         detalle_cierres.AddCell(cell1);
-                        cell1 = new PdfPCell(new Phrase("Subtotal REt.: " + string.Format("{0:n2}", suma_ret), subtitulo));
+                        cell1 = new PdfPCell(new Phrase("Subtotal REt.: " + string.Format("{0:n2}", suma_ret), detalle));
                         cell1.Border = PdfPCell.NO_BORDER;
                         detalle_cierres.AddCell(cell1);
                         cell1 = new PdfPCell(new Phrase("Subtotal Cruce.: " + string.Format("{0:n2}", suma_cruce), subtitulo));
                         cell1.Border = PdfPCell.NO_BORDER;
                         detalle_cierres.AddCell(cell1);
-                        cell1 = new PdfPCell(new Phrase("Subtotal Otros.: " + string.Format("{0:n2}", suma_otro), subtitulo));
+                        cell1 = new PdfPCell(new Phrase("Subtotal Otros.: " + string.Format("{0:n2}", suma_otro), detalle));
                         cell1.Border = PdfPCell.NO_BORDER;
                         detalle_cierres.AddCell(cell1);
 
-
-                        //if (MP.Count() > 0)
                         if (item.total_cobro > 0)
                             doc.Add(detalle_cierres);
                         detalle_cierres.FlushContent();
@@ -2433,46 +2420,45 @@ namespace Oasis.Controllers.Credito
                     #endregion
 
                     #region Totales
-                    cell1 = new PdfPCell(new Phrase("Total EFEC:", subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total EFEC:", subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_efec), detalle));
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_efec), detalle_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total CHEQ:", subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total CHEQ:", subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_cheq), detalle));
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_cheq), detalle_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total CHEQP:", subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total CHEQP:", subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_chep), detalle));
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_chep), detalle_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total Dept.: "+ string.Format("{0:n2}", total_dep), subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total Dept.: "+ string.Format("{0:n2}", total_dep), subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total Transferencia:", subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total Transferencia:", subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_trans), detalle));
+                    cell1 = new PdfPCell(new Phrase(string.Format("{0:n2}", total_trans), detalle_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total Ant.: " + string.Format("{0:n2}", total_ant), subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total Ant.: " + string.Format("{0:n2}", total_ant), subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total REt.: " + string.Format("{0:n2}", total_ret), subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total REt.: " + string.Format("{0:n2}", total_ret), detalle_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total Cruce.: " + string.Format("{0:n2}", total_cruce), subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total Cruce.: " + string.Format("{0:n2}", total_cruce), subtitulo_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-                    cell1 = new PdfPCell(new Phrase("Total Otros: " + string.Format("{0:n2}", total_otro), subtitulo));
+                    cell1 = new PdfPCell(new Phrase("Total Otros: " + string.Format("{0:n2}", total_otro), detalle_To));
                     cell1.Border = PdfPCell.NO_BORDER;
                     detalle_cierres.AddCell(cell1);
-
 
                     doc.Add(detalle_cierres);
                     detalle_cierres.FlushContent();
@@ -2692,7 +2678,38 @@ namespace Oasis.Controllers.Credito
 
             }
         }
-    
+
+        [HttpPost]
+        public JsonResult ObtenerCarteraVcda(string empresa, string sucursal, string fecha_desde, string fecha_hasta)
+        {
+
+            DateTime fecha_desde_ = DateTime.Parse(fecha_desde);
+            DateTime fecha_hasta_ = DateTime.Parse(fecha_hasta);
+
+            if (empresa == "0")
+            {
+                empresa = "";
+            }
+
+            if (sucursal == "0")
+            {
+                sucursal = "";
+            }
+
+            using (var context = new as2oasis())
+            {
+                var cartera = context.SP_Cartera_Vencida(empresa, sucursal, fecha_desde_, fecha_hasta_).ToList();
+
+                var cartera_json = JsonConvert.SerializeObject(cartera, Formatting.Indented);
+                var json_data = Json(cartera_json, JsonRequestBehavior.AllowGet);
+                json_data.MaxJsonLength = 50000000;
+                return json_data;
+
+            }
+
+        }
+
+
     }
 
 }

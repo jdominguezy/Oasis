@@ -507,19 +507,13 @@
                 User.IsInRole("Admin"))
                 {
                     <li class="@Html.DropdownIsSelected(controllers: "KPI")">
-                       <a href="#" class="@Html.LabelDropdownIsSelected(controllers: "KPI")">
-                            <i class="nav-icon fas fa-industry"></i>
-                            <p>
-                                KPI
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
+                       
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="@Url.Action("SalidaMaterial", "KPI")"
-                                   class="@Html.IsSelected(actions: "SalidaMaterial", controllers: "KPI")">
+                                <a href="@Url.Action("ManoObra", "Costos")"
+                                   class="@Html.IsSelected(actions: "ManoObra", controllers: "Costos")">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Salida de material</p>
+                                    <p>Mano de Obra</p>
                                 </a>
                             </li>
                         </ul>

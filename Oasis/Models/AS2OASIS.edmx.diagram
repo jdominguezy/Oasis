@@ -44,10 +44,8 @@
         <EntityTypeShape EntityType="oasisModel1.invt_um" Width="1.5" PointX="17.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Anticipos" Width="1.5" PointX="17.75" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.CarteraBK" Width="1.5" PointX="9.75" PointY="19.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="oasisModel1.Cheques_Postfechados" Width="1.5" PointX="18.75" PointY="14.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Clientes" Width="1.5" PointX="19.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Clientes2" Width="1.5" PointX="11.75" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="oasisModel1.Cobros_Consolidado" Width="1.5" PointX="19.875" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Cobros_Diario" Width="1.5" PointX="20.75" PointY="14.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.DetalleOCEnlazada" Width="1.5" PointX="13.75" PointY="21.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.GuiaUrbano" Width="1.5" PointX="17.75" PointY="21.125" IsExpanded="true" />
@@ -57,12 +55,11 @@
         <EntityTypeShape EntityType="oasisModel1.Orden_Produccion_Cabecera" Width="1.5" PointX="22.75" PointY="20.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.ordenes_compra" Width="1.5" PointX="23.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Pedidos" Width="1.5" PointX="19.75" PointY="24.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="oasisModel1.Picking_Estado" Width="1.5" PointX="21.75" PointY="24.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="oasisModel1.PickingGuias" Width="1.5" PointX="23.75" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.Picking_Estado" Width="1.5" PointX="21.875" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="oasisModel1.PickingGuias" Width="1.5" PointX="24.375" PointY="24.875" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Presupuesto_Vendedor_Detalle" Width="1.5" PointX="24.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Proveedores" Width="1.5" PointX="5.75" PointY="25.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Registros_Contabilidad" Width="1.5" PointX="7.75" PointY="25.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="oasisModel1.Reporte_GuiasRemision" Width="1.5" PointX="24.75" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Stock" Width="1.5" PointX="24.75" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Transito_MP_ME_OC" Width="1.5" PointX="24.75" PointY="17.125" IsExpanded="true" />
         <EntityTypeShape EntityType="oasisModel1.Transito_MP_ME_pedido" Width="1.5" PointX="24.75" PointY="20.125" IsExpanded="true" />
@@ -104,7 +101,6 @@
         <AssociationConnector Association="oasisModel1.FK_relacion_cotizacion_ganadora_perdedora_cotizacion_cabecera" />
         <AssociationConnector Association="oasisModel1.FK_relacion_cotizacion_ganadora_perdedora_cotizacion_cabecera1" />
         <EntityTypeShape EntityType="oasisModel1.Costos_Indirectos" Width="1.5" PointX="28.375" PointY="0.75" />
-        <EntityTypeShape EntityType="oasisModel1.DVP" Width="1.5" PointX="17.75" PointY="26.625" />
         <EntityTypeShape EntityType="oasisModel1.Orden_Produccion" Width="1.5" PointX="14.375" PointY="25.75" />
         <EntityTypeShape EntityType="oasisModel1.Costos_MP_ME" Width="1.5" PointX="22.375" PointY="28.75" />
         <EntityTypeShape EntityType="oasisModel1.Costos_MOD" Width="1.5" PointX="28.375" PointY="20.75" />
@@ -136,6 +132,12 @@
         <EntityTypeShape EntityType="oasisModel1.Detalle_Cheques" Width="1.5" PointX="9.375" PointY="34.75" />
         <EntityTypeShape EntityType="oasisModel1.Mano_Obra" Width="1.5" PointX="30.375" PointY="20.75" />
         <EntityTypeShape EntityType="oasisModel1.V_cobros_empresa" Width="1.5" PointX="32.375" PointY="19.75" />
+        <EntityTypeShape EntityType="oasisModel1.DVP" Width="1.5" PointX="16.375" PointY="27.75" />
+        <EntityTypeShape EntityType="oasisModel1.DVP_Credito" Width="1.5" PointX="18.375" PointY="31.75" />
+        <EntityTypeShape EntityType="oasisModel1.MateriaPrima_Lote" Width="1.5" PointX="33.375" PointY="14.75" />
+        <EntityTypeShape EntityType="oasisModel1.Cheques_Postfechados" Width="1.5" PointX="34.375" PointY="25.75" />
+        <EntityTypeShape EntityType="oasisModel1.Cobros_Consolidado" Width="1.5" PointX="34.375" PointY="19.75" />
+        <EntityTypeShape EntityType="oasisModel1.Reporte_GuiasRemision" Width="1.5" PointX="34.375" PointY="32.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
